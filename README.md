@@ -2,7 +2,7 @@
 
 GradeAI is a student outcome analytics toy project with a React frontend, FastAPI backend, and R-based training pipeline. It demonstrates supervised classification (Decision Tree and Linear Regression), unsupervised analytics (PCA and K-Means), prediction explanations, and class-level charts.
 
-> **Demo-data warning:** the included 50-row CSV is synthetic/sample data. Metrics are descriptive and mostly in-sample; do not use these predictions to make real academic decisions. Linear Regression is fitted to Pass=1/Fail=0 labels and returns a clamped score—not predicted exam marks or a calibrated probability.
+> **Demo-data warning:** the included 500-row CSV is reproducible synthetic demo data with 250 Pass and 250 Fail examples. Balanced class counts are for demonstration and do not represent real-world prevalence. Metrics are descriptive and mostly in-sample; do not use these predictions to make real academic decisions. Linear Regression is fitted to Pass=1/Fail=0 labels and returns a clamped score—not predicted exam marks or a calibrated probability.
 
 ## Train all models
 
@@ -20,7 +20,7 @@ The script installs/uses `rpart` and `jsonlite` and writes these files into `bac
 - `kmeans_model.json` — standardized cluster centers, cluster sizes, and assigned records.
 - `analytics_summary.json` — dataset summaries and model diagnostics.
 
-The same training pipeline runs automatically on pushes to `main` that touch `r_analytics/`, and can be started manually from GitHub Actions using **Train and validate GradeAI models**. The workflow validates all five JSON artifacts and uploads them as the `gradeai-trained-models` workflow artifact. Download/copy those artifacts into `backend/model_store/` if you want to use the exact CI-trained files locally.
+Regenerate the balanced synthetic CSV with `python r_analytics/data/generate_balanced_dataset.py`. The generator uses a fixed seed and creates overlapping feature distributions for both labels; it does not contain real student records or establish validated relationships. The same training pipeline runs automatically on pushes to `main` that touch `r_analytics/`, and can be started manually from GitHub Actions using **Train and validate GradeAI models**. The workflow validates all five JSON artifacts and uploads them as the `gradeai-trained-models` workflow artifact. Download/copy those artifacts into `backend/model_store/` if you want to use the exact CI-trained files locally.
 
 ### Why `utils.R` exists
 
