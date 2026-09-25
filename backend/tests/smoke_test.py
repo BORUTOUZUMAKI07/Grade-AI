@@ -34,6 +34,17 @@ with TestClient(app) as c, TestClient(app) as c2, TestClient(app) as ca:
     analytics = c.get(f"{P}/predict/analytics", headers=H)
     chk("analytics endpoint exposes PCA, K-Means and regression artifacts",
         analytics.status_code == 200 and analytics.json().get("pca") and analytics.json().get("clustering") and analytics.json().get("regression", {}).get("weights"))
+    live_curve = c.post(f"{P}/predict/sensitivity", json=PRED(6, 75, 60), headers=H)
+    curve_json = live_curve.json()
+    chk("live sensitivity returns all three feature curves",
+        live_curve.status_code == 200 and set(curve_json.get("curves", {})) == {"study_hours", "attendance", "previous_marks"})
+    chk("live sensitivity holds other inputs and tags current values",
+        curve_json.get("baseline_inputs", {}).get("attendance") == 75 and
+        any(point.get("is_current") for point in curve_json.get("curves", {}).get("study_hours", {}).get("points", [])))
+    live_linear = c.post(f"{P}/predict/sensitivity", json=PRED(6, 75, 60, model="linear_regression"), headers=H)
+    chk("live sensitivity evaluates selected Linear Regression",
+        live_linear.status_code == 200 and live_linear.json().get("selected_model") == "linear_regression" and
+        len(live_linear.json().get("curves", {}).get("attendance", {}).get("points", [])) == 11)
     linear = c.post(f"{P}/predict/", json=PRED(6, 75, 60, model="linear_regression"), headers=H)
     chk("linear regression selected model returns tagged prediction",
         linear.status_code == 200 and linear.json().get("selected_model") == "linear_regression" and "linear probability" in linear.json().get("model_source", "").lower())
