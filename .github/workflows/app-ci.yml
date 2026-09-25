@@ -1,5 +1,6 @@
 name: GradeAI application checks
-# Runs frontend production compilation and API integration smoke tests.\n# Includes API contract checks for model selection, analytics artifacts, and history.
+# Runs frontend production compilation and API integration smoke tests.
+# Includes API contract checks for model selection, analytics artifacts, and history.
 
 on:
   push:
@@ -7,6 +8,7 @@ on:
     paths:
       - "frontend-react/**"
       - "backend/**"
+      - "r_analytics/**"
       - ".github/workflows/app-ci.yml"
   workflow_dispatch:
 
@@ -36,10 +38,16 @@ jobs:
         working-directory: backend
     steps:
       - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.4'
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: pip
           cache-dependency-path: backend/requirements.txt
       - run: pip install -r requirements.txt httpx
+      - name: Train fresh analytics and model artifacts
+        working-directory: r_analytics
+        run: Rscript src/train.R
       - run: python tests/smoke_test.py
