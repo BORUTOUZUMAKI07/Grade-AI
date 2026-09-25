@@ -1,4 +1,5 @@
 name: GradeAI application checks
+# Runs frontend production compilation and the API integration smoke suite.
 
 on:
   push:
