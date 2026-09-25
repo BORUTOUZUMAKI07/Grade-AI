@@ -24,6 +24,8 @@ class SimilarStudent(StudentRecord):
 class PredictionResponse(BaseModel):
     predicted_result: str
     confidence_score: float
+    confidence_kind: str = "unspecified"
+    confidence_note: str = "Confidence score semantics depend on the selected model."
     pass_probability: float
     similar_students: list[SimilarStudent]
     explanation: list[str]
