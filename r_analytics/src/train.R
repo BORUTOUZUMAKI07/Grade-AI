@@ -28,6 +28,19 @@ evaluate_binary <- function(actual, predicted, score) {
   auc <- if (length(pos) && length(neg)) {
     mean(outer(pos, neg, function(p, n) ifelse(p > n, 1, ifelse(p == n, 0.5, 0))))
   } else NA_real_
+  calibration_bins <- cut(score, breaks=seq(0, 1, by=0.2),
+                           include.lowest=TRUE, right=TRUE,
+                           labels=c("0.0-0.2", "0.2-0.4", "0.4-0.6", "0.6-0.8", "0.8-1.0"))
+  bin_rows <- lapply(levels(calibration_bins), function(bin) {
+    idx <- which(calibration_bins == bin)
+    list(bin=bin, count=length(idx),
+         mean_predicted=if(length(idx)) mean(score[idx]) else NA_real_,
+         observed_pass_rate=if(length(idx)) mean(actual[idx] == "Pass") else NA_real_)
+  })
+  nonempty <- which(vapply(bin_rows, function(x) x$count > 0, logical(1)))
+  ece <- if(length(nonempty)) sum(vapply(nonempty, function(i)
+    bin_rows[[i]]$count / length(actual) *
+      abs(bin_rows[[i]]$mean_predicted - bin_rows[[i]]$observed_pass_rate), numeric(1))) else NA_real_
   list(n=length(actual), accuracy=mean(actual == predicted),
        precision=precision, recall=recall, specificity=specificity, f1=f1,
        roc_auc=auc, confusion_matrix=list(
@@ -36,7 +49,8 @@ evaluate_binary <- function(actual, predicted, score) {
                    actual_Pass=list(predicted_Fail=fn, predicted_Pass=tp))),
        baseline_majority_accuracy=max(mean(actual == "Pass"), mean(actual == "Fail")),
        brier_score=mean((score - as.numeric(actual == "Pass"))^2),
-       calibration_note="Brier score is a proper score on this hold-out set; no calibration method was fitted.")
+       calibration= list(expected_calibration_error=ece, bins=bin_rows,
+         note="Descriptive 5-bin calibration check on the held-out split only; no calibration model was fitted."))
 }
 
 make_holdout <- function(data) {
