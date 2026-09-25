@@ -94,7 +94,7 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction })
       <div className="mt-2 flex flex-wrap items-center gap-4">
         <span className="text-lg font-bold text-white">{prediction.predicted_result}</span>
         <span className="text-sm text-neutral-300">Pass probability: {(Number(prediction.pass_probability || 0) * 100).toFixed(1)}%</span>
-        <span className="text-sm text-neutral-300">Confidence: {(Number(prediction.confidence_score || 0) * 100).toFixed(1)}%</span>
+        <span className="text-sm text-neutral-300">Confidence proxy: {(Number(prediction.confidence_score || 0) * 100).toFixed(1)}%</span>
       </div>
     </div>}
 
@@ -104,6 +104,38 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction })
       <Metric label="Fail records" value={summary.result_counts?.Fail ?? 0} detail="Training label count" />
       <Metric label="Trained at" value={trainedAt} detail="Timestamp embedded in the summary artifact" />
     </div>
+
+    {summary.validation && <section className={panel}>
+      <ChartTitle title="Held-out evaluation" note={`Stratified 80/20 hold-out · ${summary.validation.test_rows} test rows · seed ${summary.validation.seed}. These are synthetic-demo results, not evidence of real-world student performance.`} />
+      <div className="grid gap-4 lg:grid-cols-2">
+        {[
+          ['Decision Tree', summary.validation.decision_tree],
+          ['Linear probability model', summary.validation.linear_regression],
+        ].map(([name, result]) => result && <div key={name} className="rounded-xl border border-white/10 bg-black/20 p-4">
+          <h4 className="mb-3 font-semibold text-white">{name}</h4>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {[
+              ['Accuracy', result.accuracy], ['Precision', result.precision], ['Recall', result.recall],
+              ['F1', result.f1], ['ROC-AUC', result.roc_auc], ['Brier score', result.brier_score],
+            ].map(([label, value]) => <div key={label} className="rounded-lg bg-white/[0.03] p-3">
+              <p className="text-[10px] uppercase tracking-wide text-neutral-500">{label}</p>
+              <p className="mono mt-1 text-lg font-semibold text-white">{Number.isFinite(Number(value)) ? Number(value).toFixed(3) : 'N/A'}</p>
+            </div>)}
+          </div>
+          <p className="mt-3 text-xs text-neutral-500">Majority-class baseline accuracy: {Number(result.baseline_majority_accuracy ?? 0).toFixed(3)}</p>
+          <div className="mt-3 overflow-x-auto">
+            <table className="w-full text-xs text-neutral-300">
+              <thead><tr><th className="p-2 text-left font-medium text-neutral-500">Actual / predicted</th><th className="p-2">Fail</th><th className="p-2">Pass</th></tr></thead>
+              <tbody>
+                <tr><td className="p-2">Fail</td><td className="p-2 text-center">{result.confusion_matrix?.rows?.actual_Fail?.predicted_Fail ?? '—'}</td><td className="p-2 text-center">{result.confusion_matrix?.rows?.actual_Fail?.predicted_Pass ?? '—'}</td></tr>
+                <tr><td className="p-2">Pass</td><td className="p-2 text-center">{result.confusion_matrix?.rows?.actual_Pass?.predicted_Fail ?? '—'}</td><td className="p-2 text-center">{result.confusion_matrix?.rows?.actual_Pass?.predicted_Pass ?? '—'}</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>)}
+      </div>
+      <p className="mt-4 text-xs leading-relaxed text-neutral-500">Metrics are from a single held-out split; no cross-validation or probability-calibration procedure is claimed. The training artifacts used by the app are refit on the full dataset after evaluation. PCA and K-Means remain descriptive and are not assigned classifier accuracy.</p>
+    </section>}
 
     <div className="grid gap-5 xl:grid-cols-2">
       <div className={panel}>
@@ -175,7 +207,7 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction })
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <p className="text-xs text-neutral-500">Training-set accuracy: {(Number(summary.tree?.accuracy ?? 0) * 100).toFixed(1)}%. This is measured on the same records used to fit the tree and is not an estimate of performance on unseen students. Held-out or cross-validation evaluation is needed before real-world performance claims.</p>
+        <p className="text-xs text-neutral-500">In-sample training accuracy: {(Number(summary.tree?.accuracy ?? 0) * 100).toFixed(1)}%. This is descriptive only; use the held-out evaluation panel above for the provided split, and do not treat synthetic-demo metrics as real-world performance.</p>
       </div>
 
       <div className={panel + ' xl:col-span-2'}>
