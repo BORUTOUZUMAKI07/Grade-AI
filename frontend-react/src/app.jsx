@@ -333,6 +333,15 @@ export default function App() {
         model: selectedModel,
       });
       setData(payload);
+      const submittedInputs = { study_hours: parseFloat(studyHours || 0), attendance: parseFloat(attendance || 0), previous_marks: parseFloat(previousMarks || 0) };
+      setPredictionInputs(submittedInputs);
+      setSensitivity(null);
+      try {
+        const curve = await api('/predict/sensitivity', { ...submittedInputs, model: payload.selected_model || selectedModel });
+        setSensitivity(curve);
+      } catch (curveError) {
+        log('Prediction succeeded; live response curve unavailable: ' + curveError.message, 'WARN');
+      }
       setHistory((h) => [{ t: Date.now(), study: parseFloat(studyHours || 0), att: parseFloat(attendance || 0), marks: parseFloat(previousMarks || 0), result: payload.predicted_result, model: payload.selected_model || selectedModel, conf: Math.round(payload.confidence_score * 100) }, ...h].slice(0, 50));
       log(`Prediction (${payload.selected_model || selectedModel}): ${payload.predicted_result.toUpperCase()}`, 'OK');
       if (payload.predicted_result === 'Pass') {
