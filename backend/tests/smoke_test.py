@@ -50,7 +50,7 @@ with TestClient(app) as c, TestClient(app) as c2, TestClient(app) as ca:
         training_rows.status_code == 200 and training_json.get("is_training_data") is True
         and training_json.get("total_records") == len(training_json.get("rows", []))
         and training_json.get("source", "").startswith("model artifact raw_records")
-        and "in-sample" in training_json.get("warning", ""),
+        and "in-sample" in training_json.get("warning", "").lower(),
         str({k: training_json.get(k) for k in ("total_records", "source", "warning", "is_training_data")} | {"rows_len": len(training_json.get("rows", []))}))
     chk("training predictions include actual and model-predicted labels",
         bool(training_json.get("rows")) and
