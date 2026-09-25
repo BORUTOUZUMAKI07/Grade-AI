@@ -9,6 +9,51 @@ source("src/utils.R")
 if (!requireNamespace("rpart", quietly = TRUE)) install.packages("rpart", repos="https://cloud.r-project.org")
 if (!requireNamespace("jsonlite", quietly = TRUE)) install.packages("jsonlite", repos="https://cloud.r-project.org")
 
+
+# Reproducible stratified hold-out evaluation. Final production artifacts below are
+# still fit on all rows; this split is reserved for an honest generalization estimate.
+evaluate_binary <- function(actual, predicted, score) {
+  actual <- factor(as.character(actual), levels=c("Fail", "Pass"))
+  predicted <- factor(as.character(predicted), levels=c("Fail", "Pass"))
+  tp <- sum(actual == "Pass" & predicted == "Pass")
+  tn <- sum(actual == "Fail" & predicted == "Fail")
+  fp <- sum(actual == "Fail" & predicted == "Pass")
+  fn <- sum(actual == "Pass" & predicted == "Fail")
+  precision <- if ((tp + fp) == 0) 0 else tp / (tp + fp)
+  recall <- if ((tp + fn) == 0) 0 else tp / (tp + fn)
+  specificity <- if ((tn + fp) == 0) 0 else tn / (tn + fp)
+  f1 <- if ((precision + recall) == 0) 0 else 2 * precision * recall / (precision + recall)
+  # Pairwise rank AUC; ties contribute 0.5.
+  pos <- score[actual == "Pass"]; neg <- score[actual == "Fail"]
+  auc <- if (length(pos) && length(neg)) {
+    mean(outer(pos, neg, function(p, n) ifelse(p > n, 1, ifelse(p == n, 0.5, 0))))
+  } else NA_real_
+  list(n=length(actual), accuracy=mean(actual == predicted),
+       precision=precision, recall=recall, specificity=specificity, f1=f1,
+       roc_auc=auc, confusion_matrix=list(
+         labels=c("Fail", "Pass"),
+         rows=list(actual_Fail=list(predicted_Fail=tn, predicted_Pass=fp),
+                   actual_Pass=list(predicted_Fail=fn, predicted_Pass=tp))),
+       baseline_majority_accuracy=max(mean(actual == "Pass"), mean(actual == "Fail")),
+       brier_score=mean((score - as.numeric(actual == "Pass"))^2),
+       calibration_note="Brier score is a proper score on this hold-out set; no calibration method was fitted.")
+}
+
+make_holdout <- function(data) {
+  set.seed(20260925)
+  train_idx <- integer(0); test_idx <- integer(0)
+  for (label in levels(data$Result)) {
+    idx <- which(data$Result == label)
+    idx <- sample(idx)
+    n_test <- max(1, floor(length(idx) * 0.2))
+    if (length(idx) - n_test < 1) stop("Each class needs at least two rows for stratified hold-out.")
+    test_idx <- c(test_idx, idx[seq_len(n_test)])
+    train_idx <- c(train_idx, idx[(n_test + 1):length(idx)])
+  }
+  list(train=data[train_idx, , drop=FALSE], test=data[test_idx, , drop=FALSE],
+       seed=20260925, train_rows=length(train_idx), test_rows=length(test_idx))
+}
+
 main <- function() {
   cat("Training GradeAI model suite...\n")
   if (!file.exists(CONFIG$data_path)) stop(paste("Dataset not found:", CONFIG$data_path))
@@ -21,7 +66,24 @@ main <- function() {
   if (nrow(students) < 4) stop("At least four complete student rows are required.")
   dir.create(CONFIG$output_dir, recursive=TRUE, showWarnings=FALSE)
 
-  # 1) Decision Tree classifier (existing API-compatible export)
+  # Evaluate on a stratified hold-out that is never used to fit these evaluation models.
+  split <- make_holdout(students)
+  eval_tree <- rpart::rpart(Result ~ StudyHours + Attendance + PreviousMarks,
+                            data=split$train, method="class",
+                            control=rpart::rpart.control(cp=0.01))
+  tree_score <- as.numeric(stats::predict(eval_tree, split$test, type="prob")[, "Pass"])
+  tree_pred <- ifelse(tree_score >= 0.5, "Pass", "Fail")
+  tree_eval <- evaluate_binary(split$test$Result, tree_pred, tree_score)
+
+  eval_x_train <- split$train[, c("StudyHours", "Attendance", "PreviousMarks")]
+  eval_x_test <- split$test[, c("StudyHours", "Attendance", "PreviousMarks")]
+  eval_lm <- stats::lm(as.numeric(split$train$Result == "Pass") ~ StudyHours + Attendance + PreviousMarks,
+                       data=split$train)
+  lm_score <- pmin(1, pmax(0, as.numeric(stats::predict(eval_lm, newdata=eval_x_test))))
+  lm_pred <- ifelse(lm_score >= 0.5, "Pass", "Fail")
+  lm_eval <- evaluate_binary(split$test$Result, lm_pred, lm_score)
+
+  # 1) Decision Tree classifier (existing API-compatible export) (existing API-compatible export)
   tree <- rpart::rpart(Result ~ StudyHours + Attendance + PreviousMarks,
                        data=students, method="class", control=rpart::rpart.control(cp=0.01))
   export_tree_meta(tree, students, CONFIG$output_dir, CONFIG$tree_filename)
@@ -84,8 +146,14 @@ main <- function() {
 
   # One summary document powers the model registry/analytics UI.
   analytics <- list(
-    dataset_note="Synthetic demo dataset; metrics below are in-sample descriptive metrics, not held-out validation.",
+    dataset_note="Synthetic demo dataset. Decision Tree and Linear Regression validation metrics use a reproducible stratified 80/20 hold-out. Final artifacts are then refit on all rows. PCA and K-Means are descriptive/unsupervised and have no predictive accuracy score.",
+    data_source="r_analytics/data/student_data.csv (synthetic demo data)",
     trained_at=format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ"), total_records=nrow(students),
+    validation=list(method="stratified 80/20 hold-out", seed=split$seed,
+                    train_rows=split$train_rows, test_rows=split$test_rows,
+                    positive_class="Pass", threshold=0.5,
+                    decision_tree=tree_eval, linear_regression=lm_eval,
+                    unsupervised_note="PCA and K-Means are not evaluated as Pass/Fail classifiers; no accuracy, F1 or AUC is assigned to them."),
     result_counts=as.list(table(students$Result)),
     feature_summary=lapply(x, function(v) list(min=min(v), max=max(v), mean=mean(v), median=median(v), sd=stats::sd(v))),
     tree=list(accuracy=mean(stats::predict(tree, students, type="class")==students$Result),
