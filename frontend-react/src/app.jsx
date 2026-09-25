@@ -647,7 +647,7 @@ export default function App() {
 
                     {activeTab === 'modelAnalytics' && user.role !== 'student' && (
                       <div className="custom-scrollbar max-h-[720px] overflow-y-auto pr-1">
-                        <ModelAnalytics analytics={analytics} selectedModel={data.selected_model || selectedModel} prediction={data} />
+                        <ModelAnalytics analytics={analytics} selectedModel={data.selected_model || selectedModel} prediction={data} api={api} />
                       </div>
                     )}
 
