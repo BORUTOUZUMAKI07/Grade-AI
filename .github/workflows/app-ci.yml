@@ -1,5 +1,5 @@
 name: GradeAI application checks
-# Runs frontend production compilation and the API integration smoke suite.
+# Runs frontend production compilation and API integration smoke tests.\n# Includes API contract checks for model selection and analytics artifacts.
 
 on:
   push:
