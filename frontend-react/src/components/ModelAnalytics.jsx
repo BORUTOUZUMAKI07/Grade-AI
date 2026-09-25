@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import {
   Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Scatter, ScatterChart,
-  Tooltip, XAxis, YAxis
+  Tooltip, XAxis, YAxis, ReferenceLine
 } from 'recharts';
 
 const panel = 'rounded-2xl border border-white/10 bg-black/30 p-5';
@@ -181,14 +181,17 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction })
       <div className={panel + ' xl:col-span-2'}>
         <ChartTitle title={selectedModel === 'linear_regression' ? 'Linear Regression coefficients (selected model)' : 'Linear Regression coefficients (reference model)'} note="The model fits Pass=1 / Fail=0 as a linear probability score, clipped to [0,1]. It does not predict exam marks." />
         <div className="grid gap-5 lg:grid-cols-[1.2fr_1fr]">
-          <div className="h-[280px]">
+          <div className="h-[320px] min-w-0">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={coefficients} margin={{ top: 10, right: 12, bottom: 8, left: -12 }}>
-                <CartesianGrid strokeDasharray="3 5" stroke="#292929" vertical={false} />
-                <XAxis dataKey="feature" stroke="#777" fontSize={10} interval={0} angle={-12} textAnchor="end" height={55} />
-                <YAxis stroke="#777" fontSize={11} />
+              <BarChart data={coefficients} layout="vertical" margin={{ top: 12, right: 28, bottom: 12, left: 18 }}>
+                <CartesianGrid strokeDasharray="3 5" stroke="#292929" horizontal={false} />
+                <XAxis type="number" stroke="#888" fontSize={11} domain={['auto', 'auto']} tickFormatter={(v) => Number(v).toFixed(2)} />
+                <YAxis type="category" dataKey="feature" stroke="#bbb" fontSize={11} width={125} />
+                <ReferenceLine x={0} stroke="#f3f4f6" strokeWidth={1.5} />
                 <Tooltip {...tooltipStyle} formatter={(v) => [Number(v).toFixed(5), 'Coefficient']} />
-                <Bar dataKey="coefficient" name="Coefficient" radius={[6, 6, 0, 0]}>{coefficients.map((r, i) => <Cell key={r.feature} fill={r.coefficient < 0 ? '#d77d6b' : colors[i % colors.length]} />)}</Bar>
+                <Bar dataKey="coefficient" name="Coefficient" radius={[0, 6, 6, 0]} isAnimationActive={false}>
+                  {coefficients.map((r) => <Cell key={r.feature} fill={r.coefficient < 0 ? '#ef746b' : '#55c59a'} />)}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
