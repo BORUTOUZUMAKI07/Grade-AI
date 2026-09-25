@@ -1,3 +1,8 @@
+# Make paths independent of the caller working directory.
+args <- commandArgs(trailingOnly = FALSE)
+file_arg <- sub("^--file=", "", args[grepl("^--file=", args)][1])
+script_dir <- dirname(normalizePath(file_arg, winslash = "/", mustWork = TRUE))
+setwd(normalizePath(file.path(script_dir, ".."), winslash = "/", mustWork = TRUE))
 source("src/config.R")
 source("src/utils.R")
 
@@ -41,6 +46,11 @@ main <- function() {
                        auto_unbox=TRUE, pretty=TRUE, digits=NA)
 
   # 3) PCA on standardized numeric inputs; save loadings, center, scale and variance.
+  feature_sd <- vapply(x, stats::sd, numeric(1))
+  if (any(!is.finite(feature_sd) | feature_sd == 0)) {
+    stop("PCA/K-Means require non-constant numeric features: ",
+         paste(names(feature_sd)[!is.finite(feature_sd) | feature_sd == 0], collapse=", "))
+  }
   scaled <- scale(x)
   pca <- stats::prcomp(x, center=TRUE, scale.=TRUE)
   pca_payload <- list(
@@ -74,6 +84,7 @@ main <- function() {
 
   # One summary document powers the model registry/analytics UI.
   analytics <- list(
+    dataset_note="Synthetic demo dataset; metrics below are in-sample descriptive metrics, not held-out validation.",
     trained_at=format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ"), total_records=nrow(students),
     result_counts=as.list(table(students$Result)),
     feature_summary=lapply(x, function(v) list(min=min(v), max=max(v), mean=mean(v), median=median(v), sd=stats::sd(v))),
