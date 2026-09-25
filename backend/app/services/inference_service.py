@@ -145,7 +145,23 @@ class StudentInferenceService:
                 pass_probability = sum(1 for s in similar if s["result"] == "Pass") / len(similar) if similar else 0.0
                 steps = ["No trained tree was found; fixed fallback rules were used. Run the R training script."]
                 source = "Fallback rules (no trained tree)"
+        confidence_kind = {
+            "decision_tree": "smoothed_training_leaf_share",
+            "linear_regression": "distance_from_0.5_linear_score",
+            "kmeans": "smoothed_cluster_pass_share",
+            "pca_knn": "smoothed_neighbour_vote_share",
+        }.get(model, "fallback_heuristic")
+        confidence_note = {
+            "decision_tree": "Smoothed Pass/Fail share in the reached training leaf; not calibrated confidence.",
+            "linear_regression": "Distance of a clipped linear score from 0.5; not a calibrated probability or uncertainty estimate.",
+            "kmeans": "Smoothed Pass share among training records in the nearest cluster; cluster labels are descriptive.",
+            "pca_knn": "Smoothed Pass share among nearby training records in PCA space; not calibrated.",
+        }.get(model, "Fallback-rule score; not model-estimated or calibrated.")
+        if source.startswith("Fallback rules"):
+            confidence_kind = "fallback_heuristic"
+            confidence_note = "Fallback rule heuristic; it is not learned, validated, or calibrated."
         return {"predicted_result": prediction, "confidence_score": round(confidence, 4),
+                "confidence_kind": confidence_kind, "confidence_note": confidence_note,
                 "pass_probability": round(pass_probability, 4), "similar_students": similar,
                 "explanation": steps, "model_source": source,
                 "metadata": model_payload.get("metadata", {}), "raw_records": records,
