@@ -11,6 +11,7 @@ import { useAuth } from './auth.jsx';
 import CountUp from 'react-countup';
 import toast, { Toaster } from 'react-hot-toast';
 import ModelAnalytics from './components/ModelAnalytics.jsx';
+import LivePredictionCharts from './components/LivePredictionCharts.jsx';
 import {
   BookOpen, CalendarCheck, Trophy, Sparkles, Activity, Database,
   ScatterChart as ScatterIcon, Radar as RadarIcon, Terminal, CheckCircle2,
@@ -39,6 +40,7 @@ const TABS = [
   { id: 'hist', label: 'Histograms', icon: BarChart3 },
   { id: 'space', label: '3D space', icon: Box },
   { id: 'registry', label: 'Records', icon: Database },
+  { id: 'liveResponse', label: 'Live response', icon: Activity },
   { id: 'modelAnalytics', label: 'Model analytics', icon: Brain },
 ];
 
@@ -253,6 +255,8 @@ export default function App() {
   const [selectedModel, setSelectedModel] = useState('decision_tree');
   const [modelRegistry, setModelRegistry] = useState([]);
   const [analytics, setAnalytics] = useState(null);
+  const [sensitivity, setSensitivity] = useState(null);
+  const [predictionInputs, setPredictionInputs] = useState(null);
   const [data, setData] = useState(null);
   const [activeTab, setActiveTab] = useState('distribution');
   const [logs, setLogs] = useState([]);
@@ -451,7 +455,7 @@ export default function App() {
           <motion.section initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} className={`${glass} flex flex-col p-6 lg:col-span-4`}>
             <h2 className="mb-6 flex items-center gap-2 text-base font-semibold text-white"><Layers size={17} className="text-yellow-400" /> Student details</h2>
             <form onSubmit={run} className="space-y-6">
-              <label className="block"><span className="mb-2 block text-sm font-medium text-neutral-300">Prediction model</span><select value={selectedModel} onChange={(e) => setSelectedModel(e.target.value)} className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3.5 text-sm text-white outline-none focus:border-yellow-400/70">{(modelRegistry.length ? modelRegistry.filter((m) => m.available) : [{id:'decision_tree',name:'Decision Tree'},{id:'linear_regression',name:'Linear Regression'}]).map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}</select><p className="mt-1 text-xs text-neutral-500">{selectedModel === 'linear_regression' ? 'Uses a linear score fitted to Pass/Fail labels; it does not predict exam marks.' : 'Uses the trained tree and its decision path.'}</p></label>
+              <label className="block"><span className="mb-2 block text-sm font-medium text-neutral-300">Prediction model</span><select value={selectedModel} onChange={(e) => { setSelectedModel(e.target.value); setSensitivity(null); }} className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3.5 text-sm text-white outline-none focus:border-yellow-400/70">{(modelRegistry.length ? modelRegistry.filter((m) => m.available) : [{id:'decision_tree',name:'Decision Tree'},{id:'linear_regression',name:'Linear Regression'}]).map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}</select><p className="mt-1 text-xs text-neutral-500">{selectedModel === 'linear_regression' ? 'Uses a linear score fitted to Pass/Fail labels; it does not predict exam marks.' : 'Uses the trained tree and its decision path.'}</p></label>
               <Field icon={BookOpen} label="Study hours" hint="per day" value={studyHours} onChange={setStudyHours} min={0} max={24} step={0.1} unit="h" />
               <Field icon={CalendarCheck} label="Attendance" hint="percent" value={attendance} onChange={setAttendance} min={0} max={100} step={1} unit="%" />
               <Field icon={Trophy} label="Previous marks" hint="out of 100" value={previousMarks} onChange={setPreviousMarks} min={0} max={100} step={1} unit="/100" />
@@ -627,6 +631,12 @@ export default function App() {
                           <Cube3D points={points} palette={palette} me={last ? { x: last.study, y: last.att, z: last.marks } : null} />
                         </Suspense>
                         <p className="pointer-events-none absolute bottom-2 left-0 right-0 text-center text-xs text-neutral-500">Circles passed, diamonds failed. Dashed lines join this student to the 5 most similar records.</p>
+                      </div>
+                    )}
+
+                    {activeTab === 'liveResponse' && (
+                      <div className="custom-scrollbar max-h-[720px] overflow-y-auto pr-1">
+                        <LivePredictionCharts sensitivity={sensitivity} prediction={data} selectedModel={data?.selected_model || selectedModel} inputs={predictionInputs} />
                       </div>
                     )}
 
