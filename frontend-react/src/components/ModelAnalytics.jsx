@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Scatter, ScatterChart,
   Tooltip, XAxis, YAxis, ReferenceLine
@@ -31,7 +31,17 @@ const tooltipStyle = {
   contentStyle: { background: '#111', border: '1px solid rgba(255,255,255,.15)', borderRadius: 12, color: '#eee', fontSize: 12 },
 };
 
-export default function ModelAnalytics({ analytics, selectedModel, prediction }) {
+export default function ModelAnalytics({ analytics, selectedModel, prediction, api }) {
+  const [trainingPredictions, setTrainingPredictions] = useState(null);
+  const [trainingPredictionsError, setTrainingPredictionsError] = useState('');
+  useEffect(() => {
+    if (typeof api !== 'function') return;
+    setTrainingPredictions(null);
+    setTrainingPredictionsError('');
+    api('/predict/training-predictions?model=' + encodeURIComponent(selectedModel || 'decision_tree'))
+      .then(setTrainingPredictions)
+      .catch((error) => setTrainingPredictionsError(error?.message || 'Could not load model-specific training predictions.'));
+  }, [api, selectedModel]);
   const summary = analytics?.summary || {};
   const pca = analytics?.pca;
   const cluster = analytics?.clustering;
@@ -136,6 +146,18 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction })
       </div>
       <p className="mt-4 text-xs leading-relaxed text-neutral-500">Metrics are from a single held-out split; no cross-validation or probability-calibration procedure is claimed. The training artifacts used by the app are refit on the full dataset after evaluation. PCA and K-Means remain descriptive and are not assigned classifier accuracy.</p>
     </section>}
+
+    <section className={panel}>
+      <ChartTitle title="Selected-model predictions on the reference records" note="This distribution runs the selected model over each synthetic training row. It is an in-sample description, not a held-out score or a live-student population estimate." />
+      {trainingPredictionsError && <p className="text-sm text-red-300">{trainingPredictionsError}</p>}
+      {!trainingPredictions && !trainingPredictionsError && <p className="text-sm text-neutral-500">Loading selected-model predictions…</p>}
+      {trainingPredictions && <div className="grid gap-4 md:grid-cols-3">
+        <Metric label="Predicted Pass" value={trainingPredictions.predicted_pass ?? '—'} detail="Selected model output across training rows" />
+        <Metric label="Predicted Fail" value={trainingPredictions.predicted_fail ?? '—'} detail="Selected model output across training rows" />
+        <Metric label="Training match rate" value={Number.isFinite(Number(trainingPredictions.training_match_rate)) ? (Number(trainingPredictions.training_match_rate) * 100).toFixed(1) + '%' : 'N/A'} detail="In-sample only; not generalization" />
+      </div>}
+      {trainingPredictions && <p className="mt-3 text-xs leading-relaxed text-neutral-500">{trainingPredictions.warning} Source: {trainingPredictions.source}. Total rows: {trainingPredictions.total_records}.</p>}
+    </section>
 
     <div className="grid gap-5 xl:grid-cols-2">
       <div className={panel}>
