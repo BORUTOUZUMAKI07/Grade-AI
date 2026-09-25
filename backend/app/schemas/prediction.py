@@ -44,6 +44,7 @@ class HistoryItem(BaseModel):
     result: str
     confidence: float
     pass_probability: float
+    model_name: str = "decision_tree"
     created_at: UtcDatetime
 
 class BatchRow(BaseModel):
