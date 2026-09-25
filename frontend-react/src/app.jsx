@@ -600,7 +600,11 @@ export default function App() {
                             </li>
                           ))}
                         </ol>
-                        <p className="mt-5 text-xs leading-relaxed text-neutral-500">Model: {data.model_source}. The pass score and confidence proxy are model-specific and not calibrated probabilities, guarantees, or causal evidence. See Model analytics for held-out metrics and limitations. Check Model analytics for dataset and evaluation limitations.</p>
+                        <div className="mt-5 rounded-xl border border-white/10 bg-black/30 p-4">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-yellow-200">How to read this score</p>
+                          <p className="mt-2 text-xs leading-relaxed text-neutral-400">{data.confidence_note || 'Confidence is a model-specific proxy and is not necessarily calibrated.'}</p>
+                          <p className="mt-2 text-xs leading-relaxed text-neutral-500">Model source: {data.model_source}. This is a synthetic-data demonstration, not a real-student assessment or causal conclusion. See Model analytics for the hold-out evaluation and limitations.</p>
+                        </div>
                       </div>
                     )}
 
