@@ -21,7 +21,7 @@ _batch = RateLimiter(10, 60)
 def _history_item(p: Prediction, student_name: str | None) -> HistoryItem:
     return HistoryItem(id=p.id, student_id=p.student_id, student_name=student_name, study_hours=p.study_hours,
                        attendance=p.attendance, previous_marks=p.previous_marks, result=p.result,
-                       confidence=p.confidence, pass_probability=p.pass_probability, created_at=p.created_at)
+                       confidence=p.confidence, pass_probability=p.pass_probability, model_name=p.model_name, created_at=p.created_at)
 
 
 @router.get("/models")
@@ -50,7 +50,7 @@ def process_prediction(payload: PredictionRequest,
     db.add(Prediction(user_id=user.id, student_id=payload.student_id,
         study_hours=payload.study_hours, attendance=payload.attendance, previous_marks=payload.previous_marks,
         result=result["predicted_result"], confidence=result["confidence_score"],
-        pass_probability=result["pass_probability"]))
+        pass_probability=result["pass_probability"], model_name=payload.model))
     db.commit()
     return result
 
@@ -69,7 +69,7 @@ def batch_predict(payload: BatchRequest, service: StudentInferenceService = Depe
     db.add_all(Prediction(user_id=user.id, student_id=r.get("student_id"),
         study_hours=r["study_hours"], attendance=r["attendance"], previous_marks=r["previous_marks"],
         result=r["predicted_result"], confidence=r["confidence_score"],
-        pass_probability=r["pass_probability"]) for r in results)
+        pass_probability=r["pass_probability"], model_name=payload.model) for r in results)
     db.commit()
     passed = sum(1 for r in results if r["predicted_result"] == "Pass")
     return {"results": results, "passed": passed, "failed": len(results) - passed}
