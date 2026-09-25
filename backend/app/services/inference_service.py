@@ -64,6 +64,7 @@ class StudentInferenceService:
         pca = _read_json("pca_model.json")
         clusters = _read_json("kmeans_model.json")
         return {"summary": summary, "pca": pca, "clustering": clusters,
+                "regression": _read_json("regression_weights.json"),
                 "models": self.available_models()}
 
     def _classify(self, model_payload: dict, study_hours: float, attendance: float,
