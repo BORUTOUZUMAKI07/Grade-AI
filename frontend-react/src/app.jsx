@@ -505,16 +505,8 @@ export default function App() {
           <div className="flex flex-col gap-6 lg:col-span-8">
             <AnimatePresence mode="wait">
               {data ? (
-                <motion.div key="kpi" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                  <Stat icon={passed ? CheckCircle2 : XCircle} label="Predicted result" tone={passed ? 'text-[color:var(--pass)]' : 'text-[color:var(--fail)]'}>
-                    {data.predicted_result}
-                  </Stat>
-                  <Stat icon={Gauge} label="Model confidence">
-                    <CountUp end={conf} duration={1.2} preserveValue />%
-                  </Stat>
-                  <Stat icon={Database} label="Training records" tone="text-yellow-400">
-                    <CountUp end={data.metadata.total_records} duration={1.2} preserveValue />
-                  </Stat>
+                <motion.div key="result-context" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="rounded-2xl border border-white/10 bg-black/20 px-5 py-3">
+                  <p className="text-xs text-neutral-400">Prediction details and model evidence are available in the tabs below. Interpret the result as a model estimate, not a guarantee.</p>
                 </motion.div>
               ) : (
                 <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={`${glass} grid place-items-center border-dashed p-14 text-center`}>
