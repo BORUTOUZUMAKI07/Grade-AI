@@ -55,6 +55,15 @@ def process_prediction(payload: PredictionRequest,
     return result
 
 
+@router.post("/sensitivity")
+def prediction_sensitivity(payload: PredictionRequest,
+    service: StudentInferenceService = Depends(get_inference_service),
+    user: User = Depends(get_current_user)):
+    """Return selected-model response curves around the submitted student inputs."""
+    return service.sensitivity(payload.study_hours, payload.attendance,
+                               payload.previous_marks, payload.model)
+
+
 @router.post("/batch", response_model=BatchResponse)
 def batch_predict(payload: BatchRequest, service: StudentInferenceService = Depends(get_inference_service),
     user: User = Depends(staff_only), db: Session = Depends(get_db)):
