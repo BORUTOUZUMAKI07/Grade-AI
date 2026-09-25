@@ -198,6 +198,43 @@ class StudentInferenceService:
         return {"selected_model": model, "baseline_inputs": base, "curves": curves,
                 "note": "Model response curve: one input varies while the other two stay fixed. Not causal evidence."}
 
+    def training_predictions(self, model: str = "decision_tree") -> dict:
+        """Run a selected model over the checked-in reference rows for descriptive comparison.
+
+        These are in-sample predictions on training data, not held-out evaluation.
+        """
+        if model not in {"decision_tree", "linear_regression", "kmeans", "pca_knn"}:
+            raise ValueError("Choose Decision Tree, Linear Regression, K-Means or PCA + nearest-neighbour.")
+        payload = self._repository.fetch_all()
+        records = payload.get("raw_records", [])
+        rows = []
+        for index, record in enumerate(records):
+            result = self._classify(payload, float(record["study_hours"]),
+                                    float(record["attendance"]), float(record["previous_marks"]), model)
+            rows.append({
+                "record_index": index + 1,
+                "study_hours": record["study_hours"],
+                "attendance": record["attendance"],
+                "previous_marks": record["previous_marks"],
+                "actual_result": record.get("result"),
+                "predicted_result": result["predicted_result"],
+                "pass_probability": result["pass_probability"],
+                "confidence_score": result["confidence_score"],
+            })
+        actual = [r for r in rows if r["actual_result"] in {"Pass", "Fail"}]
+        correct = sum(r["actual_result"] == r["predicted_result"] for r in actual)
+        return {
+            "model": model,
+            "source": "model artifact raw_records (synthetic training reference set)",
+            "is_training_data": True,
+            "warning": "In-sample predictions on synthetic training data; not an estimate of generalization.",
+            "total_records": len(rows),
+            "predicted_pass": sum(r["predicted_result"] == "Pass" for r in rows),
+            "predicted_fail": sum(r["predicted_result"] == "Fail" for r in rows),
+            "training_match_rate": (correct / len(actual)) if actual else None,
+            "rows": rows,
+        }
+
     def execute_batch(self, rows: list[dict], model: str = "decision_tree") -> list[dict]:
         payload = self._repository.fetch_all()
         out = []
