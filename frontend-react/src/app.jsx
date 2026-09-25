@@ -364,7 +364,7 @@ export default function App() {
     { subject: 'Study', A: Math.min(100, (parseFloat(studyHours || 0) / 12) * 100) },
     { subject: 'Attendance', A: parseFloat(attendance || 0) },
     { subject: 'Prior marks', A: parseFloat(previousMarks || 0) },
-    { subject: 'Confidence', A: data ? data.confidence_score * 100 : 0 },
+    { subject: 'Pass probability', A: data ? data.pass_probability * 100 : 0 },
   ];
   const bars = useMemo(() => {
     const c = { Pass: 0, Fail: 0 };
@@ -528,7 +528,7 @@ export default function App() {
                       </button>
                     ))}
                   </div>
-                  <span className="text-xs text-neutral-500">Hover a point for details</span>
+                  <span className="text-xs text-neutral-500">Charts use loaded training records; hover points for values.</span>
                 </div>
 
                 <AnimatePresence mode="wait">
@@ -600,7 +600,7 @@ export default function App() {
                             </li>
                           ))}
                         </ol>
-                        <p className="mt-5 text-xs leading-relaxed text-neutral-500">Model: {data.model_source}. Confidence is the share of training students in the same branch who had this result, slightly reduced so a small branch never reads as 100%.</p>
+                        <p className="mt-5 text-xs leading-relaxed text-neutral-500">Model: {data.model_source}. Pass probability and confidence are model-specific estimates, not calibrated guarantees or causal evidence. Check Model analytics for dataset and evaluation limitations.</p>
                       </div>
                     )}
 
