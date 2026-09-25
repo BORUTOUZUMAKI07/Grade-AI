@@ -76,7 +76,7 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction })
   const variance = pca?.metadata?.explained_variance || summary.pca?.explained_variance || [];
   const varianceRows = variance.map((v, i) => ({ component: 'PC' + (i + 1), variance: +(Number(v) * 100).toFixed(2) }));
   const trainedAt = summary.trained_at ? new Date(summary.trained_at).toLocaleString() : 'Not available';
-  const modelName = selectedModel === 'linear_regression' ? 'Linear Regression' : 'Decision Tree';
+  const modelName = ({ decision_tree: 'Decision Tree', linear_regression: 'Linear Regression', kmeans: 'K-Means + cluster label mapping', pca_knn: 'PCA + nearest-neighbour' })[selectedModel] || selectedModel;
 
   if (!analytics || !summary || Object.keys(summary).length === 0) {
     return <div className={panel}><p className="font-semibold text-white">Model analytics are not available yet.</p><p className="mt-2 text-sm text-neutral-400">Run the R training workflow and make sure its JSON artifacts are deployed to backend/model_store.</p></div>;
@@ -85,7 +85,7 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction })
   return <div className="space-y-5">
     <div className="flex flex-wrap items-start justify-between gap-3">
       <div><h2 className="text-xl font-bold text-white">Training & model analytics</h2>
-        <p className="mt-1 max-w-3xl text-sm text-neutral-400">These charts describe the training dataset and exported model artifacts. They do not change the selected model's individual prediction.</p></div>
+        <p className="mt-1 max-w-3xl text-sm text-neutral-400">Exploratory charts describe the synthetic training data and fitted artifacts; they are not independent model validation. Do not use these demo metrics for high-stakes student decisions.</p></div>
       <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3 py-1.5 text-xs font-semibold text-yellow-200">Prediction model: {modelName}</span>
     </div>
 
@@ -175,7 +175,7 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction })
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <p className="text-xs text-neutral-500">In-sample tree accuracy: {(Number(summary.tree?.accuracy ?? 0) * 100).toFixed(1)}%. Accuracy here is training-set accuracy, not independent validation.</p>
+        <p className="text-xs text-neutral-500">Training-set accuracy: {(Number(summary.tree?.accuracy ?? 0) * 100).toFixed(1)}%. This is measured on the same records used to fit the tree and is not an estimate of performance on unseen students. Held-out or cross-validation evaluation is needed before real-world performance claims.</p>
       </div>
 
       <div className={panel + ' xl:col-span-2'}>
@@ -193,8 +193,8 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction })
             </ResponsiveContainer>
           </div>
           <div className="grid content-start gap-3 sm:grid-cols-2 lg:grid-cols-1">
-            <Metric label="R-squared" value={Number(summary.regression?.r_squared ?? 0).toFixed(3)} detail="In-sample fit to binary pass/fail labels" />
-            <Metric label="RMSE" value={Number(summary.regression?.rmse ?? 0).toFixed(3)} detail="In-sample score error; not exam-mark error" />
+            <Metric label="Training R-squared" value={Number(summary.regression?.r_squared ?? 0).toFixed(3)} detail="In-sample fit to binary pass/fail labels; not validation performance" />
+            <Metric label="Training RMSE" value={Number(summary.regression?.rmse ?? 0).toFixed(3)} detail="In-sample error on a 0/1 target; not exam-mark error or calibrated probability error" />
             <p className="text-xs leading-relaxed text-neutral-500">{summary.dataset_note || 'Metrics describe the dataset used to train these artifacts.'}</p>
           </div>
         </div>
