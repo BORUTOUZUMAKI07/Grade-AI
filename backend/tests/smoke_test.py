@@ -28,6 +28,18 @@ with TestClient(app) as c, TestClient(app) as c2, TestClient(app) as ca:
     r = c.post(f"{P}/predict/", json=PRED(6, 75, 60), headers=H).json()
     chk("tree: (6h) is Pass, pass_probability 30/31", r["predicted_result"] == "Pass" and abs(r["pass_probability"] - 30/31) < 1e-3)
 
+    # ---- selectable models and model analytics
+    models = c.get(f"{P}/predict/models", headers=H)
+    chk("model registry exposes both trained models", models.status_code == 200 and {m["id"] for m in models.json()["models"]} >= {"decision_tree", "linear_regression"})
+    analytics = c.get(f"{P}/predict/analytics", headers=H)
+    chk("analytics endpoint exposes PCA, K-Means and regression artifacts",
+        analytics.status_code == 200 and analytics.json().get("pca") and analytics.json().get("clustering") and analytics.json().get("regression", {}).get("weights"))
+    linear = c.post(f"{P}/predict/", json=PRED(6, 75, 60, model="linear_regression"), headers=H)
+    chk("linear regression selected model returns tagged prediction",
+        linear.status_code == 200 and linear.json().get("selected_model") == "linear_regression" and "linear probability" in linear.json().get("model_source", "").lower())
+    recent = c.get(f"{P}/predict/history?page_size=10", headers=H).json()
+    chk("history persists selected model", any(item.get("model_name") == "linear_regression" for item in recent.get("items", [])))
+
     # ---- classes & students
     r = c.post(f"{P}/classes", json={"name": "Class 10A"}, headers=H); cid = r.json()["id"]
     chk("create class", r.status_code == 201)
