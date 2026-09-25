@@ -248,6 +248,9 @@ export default function App() {
   const [attendance, setAttendance] = useState('');
   const [previousMarks, setPreviousMarks] = useState('');
   const [loading, setLoading] = useState(false);
+  const [selectedModel, setSelectedModel] = useState('decision_tree');
+  const [modelRegistry, setModelRegistry] = useState([]);
+  const [analytics, setAnalytics] = useState(null);
   const [data, setData] = useState(null);
   const [activeTab, setActiveTab] = useState('distribution');
   const [logs, setLogs] = useState([]);
@@ -269,6 +272,10 @@ export default function App() {
     const g = (n) => cs.getPropertyValue(n).trim();
     setPalette({ accent: g('--color-yellow-400'), accent2: g('--color-yellow-600'), pass: g('--pass'), fail: g('--fail') });
   }, [theme]);
+  useEffect(() => {
+    api('/predict/models').then((r) => setModelRegistry(r.models || [])).catch(() => {});
+    if (user.role !== 'student') api('/predict/analytics').then(setAnalytics).catch(() => {});
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     api('/predict/history?page_size=50')
       .then((page) => setHistory(page.items.map((h) => ({ t: new Date(h.created_at).getTime(), study: h.study_hours, att: h.attendance, marks: h.previous_marks, result: h.result, conf: Math.round(h.confidence * 100) }))))
@@ -310,17 +317,18 @@ export default function App() {
   const run = async (e) => {
     e.preventDefault();
     setLoading(true);
-    log('Sending inputs to the model…', 'RUN');
+    log(`Sending inputs to ${selectedModel}…`, 'RUN');
     try {
       const payload = await api('/predict/', {
         study_hours: parseFloat(studyHours || 0),
         attendance: parseFloat(attendance || 0),
         previous_marks: parseFloat(previousMarks || 0),
         student_id: studentId ? Number(studentId) : undefined,
+        model: selectedModel,
       });
       setData(payload);
       setHistory((h) => [{ t: Date.now(), study: parseFloat(studyHours || 0), att: parseFloat(attendance || 0), marks: parseFloat(previousMarks || 0), result: payload.predicted_result, conf: Math.round(payload.confidence_score * 100) }, ...h].slice(0, 50));
-      log(`Prediction: ${payload.predicted_result.toUpperCase()}`, 'OK');
+      log(`Prediction (${payload.selected_model || selectedModel}): ${payload.predicted_result.toUpperCase()}`, 'OK');
       if (payload.predicted_result === 'Pass') {
         toast.success('Predicted to pass');
         if (!reduce) confetti({ particleCount: 110, spread: 70, colors: [palette.accent, palette.pass, '#ffffff'], origin: { y: 0.6 } });
