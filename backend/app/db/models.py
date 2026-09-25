@@ -64,4 +64,5 @@ class Prediction(Base):
     result: Mapped[str] = mapped_column(String(10))
     confidence: Mapped[float] = mapped_column(Float)
     pass_probability: Mapped[float] = mapped_column(Float)
+    model_name: Mapped[str] = mapped_column(String(40), default="decision_tree", nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
