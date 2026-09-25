@@ -47,6 +47,8 @@ jobs:
           cache: pip
           cache-dependency-path: backend/requirements.txt
       - run: pip install -r requirements.txt httpx
+      - name: Install R training dependencies
+        run: Rscript -e 'install.packages(c("jsonlite", "rpart"), repos="https://cloud.r-project.org")'
       - name: Train fresh analytics and model artifacts
         working-directory: r_analytics
         run: Rscript src/train.R
