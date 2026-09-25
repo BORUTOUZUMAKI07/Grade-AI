@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from './auth.jsx';
 import CountUp from 'react-countup';
 import toast, { Toaster } from 'react-hot-toast';
+import ModelAnalytics from './components/ModelAnalytics.jsx';
 import {
   BookOpen, CalendarCheck, Trophy, Sparkles, Activity, Database,
   ScatterChart as ScatterIcon, Radar as RadarIcon, Terminal, CheckCircle2,
@@ -38,6 +39,7 @@ const TABS = [
   { id: 'hist', label: 'Histograms', icon: BarChart3 },
   { id: 'space', label: '3D space', icon: Box },
   { id: 'registry', label: 'Records', icon: Database },
+  { id: 'modelAnalytics', label: 'Model analytics', icon: Brain },
 ];
 
 function Field({ icon: Icon, label, hint, value, onChange, min, max, step, unit }) {
@@ -513,7 +515,7 @@ export default function App() {
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className={`${glass} flex min-h-[470px] flex-1 flex-col p-5`}>
                 <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                   <div role="tablist" className="flex gap-1 rounded-full border border-white/10 bg-black/40 p-1">
-                    {TABS.map(({ id, label, icon: I }) => (
+                    {TABS.filter(({ id }) => id !== 'modelAnalytics' || user.role !== 'student').map(({ id, label, icon: I }) => (
                       <button key={id} role="tab" aria-selected={activeTab === id} onClick={() => setActiveTab(id)}
                         className={`relative flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-yellow-400 ${activeTab === id ? 'text-black' : 'text-neutral-400 hover:text-white'}`}>
                         {activeTab === id && <motion.span layoutId="tab-pill" className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-300" transition={{ type: 'spring', stiffness: 400, damping: 32 }} />}
@@ -625,6 +627,12 @@ export default function App() {
                           <Cube3D points={points} palette={palette} me={last ? { x: last.study, y: last.att, z: last.marks } : null} />
                         </Suspense>
                         <p className="pointer-events-none absolute bottom-2 left-0 right-0 text-center text-xs text-neutral-500">Circles passed, diamonds failed. Dashed lines join this student to the 5 most similar records.</p>
+                      </div>
+                    )}
+
+                    {activeTab === 'modelAnalytics' && user.role !== 'student' && (
+                      <div className="custom-scrollbar max-h-[720px] overflow-y-auto pr-1">
+                        <ModelAnalytics analytics={analytics} selectedModel={data.selected_model || selectedModel} prediction={data} />
                       </div>
                     )}
 
