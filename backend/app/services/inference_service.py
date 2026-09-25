@@ -57,6 +57,8 @@ class StudentInferenceService:
         return [
             {"id": "decision_tree", "name": "Decision Tree", "kind": "supervised", "available": bool((_read_json("decision_tree_model.json") or {}).get("tree"))},
             {"id": "linear_regression", "name": "Linear Regression", "kind": "supervised", "available": bool((_read_json("regression_weights.json") or {}).get("weights"))},
+            {"id": "kmeans", "name": "K-Means (cluster to Pass/Fail)", "kind": "unsupervised + label mapping", "available": bool((_read_json("kmeans_model.json") or {}).get("centers"))},
+            {"id": "pca_knn", "name": "PCA + nearest-neighbour", "kind": "PCA + supervised neighbour vote", "available": bool((_read_json("pca_model.json") or {}).get("scores"))},
         ]
 
     def analytics(self) -> dict:
@@ -89,6 +91,39 @@ class StudentInferenceService:
                      f"Estimated pass score (clamped to 0–1): {pass_probability:.3f}.",
                      "This is a score fitted to Pass/Fail labels, not a predicted exam mark."]
             source = "R stats::lm linear probability model"
+        elif model == "kmeans":
+            km = _read_json("kmeans_model.json") or {}
+            pca = _read_json("pca_model.json") or {}
+            centers = km.get("centers", [])
+            if not centers: raise ValueError("K-Means artifact missing; run the R training script.")
+            vals = [study_hours, attendance, previous_marks]
+            names = ["StudyHours", "Attendance", "PreviousMarks"]
+            z = [(vals[i] - float(pca.get("center", {}).get(names[i], 0))) / (float(pca.get("scale", {}).get(names[i], 1)) or 1) for i in range(3)]
+            cluster_id = min(range(len(centers)), key=lambda j: sum((z[i] - float(centers[j][i])) ** 2 for i in range(3))) + 1
+            members = [r for r in km.get("records", []) if int(r.get("cluster", 0)) == cluster_id]
+            passed = sum(r.get("result") == "Pass" for r in members); failed = len(members) - passed
+            pass_probability = (passed + 1) / (len(members) + 2); prediction = "Pass" if pass_probability >= 0.5 else "Fail"
+            confidence = max(pass_probability, 1 - pass_probability)
+            steps = [f"Nearest K-Means centroid is cluster {cluster_id}.", f"Cluster labels: {passed} Pass and {failed} Fail.", "Pass probability is the smoothed Pass share of the assigned cluster."]
+            source = "K-Means with cluster-to-outcome label mapping"
+        elif model == "pca_knn":
+            pca = _read_json("pca_model.json") or {}
+            scores, loads, names = pca.get("scores", []), pca.get("loadings", []), pca.get("loading_names", [])
+            if not scores or not loads: raise ValueError("PCA artifact missing; run the R training script.")
+            vals = {"StudyHours": study_hours, "Attendance": attendance, "PreviousMarks": previous_marks}
+            z = [(vals[n] - float(pca.get("center", {}).get(n, 0))) / (float(pca.get("scale", {}).get(n, 1)) or 1) for n in names]
+            projected = [sum(z[i] * float(loads[j].get(names[i], 0)) for i in range(len(names))) for j in range(min(3, len(loads)))]
+            train = (_read_json("kmeans_model.json") or {}).get("records", []); ranked = []
+            for i, row in enumerate(scores):
+                coords = row if isinstance(row, list) else [row]
+                dist = math.sqrt(sum((projected[j] - float(coords[j])) ** 2 for j in range(min(len(projected), len(coords)))))
+                if i < len(train): ranked.append((dist, train[i]))
+            neighbours = sorted(ranked, key=lambda x: x[0])[:15]
+            passed = sum(r.get("result") == "Pass" for _, r in neighbours); failed = len(neighbours) - passed
+            pass_probability = (passed + 1) / (len(neighbours) + 2); prediction = "Pass" if pass_probability >= 0.5 else "Fail"
+            confidence = max(pass_probability, 1 - pass_probability)
+            steps = [f"Projected inputs into {len(projected)} principal components.", f"Among nearest PCA-space records: {passed} Pass and {failed} Fail.", "Pass probability is the smoothed neighbour Pass share."]
+            source = "PCA projection + nearest-neighbour label vote"
         else:
             tree = model_payload.get("tree")
             if tree:
@@ -119,8 +154,8 @@ class StudentInferenceService:
     def execute_tree_classification(self, study_hours: float, attendance: float,
                                     previous_marks: float, model: str = "decision_tree") -> dict:
         logger.info("Prediction model=%s hours=%s attendance=%s marks=%s", model, study_hours, attendance, previous_marks)
-        if model not in {"decision_tree", "linear_regression"}:
-            raise ValueError("Choose decision_tree or linear_regression for prediction.")
+        if model not in {"decision_tree", "linear_regression", "kmeans", "pca_knn"}:
+            raise ValueError("Choose Decision Tree, Linear Regression, K-Means or PCA + nearest-neighbour.")
         return self._classify(self._repository.fetch_all(), study_hours, attendance, previous_marks, model)
 
     def sensitivity(self, study_hours: float, attendance: float, previous_marks: float,
