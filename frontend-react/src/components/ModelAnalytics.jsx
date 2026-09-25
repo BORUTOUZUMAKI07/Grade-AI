@@ -175,7 +175,7 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction })
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <p className="text-xs text-neutral-500">In-sample tree accuracy: {Number(summary.tree?.accuracy ?? 0) * 100 .toFixed?.(1) || '—'}%. Accuracy here is training-set accuracy, not independent validation.</p>
+        <p className="text-xs text-neutral-500">In-sample tree accuracy: {(Number(summary.tree?.accuracy ?? 0) * 100).toFixed(1)}%. Accuracy here is training-set accuracy, not independent validation.</p>
       </div>
 
       <div className={panel + ' xl:col-span-2'}>
