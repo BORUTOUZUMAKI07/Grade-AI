@@ -55,6 +55,14 @@ def process_prediction(payload: PredictionRequest,
     return result
 
 
+@router.get("/training-predictions")
+def training_predictions(model: str = Query("decision_tree"),
+    service: StudentInferenceService = Depends(get_inference_service),
+    user: User = Depends(staff_only)):
+    """Per-record predictions from the selected model on synthetic training rows."""
+    return service.training_predictions(model)
+
+
 @router.post("/sensitivity")
 def prediction_sensitivity(payload: PredictionRequest,
     service: StudentInferenceService = Depends(get_inference_service),
