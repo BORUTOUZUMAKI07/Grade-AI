@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "framework": "R base::lm",
+    "trained_at": "2026-09-24T10:51:34Z"
+  },
+  "weights": {
+    "intercept": 17.3872,
+    "slope": 9.1533
+  }
+}

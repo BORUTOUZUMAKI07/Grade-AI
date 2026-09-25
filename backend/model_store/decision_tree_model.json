@@ -1,0 +1,337 @@
+{
+  "metadata": {
+    "framework": "R base::rpart",
+    "trained_at": "2026-09-25T04:33:39Z",
+    "total_records": 50,
+    "training_accuracy": 1,
+    "variable_importance": {
+      "StudyHours": 24.36,
+      "Attendance": 22.04,
+      "PreviousMarks": 22.04
+    }
+  },
+  "tree": {
+    "feature": "study_hours",
+    "threshold": 5.5,
+    "left": {
+      "leaf": true,
+      "prediction": "Fail",
+      "counts": {
+        "Fail": 21,
+        "Pass": 0
+      },
+      "n": 21
+    },
+    "right": {
+      "leaf": true,
+      "prediction": "Pass",
+      "counts": {
+        "Fail": 0,
+        "Pass": 29
+      },
+      "n": 29
+    }
+  },
+  "raw_records": [
+    {
+      "study_hours": 1,
+      "attendance": 45,
+      "previous_marks": 35,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 2,
+      "attendance": 50,
+      "previous_marks": 42,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 2,
+      "attendance": 55,
+      "previous_marks": 42,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 3,
+      "attendance": 60,
+      "previous_marks": 45,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 3,
+      "attendance": 62,
+      "previous_marks": 48,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 4,
+      "attendance": 65,
+      "previous_marks": 52,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 4,
+      "attendance": 68,
+      "previous_marks": 52,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 5,
+      "attendance": 70,
+      "previous_marks": 55,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 5,
+      "attendance": 72,
+      "previous_marks": 58,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 6,
+      "attendance": 75,
+      "previous_marks": 60,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 6,
+      "attendance": 78,
+      "previous_marks": 62,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 7,
+      "attendance": 80,
+      "previous_marks": 65,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 7,
+      "attendance": 82,
+      "previous_marks": 67,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 8,
+      "attendance": 85,
+      "previous_marks": 70,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 8,
+      "attendance": 87,
+      "previous_marks": 72,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 9,
+      "attendance": 90,
+      "previous_marks": 75,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 9,
+      "attendance": 92,
+      "previous_marks": 77,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 10,
+      "attendance": 94,
+      "previous_marks": 80,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 10,
+      "attendance": 96,
+      "previous_marks": 82,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 11,
+      "attendance": 98,
+      "previous_marks": 85,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 1,
+      "attendance": 48,
+      "previous_marks": 38,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 2,
+      "attendance": 52,
+      "previous_marks": 43,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 3,
+      "attendance": 58,
+      "previous_marks": 46,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 4,
+      "attendance": 63,
+      "previous_marks": 49,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 5,
+      "attendance": 67,
+      "previous_marks": 51,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 6,
+      "attendance": 71,
+      "previous_marks": 54,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 7,
+      "attendance": 76,
+      "previous_marks": 57,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 8,
+      "attendance": 81,
+      "previous_marks": 61,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 9,
+      "attendance": 86,
+      "previous_marks": 64,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 10,
+      "attendance": 91,
+      "previous_marks": 68,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 2,
+      "attendance": 50,
+      "previous_marks": 41,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 3,
+      "attendance": 56,
+      "previous_marks": 44,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 4,
+      "attendance": 61,
+      "previous_marks": 47,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 5,
+      "attendance": 66,
+      "previous_marks": 53,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 6,
+      "attendance": 70,
+      "previous_marks": 56,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 7,
+      "attendance": 74,
+      "previous_marks": 59,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 8,
+      "attendance": 79,
+      "previous_marks": 63,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 9,
+      "attendance": 84,
+      "previous_marks": 66,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 10,
+      "attendance": 89,
+      "previous_marks": 71,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 11,
+      "attendance": 93,
+      "previous_marks": 74,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 1,
+      "attendance": 46,
+      "previous_marks": 36,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 3,
+      "attendance": 57,
+      "previous_marks": 45,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 4,
+      "attendance": 64,
+      "previous_marks": 50,
+      "result": "Fail"
+    },
+    {
+      "study_hours": 6,
+      "attendance": 69,
+      "previous_marks": 55,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 7,
+      "attendance": 73,
+      "previous_marks": 60,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 8,
+      "attendance": 77,
+      "previous_marks": 65,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 9,
+      "attendance": 83,
+      "previous_marks": 69,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 10,
+      "attendance": 88,
+      "previous_marks": 73,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 11,
+      "attendance": 95,
+      "previous_marks": 79,
+      "result": "Pass"
+    },
+    {
+      "study_hours": 12,
+      "attendance": 99,
+      "previous_marks": 88,
+      "result": "Pass"
+    }
+  ]
+}

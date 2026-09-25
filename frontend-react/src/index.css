@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* ---------- Themes: the app uses yellow-* and neutral-* utilities, remapped here ---------- */
+/* Onyx & Brass (default) */
+:root, [data-theme="brass"] {
+  --bg: #0c0b09; --pass: #5fae8a; --fail: #c8645a; --accent-rgb: 201,162,75;
+  --color-yellow-50:#faf6ea; --color-yellow-100:#f3ead0; --color-yellow-200:#e6d3a0; --color-yellow-300:#d9bd77;
+  --color-yellow-400:#c9a24b; --color-yellow-500:#b28a37; --color-yellow-600:#8f6d2b; --color-yellow-700:#6f5423;
+  --color-yellow-800:#4d3a18; --color-yellow-900:#33270f;
+  --color-neutral-200:#e4dfd4; --color-neutral-300:#cfc9bc; --color-neutral-400:#a39d90; --color-neutral-500:#7b766b;
+  --color-neutral-600:#58544b; --color-neutral-700:#3f3c35; --color-neutral-800:#2a2823; --color-neutral-900:#1a1916;
+}
+/* Carbon & Ember */
+[data-theme="ember"] {
+  --bg: #0e0f10; --pass: #4fa383; --fail: #d15b52; --accent-rgb: 226,103,43;
+  --color-yellow-50:#fff3ec; --color-yellow-100:#ffe1d1; --color-yellow-200:#fbbf9d; --color-yellow-300:#f59a6a;
+  --color-yellow-400:#e2672b; --color-yellow-500:#c9551f; --color-yellow-600:#a24418; --color-yellow-700:#7c3414;
+  --color-yellow-800:#56240e; --color-yellow-900:#3a180a;
+  --color-neutral-200:#e2e3e4; --color-neutral-300:#cbcdcf; --color-neutral-400:#9ea1a5; --color-neutral-500:#76797d;
+  --color-neutral-600:#54565a; --color-neutral-700:#3c3e41; --color-neutral-800:#27282a; --color-neutral-900:#18191a;
+}
+/* Slate & Petrol */
+[data-theme="petrol"] {
+  --bg: #0b0f12; --pass: #54a884; --fail: #cc6a5f; --accent-rgb: 74,174,180;
+  --color-yellow-50:#edf8f8; --color-yellow-100:#d3eeee; --color-yellow-200:#a6dcdd; --color-yellow-300:#78c6c9;
+  --color-yellow-400:#4aaeb4; --color-yellow-500:#3a9aa0; --color-yellow-600:#2d7a80; --color-yellow-700:#235e63;
+  --color-yellow-800:#194247; --color-yellow-900:#112c30;
+  --color-neutral-200:#dfe6ea; --color-neutral-300:#c6d0d6; --color-neutral-400:#97a5ae; --color-neutral-500:#6f7f89;
+  --color-neutral-600:#4f5c64; --color-neutral-700:#39444b; --color-neutral-800:#262e33; --color-neutral-900:#171d21;
+}
+
+:root { color-scheme: dark; }
+html, body, #root { min-height: 100%; }
+html { scroll-behavior: smooth; }
+body { background-color: var(--bg); color: var(--color-neutral-300); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; transition: background-color .4s; }
+::selection { background: var(--color-yellow-400); color: #000; }
+:focus-visible { outline: 2px solid var(--color-yellow-400); outline-offset: 2px; }
+
+.custom-scrollbar::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,.4); }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: var(--color-yellow-600); border-radius: 9999px; }
+
+/* Cursor spotlight on glass cards (position is set from JS) */
+.glass-spot::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--accent-rgb), .14), transparent 60%);
+}
+.glass-spot:hover::before { opacity: 1; }
+
+/* Reusable glass surface for new panels */
+.glass {
+  background: linear-gradient(135deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+  backdrop-filter: blur(24px) saturate(140%); -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid rgba(255,255,255,.1); border-radius: 1.5rem;
+  box-shadow: 0 8px 40px -12px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+@keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+.cyber-scanline { animation: scanline 8s linear infinite; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .cyber-scanline { animation: none; } }
