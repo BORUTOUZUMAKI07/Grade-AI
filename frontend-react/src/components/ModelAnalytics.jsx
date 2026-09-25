@@ -126,13 +126,23 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction, a
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
             {[
               ['Accuracy', result.accuracy], ['Precision', result.precision], ['Recall', result.recall],
-              ['F1', result.f1], ['ROC-AUC', result.roc_auc], ['Brier score', result.brier_score],
+              ['F1', result.f1], ['ROC-AUC', result.roc_auc], ['Brier score', result.brier_score], ['ECE', result.calibration?.expected_calibration_error],
             ].map(([label, value]) => <div key={label} className="rounded-lg bg-white/[0.03] p-3">
               <p className="text-[10px] uppercase tracking-wide text-neutral-500">{label}</p>
               <p className="mono mt-1 text-lg font-semibold text-white">{Number.isFinite(Number(value)) ? Number(value).toFixed(3) : 'N/A'}</p>
             </div>)}
           </div>
           <p className="mt-3 text-xs text-neutral-500">Majority-class baseline accuracy: {Number(result.baseline_majority_accuracy ?? 0).toFixed(3)}</p>
+          {Array.isArray(result.calibration?.bins) && <details className="mt-3 rounded-lg border border-white/10 p-3">
+            <summary className="cursor-pointer text-xs font-medium text-neutral-300">Reliability bins (held-out)</summary>
+            <div className="mt-2 overflow-x-auto">
+              <table className="w-full text-xs text-neutral-400">
+                <thead><tr><th className="p-2 text-left">Score bin</th><th className="p-2 text-right">N</th><th className="p-2 text-right">Mean score</th><th className="p-2 text-right">Observed Pass</th></tr></thead>
+                <tbody>{result.calibration.bins.map((bin) => <tr key={bin.bin}><td className="p-2">{bin.bin}</td><td className="p-2 text-right">{bin.count}</td><td className="p-2 text-right">{bin.count ? Number(bin.mean_predicted).toFixed(3) : '—'}</td><td className="p-2 text-right">{bin.count ? Number(bin.observed_pass_rate).toFixed(3) : '—'}</td></tr>)}</tbody>
+              </table>
+            </div>
+            <p className="mt-2 text-xs text-neutral-500">{result.calibration.note}</p>
+          </details>}
           <div className="mt-3 overflow-x-auto">
             <table className="w-full text-xs text-neutral-300">
               <thead><tr><th className="p-2 text-left font-medium text-neutral-500">Actual / predicted</th><th className="p-2">Fail</th><th className="p-2">Pass</th></tr></thead>
