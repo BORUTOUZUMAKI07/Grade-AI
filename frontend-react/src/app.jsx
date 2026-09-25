@@ -152,10 +152,10 @@ function History({ history, onClear }) {
 }
 
 const FAQS = [
-  ['What does GradeAI predict?', 'Whether a student is likely to pass or fail, based on daily study hours, attendance and previous marks.'],
-  ['How much can I trust the result?', 'The confidence score shows how sure the model is, using the records it was trained on. Treat it as guidance for a conversation, not a final judgement of a student.'],
-  ['What do the charts and the 3D view show?', 'Every training record appears as a point, so you can see where your student sits compared with students who passed and failed.'],
-  ['Where does the data come from?', 'From the records stored in the backend. You can browse all of them in the Records tab after running a prediction.'],
+  ['What does GradeAI predict?', 'A demo estimate of Pass/Fail from study hours, attendance and previous marks. This project currently uses synthetic demonstration data.'],
+  ['How much can I trust the result?', 'The displayed confidence is a model-specific proxy (such as a training-leaf share or distance from a threshold), not calibrated uncertainty. Treat results as educational demonstrations, not decisions about real students.'],
+  ['What do the charts and the 3D view show?', 'Every dot is a training record colored by its recorded label, not a prediction made by the selected model. The dataset is synthetic.'],
+  ['Where does the data come from?', 'From a synthetic, balanced demo CSV shipped with the repository. It is not a real student record source. The Records tab shows the model's training reference rows.'],
 ];
 
 function SectionTitle({ id, title, sub }) {
@@ -440,7 +440,7 @@ export default function App() {
           </motion.span>
           <Words text="Know how a student will do before the exam" className="max-w-4xl text-5xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl" />
           <motion.p {...reveal} className="mt-6 max-w-2xl text-lg leading-relaxed text-neutral-400">
-            Enter study hours, attendance and previous marks. GradeAI compares them with real records and tells you whether the student is likely to pass, and how sure it is.
+            Enter study hours, attendance and previous marks. GradeAI compares them with synthetic demonstration records to illustrate how the selected model behaves. Results are not for real student decisions.
           </motion.p>
           <motion.div {...reveal} className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a href="#predict" className="rounded-2xl bg-gradient-to-r from-yellow-500 via-yellow-300 to-yellow-500 px-8 py-4 text-sm font-bold text-black shadow-[0_10px_40px_-10px_rgba(var(--accent-rgb),0.7)] transition hover:scale-[1.03]">Try the predictor</a>
@@ -528,7 +528,7 @@ export default function App() {
                       </button>
                     ))}
                   </div>
-                  <span className="text-xs text-neutral-500">Charts use loaded training records; hover points for values.</span>
+                  <span className="text-xs text-neutral-500">Training-set labels shown (not selected-model predictions); synthetic demo data.</span>
                 </div>
 
                 <AnimatePresence mode="wait">
@@ -549,7 +549,7 @@ export default function App() {
                             <Scatter name="Fail" data={points.filter((p) => p.result === 'Fail')} fill="var(--fail)" fillOpacity={0.7} />
                           </ComposedChart>
                         </ResponsiveContainer>
-                        <p className="mt-1 text-center text-xs text-neutral-500">Bubble size shows previous marks. Yellow = pass, grey = fail.</p>
+                        <p className="mt-1 text-center text-xs text-neutral-500">Bubble size shows previous marks. Recorded training label: green = Pass, red = Fail (not model-predicted labels).</p>
                       </div>
                     )}
 
@@ -573,7 +573,7 @@ export default function App() {
                             </RadialBarChart>
                           </ResponsiveContainer>
                           <div className="pointer-events-none absolute inset-0 grid place-items-center text-center">
-                            <div><div className="mono text-3xl font-bold text-yellow-300">{conf}%</div><div className="text-xs text-neutral-500">confidence</div></div>
+                            <div><div className="mono text-3xl font-bold text-yellow-300">{conf}%</div><div className="text-xs text-neutral-500">confidence proxy</div></div>
                           </div>
                         </div>
                         <div className="rounded-2xl border border-white/5 bg-black/30 p-2">
@@ -592,7 +592,7 @@ export default function App() {
 
                     {activeTab === 'why' && (
                       <div className="custom-scrollbar h-[340px] overflow-auto pr-1">
-                        <p className="mb-4 text-sm text-neutral-400">The model followed these steps to reach <span className="font-semibold text-white">{data.predicted_result}</span>:</p>
+                        <p className="mb-4 text-sm text-neutral-400">The selected model produced this result using the following steps: <span className="font-semibold text-white">{data.predicted_result}</span>:</p>
                         <ol className="space-y-2">
                           {(data.explanation || []).map((step, i) => (
                             <li key={i} className="flex gap-3 rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-neutral-200">
@@ -600,7 +600,7 @@ export default function App() {
                             </li>
                           ))}
                         </ol>
-                        <p className="mt-5 text-xs leading-relaxed text-neutral-500">Model: {data.model_source}. Pass probability and confidence are model-specific estimates, not calibrated guarantees or causal evidence. Check Model analytics for dataset and evaluation limitations.</p>
+                        <p className="mt-5 text-xs leading-relaxed text-neutral-500">Model: {data.model_source}. The pass score and confidence proxy are model-specific and not calibrated probabilities, guarantees, or causal evidence. See Model analytics for held-out metrics and limitations. Check Model analytics for dataset and evaluation limitations.</p>
                       </div>
                     )}
 
