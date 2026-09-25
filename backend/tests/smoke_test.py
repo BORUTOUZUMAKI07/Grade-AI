@@ -44,6 +44,34 @@ with TestClient(app) as c, TestClient(app) as c2, TestClient(app) as ca:
     analytics = c.get(f"{P}/predict/analytics", headers=H)
     chk("analytics endpoint exposes PCA, K-Means and regression artifacts",
         analytics.status_code == 200 and analytics.json().get("pca") and analytics.json().get("clustering") and analytics.json().get("regression", {}).get("weights"))
+    # ---- held-out model evaluation contract: metrics must be from the test split,
+    # not the full-data refit artifacts, and include the expected classification metrics.
+    analytics_json = analytics.json()
+    validation = analytics_json.get("summary", {}).get("validation", {})
+    chk("analytics exposes a reproducible stratified hold-out",
+        analytics.status_code == 200 and validation.get("method") == "stratified 80/20 hold-out"
+        and validation.get("seed") == 20260925
+        and validation.get("train_rows", 0) > 0 and validation.get("test_rows", 0) > 0
+        and validation.get("positive_class") == "Pass",
+        str({k: validation.get(k) for k in ("method", "seed", "train_rows", "test_rows", "positive_class")}))
+    for model_key in ("decision_tree", "linear_regression"):
+        metrics = validation.get(model_key, {})
+        cm = metrics.get("confusion_matrix", {}).get("rows", {})
+        matrix_total = sum(
+            int(value or 0)
+            for actual_row in cm.values() if isinstance(actual_row, dict)
+            for value in actual_row.values()
+        )
+        chk(f"{model_key}: held-out metrics and confusion matrix are complete",
+            all(isinstance(metrics.get(key), (int, float)) for key in
+                ("accuracy", "precision", "recall", "f1", "roc_auc"))
+            and matrix_total == validation.get("test_rows")
+            and metrics.get("n") == validation.get("test_rows")
+            and "baseline_majority_accuracy" in metrics,
+            str({k: metrics.get(k) for k in ("n", "accuracy", "precision", "recall", "f1", "roc_auc")}))
+    chk("analytics explicitly separates held-out validation from full-data training artifacts",
+        "hold-out" in analytics_json.get("summary", {}).get("dataset_note", "").lower()
+        and "refit on all rows" in analytics_json.get("summary", {}).get("dataset_note", "").lower())
     training_rows = ca.get(f"{P}/predict/training-predictions?model=decision_tree", headers=HA)
     training_json = training_rows.json()
     chk("training-predictions endpoint exposes every artifact row and honest source label",
