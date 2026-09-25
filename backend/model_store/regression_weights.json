@@ -1,10 +1,18 @@
 {
   "metadata": {
-    "framework": "R base::lm",
-    "trained_at": "2026-09-24T10:51:34Z"
+    "name": "Linear Regression",
+    "framework": "R stats::lm (linear probability model)",
+    "trained_at": "2026-09-25T07:43:12Z",
+    "total_records": 50,
+    "target": "Pass=1, Fail=0",
+    "target_note": "Estimated pass score from binary labels; not a predicted exam mark.",
+    "r_squared": 0.739992565327523,
+    "rmse": 0.251670044077986
   },
   "weights": {
-    "intercept": 17.3872,
-    "slope": 9.1533
+    "intercept": 0.00689605037396701,
+    "study_hours": 0.177071992982348,
+    "attendance": 0.00163770524535649,
+    "previous_marks": -0.0109951070148074
   }
 }
