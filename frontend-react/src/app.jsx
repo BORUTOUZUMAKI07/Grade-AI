@@ -155,7 +155,7 @@ const FAQS = [
   ['What does GradeAI predict?', 'A demo estimate of Pass/Fail from study hours, attendance and previous marks. This project currently uses synthetic demonstration data.'],
   ['How much can I trust the result?', 'The displayed confidence is a model-specific proxy (such as a training-leaf share or distance from a threshold), not calibrated uncertainty. Treat results as educational demonstrations, not decisions about real students.'],
   ['What do the charts and the 3D view show?', 'Every dot is a training record colored by its recorded label, not a prediction made by the selected model. The dataset is synthetic.'],
-  ['Where does the data come from?', 'From a synthetic, balanced demo CSV shipped with the repository. It is not a real student record source. The Records tab shows the model's training reference rows.'],
+  ['Where does the data come from?', 'From a synthetic, balanced demo CSV shipped with the repository. It is not a real student record source. The Records tab shows the model training reference rows.'],
 ];
 
 function SectionTitle({ id, title, sub }) {
