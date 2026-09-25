@@ -1,12 +1,16 @@
+from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.schemas.common import UtcDatetime
+
+PredictiveModel = Literal["decision_tree", "linear_regression"]
 
 class PredictionRequest(BaseModel):
     study_hours: float = Field(..., ge=0.0, le=24.0)
     attendance: float = Field(..., ge=0.0, le=100.0)
     previous_marks: float = Field(..., ge=0.0, le=100.0)
     student_id: int | None = None
+    model: PredictiveModel = "decision_tree"
 
 class StudentRecord(BaseModel):
     study_hours: float
@@ -26,6 +30,7 @@ class PredictionResponse(BaseModel):
     model_source: str
     metadata: dict
     raw_records: list[StudentRecord]
+    selected_model: str = "decision_tree"
     engine_status: str = "COMPLETED"
 
 class HistoryItem(BaseModel):
@@ -50,6 +55,7 @@ class BatchRow(BaseModel):
 
 class BatchRequest(BaseModel):
     rows: list[BatchRow] = Field(..., min_length=1, max_length=500)
+    model: PredictiveModel = "decision_tree"
 
 class BatchResult(BaseModel):
     label: str | None
@@ -59,6 +65,7 @@ class BatchResult(BaseModel):
     predicted_result: str
     confidence_score: float
     pass_probability: float
+    selected_model: str = "decision_tree"
 
 class BatchResponse(BaseModel):
     results: list[BatchResult]
