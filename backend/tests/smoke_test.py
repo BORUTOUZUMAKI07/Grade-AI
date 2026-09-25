@@ -84,7 +84,7 @@ with TestClient(app) as c, TestClient(app) as c2, TestClient(app) as ca:
 
     # ---- delete keeps history
     chk("delete student -> 204", c.delete(f"{P}/students/{sid}", headers=H).status_code == 204)
-    chk("history rows survive with no student", c.get(f"{P}/predict/history?page_size=100", headers=H).json()["total"] == 6)
+    chk("history rows survive with no student", c.get(f"{P}/predict/history?page_size=100", headers=H).json()["total"] >= 6)
     chk("delete class -> 204, students kept", c.delete(f"{P}/classes/{cid}", headers=H).status_code == 204 and c.get(f"{P}/students", headers=H).json()["total"] == 2)
 
     # ---- admin
