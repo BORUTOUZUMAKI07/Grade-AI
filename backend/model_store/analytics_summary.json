@@ -1,58 +1,58 @@
 {
   "dataset_note": "Synthetic demo dataset; metrics below are in-sample descriptive metrics, not held-out validation.",
-  "trained_at": "2026-09-25T08:41:21Z",
-  "total_records": 5000,
+  "trained_at": "2026-09-25T09:05:48Z",
+  "total_records": 500,
   "result_counts": {
-    "Fail": 672,
-    "Pass": 4328
+    "Fail": 23,
+    "Pass": 477
   },
   "feature_summary": {
     "StudyHours": {
       "min": 0,
       "max": 12,
-      "mean": 6.17558,
-      "median": 6.2,
-      "sd": 2.45516419610705
+      "mean": 5.735,
+      "median": 5.7,
+      "sd": 2.49055832325265
     },
     "Attendance": {
-      "min": 25.2,
+      "min": 41.8,
       "max": 100,
-      "mean": 75.68164,
-      "median": 75.7,
-      "sd": 12.4981877026059
+      "mean": 76.6956,
+      "median": 76.65,
+      "sd": 12.8463519396097
     },
     "PreviousMarks": {
-      "min": 15,
+      "min": 10,
       "max": 100,
-      "mean": 61.73434,
-      "median": 61.8,
-      "sd": 17.6577154169827
+      "mean": 61.5992,
+      "median": 61.5,
+      "sd": 18.0485195369302
     }
   },
   "tree": {
-    "accuracy": 0.8762,
+    "accuracy": 0.966,
     "variable_importance": {
-      "StudyHours": 83.0740795606325,
-      "PreviousMarks": 35.0085762928596,
-      "Attendance": 7.966362329445
+      "StudyHours": 8.22260138415456,
+      "PreviousMarks": 7.42857142857143,
+      "Attendance": 2.06349206349206
     }
   },
   "regression": {
     "name": "Linear Regression",
     "framework": "R stats::lm (linear probability model)",
-    "trained_at": "2026-09-25T08:41:19Z",
-    "total_records": 5000,
+    "trained_at": "2026-09-25T09:05:48Z",
+    "total_records": 500,
     "target": "Pass=1, Fail=0",
     "target_note": "Estimated pass score from binary labels; not a predicted exam mark.",
-    "r_squared": 0.149187346235952,
-    "rmse": 0.314611960053004
+    "r_squared": 0.148305891384894,
+    "rmse": 0.193328074170477
   },
   "pca": {
     "name": "PCA",
     "framework": "R stats::prcomp",
-    "trained_at": "2026-09-25T08:41:19Z",
-    "total_records": 5000,
-    "explained_variance": [0.344181, 0.332408, 0.323411]
+    "trained_at": "2026-09-25T09:05:48Z",
+    "total_records": 500,
+    "explained_variance": [0.339553, 0.335338, 0.325109]
   },
-  "clustering": [1627, 1658, 1715]
+  "clustering": [165, 146, 189]
 }
