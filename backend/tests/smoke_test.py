@@ -44,6 +44,20 @@ with TestClient(app) as c, TestClient(app) as c2, TestClient(app) as ca:
     analytics = c.get(f"{P}/predict/analytics", headers=H)
     chk("analytics endpoint exposes PCA, K-Means and regression artifacts",
         analytics.status_code == 200 and analytics.json().get("pca") and analytics.json().get("clustering") and analytics.json().get("regression", {}).get("weights"))
+    training_rows = c.get(f"{P}/predict/training-predictions?model=decision_tree", headers=H)
+    training_json = training_rows.json()
+    chk("training-predictions endpoint exposes every artifact row and honest source label",
+        training_rows.status_code == 200 and training_json.get("is_training_data") is True
+        and training_json.get("total_records") == len(training_json.get("rows", []))
+        and training_json.get("source", "").startswith("model artifact raw_records")
+        and "in-sample" in training_json.get("warning", ""))
+    chk("training predictions include actual and model-predicted labels",
+        bool(training_json.get("rows")) and
+        all(row.get("actual_result") in {"Pass", "Fail"} and row.get("predicted_result") in {"Pass", "Fail"}
+            for row in training_json.get("rows", [])))
+    forbidden = c.get(f"{P}/predict/training-predictions?model=not_a_model", headers=H)
+    chk("training-predictions rejects unsupported model names", forbidden.status_code == 422)
+
     live_curve = c.post(f"{P}/predict/sensitivity", json=PRED(6, 75, 60), headers=H)
     curve_json = live_curve.json()
     chk("live sensitivity returns all three feature curves",
