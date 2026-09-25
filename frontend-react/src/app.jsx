@@ -111,8 +111,8 @@ function Words({ text, className }) {
 
 function History({ history, onClear }) {
   const exportCsv = () => {
-    const head = 'time,study_hours,attendance,previous_marks,result,confidence\n';
-    const body = history.map((h) => [new Date(h.t).toISOString(), h.study, h.att, h.marks, h.result, h.conf].join(',')).join('\n');
+    const head = 'time,study_hours,attendance,previous_marks,model,result,confidence\n';
+    const body = history.map((h) => [new Date(h.t).toISOString(), h.study, h.att, h.marks, h.model || 'decision_tree', h.result, h.conf].join(',')).join('\n');
     const url = URL.createObjectURL(new Blob([head + body], { type: 'text/csv' }));
     const a = document.createElement('a'); a.href = url; a.download = 'gradeai-predictions.csv'; a.click(); URL.revokeObjectURL(url);
   };
@@ -133,11 +133,11 @@ function History({ history, onClear }) {
       ) : (
         <div className="custom-scrollbar max-h-72 overflow-auto">
           <table className="w-full text-left text-sm">
-            <thead className="text-xs text-neutral-500"><tr>{['Time', 'Hours', 'Attendance', 'Marks', 'Result', 'Confidence'].map((h) => <th key={h} className="p-2 font-medium">{h}</th>)}</tr></thead>
+            <thead className="text-xs text-neutral-500"><tr>{['Time', 'Hours', 'Attendance', 'Marks', 'Model', 'Result', 'Confidence'].map((h) => <th key={h} className="p-2 font-medium">{h}</th>)}</tr></thead>
             <tbody className="mono divide-y divide-white/5 text-neutral-400">
               {history.slice(0, 20).map((h) => (
                 <tr key={h.t}>
-                  <td className="p-2">{new Date(h.t).toLocaleTimeString()}</td><td className="p-2">{h.study}h</td><td className="p-2">{h.att}%</td><td className="p-2">{h.marks}</td>
+                  <td className="p-2">{new Date(h.t).toLocaleTimeString()}</td><td className="p-2">{h.study}h</td><td className="p-2">{h.att}%</td><td className="p-2">{h.marks}</td><td className="p-2 text-xs">{h.model === 'linear_regression' ? 'Linear Regression' : 'Decision Tree'}</td>
                   <td className="p-2 font-semibold" style={{ color: h.result === 'Pass' ? 'var(--pass)' : 'var(--fail)' }}>{h.result}</td><td className="p-2">{h.conf}%</td>
                 </tr>
               ))}
@@ -280,7 +280,7 @@ export default function App() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     api('/predict/history?page_size=50')
-      .then((page) => setHistory(page.items.map((h) => ({ t: new Date(h.created_at).getTime(), study: h.study_hours, att: h.attendance, marks: h.previous_marks, result: h.result, conf: Math.round(h.confidence * 100) }))))
+      .then((page) => setHistory(page.items.map((h) => ({ t: new Date(h.created_at).getTime(), study: h.study_hours, att: h.attendance, marks: h.previous_marks, result: h.result, model: h.model_name || 'decision_tree', conf: Math.round(h.confidence * 100) }))))
       .catch(() => {});
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -329,7 +329,7 @@ export default function App() {
         model: selectedModel,
       });
       setData(payload);
-      setHistory((h) => [{ t: Date.now(), study: parseFloat(studyHours || 0), att: parseFloat(attendance || 0), marks: parseFloat(previousMarks || 0), result: payload.predicted_result, conf: Math.round(payload.confidence_score * 100) }, ...h].slice(0, 50));
+      setHistory((h) => [{ t: Date.now(), study: parseFloat(studyHours || 0), att: parseFloat(attendance || 0), marks: parseFloat(previousMarks || 0), result: payload.predicted_result, model: payload.selected_model || selectedModel, conf: Math.round(payload.confidence_score * 100) }, ...h].slice(0, 50));
       log(`Prediction (${payload.selected_model || selectedModel}): ${payload.predicted_result.toUpperCase()}`, 'OK');
       if (payload.predicted_result === 'Pass') {
         toast.success('Predicted to pass');
@@ -514,7 +514,7 @@ export default function App() {
             {data && (
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className={`${glass} flex min-h-[470px] flex-1 flex-col p-5`}>
                 <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                  <div role="tablist" className="flex gap-1 rounded-full border border-white/10 bg-black/40 p-1">
+                  <div role="tablist" className="flex flex-wrap gap-1 rounded-full border border-white/10 bg-black/40 p-1">
                     {TABS.filter(({ id }) => id !== 'modelAnalytics' || user.role !== 'student').map(({ id, label, icon: I }) => (
                       <button key={id} role="tab" aria-selected={activeTab === id} onClick={() => setActiveTab(id)}
                         className={`relative flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-yellow-400 ${activeTab === id ? 'text-black' : 'text-neutral-400 hover:text-white'}`}>
