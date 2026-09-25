@@ -1,0 +1,53 @@
+name: Train and validate GradeAI models
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "r_analytics/**"
+      - ".github/workflows/train-models.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+      - name: Install R packages
+        run: Rscript -e 'install.packages(c("rpart", "jsonlite"), repos="https://cloud.r-project.org")'
+      - name: Train all models
+        run: Rscript r_analytics/src/train.R
+      - name: Validate generated artifacts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("backend/model_store")
+          expected = ["decision_tree_model.json", "regression_weights.json", "pca_model.json",
+                      "kmeans_model.json", "analytics_summary.json"]
+          for name in expected:
+              path = root / name
+              assert path.exists(), f"Missing artifact: {path}"
+              data = json.loads(path.read_text())
+              assert isinstance(data, dict) and data, f"Empty or invalid JSON: {path}"
+              print(f"Validated {name} ({path.stat().st_size} bytes)")
+          tree = json.loads((root / "decision_tree_model.json").read_text())
+          assert "tree" in tree and "raw_records" in tree and len(tree["raw_records"]) >= 4
+          weights = json.loads((root / "regression_weights.json").read_text())["weights"]
+          assert all(k in weights for k in ["intercept", "study_hours", "attendance", "previous_marks"])
+          PY
+      - name: Upload trained model artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradeai-trained-models
+          path: backend/model_store/*.json
+          if-no-files-found: error
+          retention-days: 30
