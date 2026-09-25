@@ -123,6 +123,30 @@ class StudentInferenceService:
             raise ValueError("Choose decision_tree or linear_regression for prediction.")
         return self._classify(self._repository.fetch_all(), study_hours, attendance, previous_marks, model)
 
+    def sensitivity(self, study_hours: float, attendance: float, previous_marks: float,
+                    model: str = "decision_tree") -> dict:
+        """Evaluate the selected trained model along one feature at a time.
+
+        The two non-varied features stay fixed at the user's submitted values.
+        This is model response/sensitivity, not a causal or real-world guarantee.
+        """
+        base = {"study_hours": study_hours, "attendance": attendance, "previous_marks": previous_marks}
+        ranges = {"study_hours": (0.0, 12.0, 13), "attendance": (0.0, 100.0, 11), "previous_marks": (0.0, 100.0, 11)}
+        curves = {}
+        for feature, (low, high, count) in ranges.items():
+            points = []
+            for i in range(count):
+                value = low + (high - low) * i / (count - 1)
+                inputs = {**base, feature: round(value, 2)}
+                result = self.execute_tree_classification(
+                    inputs["study_hours"], inputs["attendance"], inputs["previous_marks"], model)
+                points.append({"value": inputs[feature], "pass_probability": result["pass_probability"],
+                               "confidence": result["confidence_score"], "predicted_result": result["predicted_result"],
+                               "is_current": abs(inputs[feature] - base[feature]) < 1e-9})
+            curves[feature] = {"label": _LABELS[feature], "current_value": base[feature], "points": points}
+        return {"selected_model": model, "baseline_inputs": base, "curves": curves,
+                "note": "Model response curve: one input varies while the other two stay fixed. Not causal evidence."}
+
     def execute_batch(self, rows: list[dict], model: str = "decision_tree") -> list[dict]:
         payload = self._repository.fetch_all()
         out = []
