@@ -4,6 +4,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
+from sqlalchemy import inspect, text
 from app.core.config import settings, DEV_SECRET
 from app.core.logging_config import setup_structured_logging
 from app.core.exceptions import DomainException
@@ -19,6 +20,12 @@ async def lifespan(_: FastAPI):
     if settings.ENVIRONMENT == "production" and settings.SECRET_KEY == DEV_SECRET:
         raise RuntimeError("Set SECRET_KEY in the environment before running in production.")
     Base.metadata.create_all(bind=engine)
+    # create_all does not add columns to an existing database. Apply this additive
+    # compatibility migration so older deployments can keep their prediction history.
+    prediction_columns = {column['name'] for column in inspect(engine).get_columns('predictions')}
+    if 'model_name' not in prediction_columns:
+        with engine.begin() as connection:
+            connection.execute(text("ALTER TABLE predictions ADD COLUMN model_name VARCHAR(40) NOT NULL DEFAULT 'decision_tree'"))
     yield
 
 
