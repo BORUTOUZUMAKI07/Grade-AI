@@ -233,8 +233,12 @@ main <- function() {
   cluster_payload <- list(
     metadata=list(name="K-Means Clustering", framework="R stats::kmeans",
                   trained_at=format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ"),
-                  total_records=nrow(students), clusters=k, features=names(x)),
+                  total_records=nrow(students), clusters=k, features=names(x),
+                  note="Cluster membership is descriptive; training cluster pass rates are not validated individual predictions."),
+    center=as.list(setNames(as.numeric(feature_center), c("study_hours", "attendance", "previous_marks"))),
+    scale=as.list(setNames(as.numeric(feature_scale), c("study_hours", "attendance", "previous_marks"))),
     centers=unname(km$centers), cluster_sizes=as.list(km$size),
+    cluster_pass_rates=as.list(vapply(seq_len(k), function(cl) mean(students$Result[km$cluster == cl] == "Pass"), numeric(1))),
     records=lapply(seq_len(nrow(students)), function(i) list(
       study_hours=students$StudyHours[i], attendance=students$Attendance[i],
       previous_marks=students$PreviousMarks[i], result=as.character(students$Result[i]),
