@@ -66,6 +66,19 @@ export default function StudentHome() {
                 </button>
               </div>
               <p className="mt-3 text-sm text-neutral-400">Estimated chance of passing: {Math.round(result.pass_probability * 100)}%</p>
+              {result.unsupervised_analysis && <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-xl border border-white/10 bg-black/20 p-4">
+                  <div className="text-xs uppercase tracking-wide text-neutral-500">K-Means · 2 clusters</div>
+                  <div className="mt-2 text-xl font-semibold text-white">{result.unsupervised_analysis.kmeans?.cluster != null ? `Cluster ${result.unsupervised_analysis.kmeans.cluster}` : 'Not available'}</div>
+                  <p className="mt-1 text-xs text-neutral-400">Historical training-cluster Pass share: {result.unsupervised_analysis.kmeans?.historical_training_pass_rate != null ? `${Math.round(Number(result.unsupervised_analysis.kmeans.historical_training_pass_rate) * 100)}%` : 'N/A'}</p>
+                  <p className="mt-2 text-xs text-amber-300">{result.unsupervised_analysis.kmeans?.interpretation}</p>
+                </div>
+                <div className="rounded-xl border border-white/10 bg-black/20 p-4">
+                  <div className="text-xs uppercase tracking-wide text-neutral-500">PCA · 2 components</div>
+                  <div className="mono mt-2 text-lg font-semibold text-white">{result.unsupervised_analysis.pca?.components ? `PC1 ${Number(result.unsupervised_analysis.pca.components.pc1).toFixed(2)} · PC2 ${Number(result.unsupervised_analysis.pca.components.pc2).toFixed(2)}` : 'Not available'}</div>
+                  <p className="mt-2 text-xs text-neutral-400">{result.unsupervised_analysis.pca?.interpretation}</p>
+                </div>
+              </div>}
               {result.explanation?.length > 0 && (
                 <ol className="mt-4 space-y-2 border-t border-white/10 pt-4">
                   {result.explanation.map((s, i) => (
