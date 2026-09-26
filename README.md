@@ -1,6 +1,6 @@
 # Grade-AI
 
-Grade-AI is an educational student-outcome analytics demo built with React, FastAPI, and R. It demonstrates two supervised classifiers—**Logistic Regression** and **Decision Tree**—alongside exploratory **PCA** and **K-Means** analytics.
+Grade-AI is an educational student-outcome analytics demo built with React, FastAPI, and R. It demonstrates two supervised classifiers—**Logistic Regression** and **Decision Tree**—alongside **PCA (2 components)** and **K-Means (2 clusters)**. The two unsupervised transforms are applied to new student inputs as supplementary analysis, not as independent Pass/Fail classifiers.
 
 > **Important demo limitation:** The included dataset is generated synthetic data (1,000 rows; 500 Pass and 500 Fail). It is not a representative or independently collected student dataset. Do not use this project or its outputs to make real academic, admission, disciplinary, or other high-impact decisions. The displayed probabilities are not calibrated for real-world outcomes.
 
@@ -10,10 +10,10 @@ Grade-AI is an educational student-outcome analytics demo built with React, Fast
 |---|---|---|
 | Logistic Regression | Binary supervised classifier; standardized inputs | Yes |
 | Decision Tree | Binary supervised classifier with a decision path | Yes |
-| PCA | Unsupervised dimensionality reduction and visualization | No |
-| K-Means | Unsupervised clustering and cluster profiles | No |
+| PCA (2 components) | Transforms new inputs with training-fitted loadings; provides a 2D projection and optional classifier features | No, not by itself |
+| K-Means (2 clusters) | Assigns new inputs to a learned cluster and shows the descriptive training-cluster outcome share | No, not by itself |
 
-PCA and K-Means are not exposed as prediction-model choices. Clustering patterns and in-sample training summaries are descriptive, not evidence of generalization.
+Every single-student prediction response now also includes a PCA projection and K-Means cluster assignment when artifacts are present. These are supplementary unsupervised outputs. Cluster Pass rates are descriptive in-sample training-set shares, not validated individual risk probabilities. The supervised prediction selector remains limited to Logistic Regression and Decision Tree.
 
 ## Evaluation design
 
@@ -70,7 +70,7 @@ Open the Vite URL shown in the terminal (normally http://localhost:5173).
 
 ## API overview
 
-- `GET /api/v1/predict/models` — registered supervised prediction models.
+- `GET /api/v1/predict/models` — registered supervised prediction models; the single prediction response additionally returns supplementary PCA/K-Means analysis.
 - `GET /api/v1/predict/analytics` — model summary, PCA, and clustering artifacts (authorized staff access).
 - `POST /api/v1/predict/` — prediction with `model: "decision_tree"` or `"logistic_regression"`.
 - `POST /api/v1/predict/batch` — batch predictions with the same two model choices.
