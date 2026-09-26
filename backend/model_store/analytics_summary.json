@@ -1,7 +1,7 @@
 {
   "dataset_note": "Synthetic demo dataset. Decision Tree and Logistic Regression validation metrics use a reproducible stratified 80/20 hold-out. Final artifacts are then refit on all rows. PCA and K-Means are descriptive/unsupervised and have no predictive accuracy score.",
   "data_source": "r_analytics/data/student_data.csv (synthetic demo data)",
-  "trained_at": "2026-09-26T05:47:48Z",
+  "trained_at": "2026-09-26T07:00:45Z",
   "total_records": 1000,
   "validation": {
     "method": "stratified 80/20 hold-out with 5-fold stratified CV on training partition",
@@ -229,7 +229,7 @@
   "logistic_regression": {
     "name": "Logistic Regression",
     "framework": "R stats::glm binomial",
-    "trained_at": "2026-09-26T05:47:48Z",
+    "trained_at": "2026-09-26T07:00:45Z",
     "total_records": 1000,
     "target": "Pass/Fail",
     "note": "Synthetic demo classifier; probabilities are not calibrated for real student outcomes."
@@ -237,9 +237,9 @@
   "pca": {
     "name": "PCA",
     "framework": "R stats::prcomp",
-    "trained_at": "2026-09-26T05:47:48Z",
+    "trained_at": "2026-09-26T07:00:45Z",
     "total_records": 1000,
     "explained_variance": [0.411815, 0.30394, 0.284245]
   },
-  "clustering": [343, 284, 373]
+  "clustering": [484, 516]
 }

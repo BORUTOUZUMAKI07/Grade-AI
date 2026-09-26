@@ -2,20 +2,18 @@
   "metadata": {
     "name": "K-Means Clustering",
     "framework": "R stats::kmeans",
-    "trained_at": "2026-09-26T05:47:48Z",
+    "trained_at": "2026-09-26T07:00:45Z",
     "total_records": 1000,
-    "clusters": 3,
+    "clusters": 2,
     "features": ["StudyHours", "Attendance", "PreviousMarks"]
   },
   "centers": [
-    [-0.206414097119167, -1.03028817707226, -0.334421054678324],
-    [-0.752607889485566, 0.647124931776041, -0.509726082511374],
-    [0.762843635189744, 0.454706070003723, 0.695626351710174]
+    [0.556424599035406, 0.381516039714056, 0.650197947915935],
+    [-0.521917647157242, -0.357856130274424, -0.609875594556809]
   ],
   "cluster_sizes": [
-    343,
-    284,
-    373
+    484,
+    516
   ],
   "records": [
     {
@@ -30,21 +28,21 @@
       "attendance": 61.8,
       "previous_marks": 71,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.1,
       "attendance": 79.2,
       "previous_marks": 68.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.9,
       "attendance": 65.9,
       "previous_marks": 53,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.1,
@@ -58,7 +56,7 @@
       "attendance": 77.9,
       "previous_marks": 74.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4,
@@ -72,7 +70,7 @@
       "attendance": 89.2,
       "previous_marks": 67.2,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 1.5,
@@ -86,28 +84,28 @@
       "attendance": 56.6,
       "previous_marks": 53,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.9,
       "attendance": 74.9,
       "previous_marks": 84,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.5,
       "attendance": 72.1,
       "previous_marks": 60.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1,
       "attendance": 83.3,
       "previous_marks": 94.3,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 1.1,
@@ -121,21 +119,21 @@
       "attendance": 85,
       "previous_marks": 72,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 7,
       "attendance": 66.8,
       "previous_marks": 73.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6,
       "attendance": 63.1,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.9,
@@ -149,49 +147,49 @@
       "attendance": 99.3,
       "previous_marks": 51.4,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 4,
       "attendance": 72.6,
       "previous_marks": 69.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.7,
       "attendance": 84.4,
       "previous_marks": 100,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.3,
       "attendance": 60.4,
       "previous_marks": 49.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.5,
       "attendance": 78.1,
       "previous_marks": 70,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.9,
       "attendance": 61.6,
       "previous_marks": 12.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3,
       "attendance": 65.4,
       "previous_marks": 89.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.8,
@@ -205,28 +203,28 @@
       "attendance": 91.4,
       "previous_marks": 44.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.4,
       "attendance": 87.3,
       "previous_marks": 46.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.6,
       "attendance": 49.6,
       "previous_marks": 51.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7,
       "attendance": 80.8,
       "previous_marks": 34.7,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.1,
@@ -240,14 +238,14 @@
       "attendance": 73,
       "previous_marks": 59,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.9,
       "attendance": 49.1,
       "previous_marks": 46.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.3,
@@ -261,28 +259,28 @@
       "attendance": 67.8,
       "previous_marks": 97.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.7,
       "attendance": 83.6,
       "previous_marks": 28.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.3,
       "attendance": 87.6,
       "previous_marks": 89.3,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0.1,
       "attendance": 40,
       "previous_marks": 26.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0,
@@ -310,35 +308,35 @@
       "attendance": 73,
       "previous_marks": 68.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.2,
       "attendance": 66.3,
       "previous_marks": 63.4,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.4,
       "attendance": 67.5,
       "previous_marks": 12.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.4,
       "attendance": 81.4,
       "previous_marks": 48.2,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.7,
       "attendance": 77.4,
       "previous_marks": 87,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.7,
@@ -359,35 +357,35 @@
       "attendance": 60.9,
       "previous_marks": 32.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.3,
       "attendance": 44.6,
       "previous_marks": 29.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.2,
       "attendance": 79.5,
       "previous_marks": 49.8,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.7,
       "attendance": 56.9,
       "previous_marks": 37.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0.1,
       "attendance": 50,
       "previous_marks": 71.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.2,
@@ -401,49 +399,49 @@
       "attendance": 85.3,
       "previous_marks": 96,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.8,
       "attendance": 86.8,
       "previous_marks": 55.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0.9,
       "attendance": 55.7,
       "previous_marks": 56.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.6,
       "attendance": 90.5,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.3,
       "attendance": 70.8,
       "previous_marks": 76,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.6,
       "attendance": 87.9,
       "previous_marks": 77.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.6,
       "attendance": 81.1,
       "previous_marks": 76.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.3,
@@ -464,56 +462,56 @@
       "attendance": 91.4,
       "previous_marks": 86.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.1,
       "attendance": 62.3,
       "previous_marks": 80.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.1,
       "attendance": 58.8,
       "previous_marks": 54.8,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.9,
       "attendance": 86.2,
       "previous_marks": 63.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.8,
       "attendance": 60.2,
       "previous_marks": 87.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.9,
       "attendance": 95.8,
       "previous_marks": 75.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.4,
       "attendance": 71.7,
       "previous_marks": 35.2,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.7,
       "attendance": 66.8,
       "previous_marks": 53.9,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.1,
@@ -527,35 +525,35 @@
       "attendance": 57.8,
       "previous_marks": 45.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.3,
       "attendance": 43.8,
       "previous_marks": 63.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.6,
       "attendance": 57.2,
       "previous_marks": 58,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5,
       "attendance": 82.7,
       "previous_marks": 52.2,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 0,
       "attendance": 42.3,
       "previous_marks": 44.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.6,
@@ -569,7 +567,7 @@
       "attendance": 100,
       "previous_marks": 92.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.1,
@@ -583,7 +581,7 @@
       "attendance": 73.2,
       "previous_marks": 50.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.1,
@@ -597,21 +595,21 @@
       "attendance": 82.6,
       "previous_marks": 61.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.7,
       "attendance": 80,
       "previous_marks": 68.9,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.1,
       "attendance": 67.7,
       "previous_marks": 26.5,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.6,
@@ -625,63 +623,63 @@
       "attendance": 74.7,
       "previous_marks": 96.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.1,
       "attendance": 83.1,
       "previous_marks": 69.2,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.1,
       "attendance": 87,
       "previous_marks": 64.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.6,
       "attendance": 80.9,
       "previous_marks": 57.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3,
       "attendance": 55.9,
       "previous_marks": 43.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7,
       "attendance": 88.4,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.2,
       "attendance": 46.5,
       "previous_marks": 34.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7,
       "attendance": 100,
       "previous_marks": 51.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.7,
       "attendance": 64.8,
       "previous_marks": 52,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.4,
@@ -695,7 +693,7 @@
       "attendance": 98.5,
       "previous_marks": 58.6,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 5.1,
@@ -709,7 +707,7 @@
       "attendance": 91.6,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.1,
@@ -723,21 +721,21 @@
       "attendance": 73.7,
       "previous_marks": 15.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.8,
       "attendance": 71.7,
       "previous_marks": 55,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.1,
       "attendance": 59.3,
       "previous_marks": 54,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.6,
@@ -751,21 +749,21 @@
       "attendance": 57.3,
       "previous_marks": 65.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.1,
       "attendance": 67.5,
       "previous_marks": 78.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.1,
       "attendance": 61.2,
       "previous_marks": 0,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.1,
@@ -786,42 +784,42 @@
       "attendance": 61.1,
       "previous_marks": 52.7,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6,
       "attendance": 62.1,
       "previous_marks": 95.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.6,
       "attendance": 71.1,
       "previous_marks": 69.8,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3,
       "attendance": 40,
       "previous_marks": 42.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7,
       "attendance": 62.6,
       "previous_marks": 59.2,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.9,
       "attendance": 49.6,
       "previous_marks": 72.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.4,
@@ -835,14 +833,14 @@
       "attendance": 100,
       "previous_marks": 58.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0.8,
       "attendance": 40,
       "previous_marks": 20.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.9,
@@ -863,140 +861,140 @@
       "attendance": 89.3,
       "previous_marks": 93,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.2,
       "attendance": 64.8,
       "previous_marks": 24.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.6,
       "attendance": 71,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.8,
       "attendance": 59.2,
       "previous_marks": 19.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.1,
       "attendance": 78.7,
       "previous_marks": 52.1,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.1,
       "attendance": 50.9,
       "previous_marks": 45.7,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.4,
       "attendance": 54,
       "previous_marks": 48.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.3,
       "attendance": 71.3,
       "previous_marks": 71.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.1,
       "attendance": 59.7,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.7,
       "attendance": 96.2,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.1,
       "attendance": 61.5,
       "previous_marks": 85.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.6,
       "attendance": 66.9,
       "previous_marks": 62.6,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.7,
       "attendance": 49.7,
       "previous_marks": 45.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 8.8,
       "attendance": 99,
       "previous_marks": 38.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.3,
       "attendance": 83.5,
       "previous_marks": 60.5,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 4.8,
       "attendance": 66,
       "previous_marks": 76.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.9,
       "attendance": 64.9,
       "previous_marks": 51.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.5,
       "attendance": 91.7,
       "previous_marks": 70.2,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 3.7,
       "attendance": 82.6,
       "previous_marks": 63.9,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 7.5,
       "attendance": 79.2,
       "previous_marks": 52.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.6,
@@ -1017,7 +1015,7 @@
       "attendance": 91.9,
       "previous_marks": 47.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.2,
@@ -1038,7 +1036,7 @@
       "attendance": 77.1,
       "previous_marks": 97.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.4,
@@ -1066,14 +1064,14 @@
       "attendance": 74.2,
       "previous_marks": 77.7,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 5,
       "attendance": 100,
       "previous_marks": 74,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.5,
@@ -1087,7 +1085,7 @@
       "attendance": 63.9,
       "previous_marks": 32.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.4,
@@ -1101,28 +1099,28 @@
       "attendance": 42.7,
       "previous_marks": 46.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.3,
       "attendance": 80.4,
       "previous_marks": 70.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.4,
       "attendance": 91,
       "previous_marks": 44.8,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.1,
       "attendance": 51.2,
       "previous_marks": 84.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.2,
@@ -1143,70 +1141,70 @@
       "attendance": 74.5,
       "previous_marks": 33.6,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.5,
       "attendance": 43.8,
       "previous_marks": 7.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.8,
       "attendance": 56.5,
       "previous_marks": 99.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.9,
       "attendance": 91.9,
       "previous_marks": 69.3,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 7.6,
       "attendance": 86.6,
       "previous_marks": 52.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.4,
       "attendance": 66.2,
       "previous_marks": 60,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 10,
       "attendance": 79.3,
       "previous_marks": 52.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.1,
       "attendance": 69.2,
       "previous_marks": 69.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.2,
       "attendance": 54.8,
       "previous_marks": 92.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.7,
       "attendance": 89.9,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.5,
@@ -1220,35 +1218,35 @@
       "attendance": 40,
       "previous_marks": 28.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.4,
       "attendance": 58.8,
       "previous_marks": 43.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3,
       "attendance": 51.9,
       "previous_marks": 25.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.9,
       "attendance": 72.8,
       "previous_marks": 76.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.9,
       "attendance": 62.1,
       "previous_marks": 53.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.6,
@@ -1269,7 +1267,7 @@
       "attendance": 100,
       "previous_marks": 77.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.8,
@@ -1283,7 +1281,7 @@
       "attendance": 49.4,
       "previous_marks": 67.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0,
@@ -1304,14 +1302,14 @@
       "attendance": 61.4,
       "previous_marks": 36.6,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.6,
       "attendance": 55.4,
       "previous_marks": 14.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.8,
@@ -1325,14 +1323,14 @@
       "attendance": 81.6,
       "previous_marks": 92.6,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 7.8,
       "attendance": 83.1,
       "previous_marks": 51.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.5,
@@ -1346,7 +1344,7 @@
       "attendance": 71.8,
       "previous_marks": 70.5,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.3,
@@ -1360,7 +1358,7 @@
       "attendance": 48.2,
       "previous_marks": 46.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.7,
@@ -1374,28 +1372,28 @@
       "attendance": 54.4,
       "previous_marks": 40.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.7,
       "attendance": 83.8,
       "previous_marks": 75.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.4,
       "attendance": 81.8,
       "previous_marks": 77.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.8,
       "attendance": 63,
       "previous_marks": 54.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0,
@@ -1409,14 +1407,14 @@
       "attendance": 83.9,
       "previous_marks": 62.3,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0,
       "attendance": 57.8,
       "previous_marks": 74,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.6,
@@ -1437,42 +1435,42 @@
       "attendance": 67.1,
       "previous_marks": 97.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.3,
       "attendance": 71.8,
       "previous_marks": 73.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.1,
       "attendance": 100,
       "previous_marks": 57,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.2,
       "attendance": 66.5,
       "previous_marks": 98.4,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.9,
       "attendance": 54.8,
       "previous_marks": 41.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.8,
       "attendance": 91.7,
       "previous_marks": 43.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.4,
@@ -1486,21 +1484,21 @@
       "attendance": 65.7,
       "previous_marks": 42.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.9,
       "attendance": 47.4,
       "previous_marks": 76.9,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.5,
       "attendance": 67.8,
       "previous_marks": 100,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0,
@@ -1514,35 +1512,35 @@
       "attendance": 76.3,
       "previous_marks": 75.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.8,
       "attendance": 52.7,
       "previous_marks": 58.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.1,
       "attendance": 72.7,
       "previous_marks": 68,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.1,
       "attendance": 71,
       "previous_marks": 78.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.4,
       "attendance": 90.3,
       "previous_marks": 81.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.9,
@@ -1577,35 +1575,35 @@
       "attendance": 86.4,
       "previous_marks": 67.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 11.4,
       "attendance": 93.4,
       "previous_marks": 52.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.7,
       "attendance": 66.1,
       "previous_marks": 42,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0,
       "attendance": 94,
       "previous_marks": 77.9,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 5.2,
       "attendance": 87.3,
       "previous_marks": 53.7,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 2.3,
@@ -1633,7 +1631,7 @@
       "attendance": 44.7,
       "previous_marks": 52.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.4,
@@ -1647,21 +1645,21 @@
       "attendance": 82.5,
       "previous_marks": 78.7,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 9.8,
       "attendance": 99.9,
       "previous_marks": 65,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.4,
       "attendance": 100,
       "previous_marks": 68.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.6,
@@ -1675,14 +1673,14 @@
       "attendance": 60.7,
       "previous_marks": 72,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.9,
       "attendance": 69.9,
       "previous_marks": 31.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.8,
@@ -1710,21 +1708,21 @@
       "attendance": 78.8,
       "previous_marks": 64.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7,
       "attendance": 72,
       "previous_marks": 60.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.2,
       "attendance": 84.6,
       "previous_marks": 88.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0.3,
@@ -1738,7 +1736,7 @@
       "attendance": 77.7,
       "previous_marks": 59.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.1,
@@ -1752,35 +1750,35 @@
       "attendance": 43.6,
       "previous_marks": 44.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.7,
       "attendance": 80,
       "previous_marks": 96.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.4,
       "attendance": 95.2,
       "previous_marks": 71.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.7,
       "attendance": 62.5,
       "previous_marks": 29,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.6,
       "attendance": 63.1,
       "previous_marks": 52.6,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.1,
@@ -1794,14 +1792,14 @@
       "attendance": 93.9,
       "previous_marks": 84.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 10.5,
       "attendance": 95.8,
       "previous_marks": 61.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.6,
@@ -1815,7 +1813,7 @@
       "attendance": 55.4,
       "previous_marks": 10.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.1,
@@ -1829,7 +1827,7 @@
       "attendance": 63.2,
       "previous_marks": 34.8,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.7,
@@ -1850,14 +1848,14 @@
       "attendance": 72.4,
       "previous_marks": 75,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.9,
       "attendance": 58.9,
       "previous_marks": 60.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.7,
@@ -1878,35 +1876,35 @@
       "attendance": 85,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.1,
       "attendance": 50.9,
       "previous_marks": 16.8,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.1,
       "attendance": 71.4,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8,
       "attendance": 100,
       "previous_marks": 62.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.9,
       "attendance": 61.2,
       "previous_marks": 78.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.3,
@@ -1920,14 +1918,14 @@
       "attendance": 56.1,
       "previous_marks": 26,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.4,
       "attendance": 70.2,
       "previous_marks": 65.8,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.7,
@@ -1948,21 +1946,21 @@
       "attendance": 64.5,
       "previous_marks": 63.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.3,
       "attendance": 40,
       "previous_marks": 51.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.3,
       "attendance": 78.7,
       "previous_marks": 69,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 1.5,
@@ -1976,56 +1974,56 @@
       "attendance": 90.7,
       "previous_marks": 82.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.4,
       "attendance": 70.5,
       "previous_marks": 60.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.1,
       "attendance": 71.5,
       "previous_marks": 41.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 8.7,
       "attendance": 74.1,
       "previous_marks": 38.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.1,
       "attendance": 100,
       "previous_marks": 77,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5,
       "attendance": 69.4,
       "previous_marks": 52.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.2,
       "attendance": 85.2,
       "previous_marks": 55.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.4,
       "attendance": 75.6,
       "previous_marks": 90.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.4,
@@ -2039,7 +2037,7 @@
       "attendance": 86.9,
       "previous_marks": 86.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.9,
@@ -2053,21 +2051,21 @@
       "attendance": 77.5,
       "previous_marks": 65.8,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.7,
       "attendance": 55.3,
       "previous_marks": 44.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.7,
       "attendance": 77.5,
       "previous_marks": 57,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 3.1,
@@ -2081,21 +2079,21 @@
       "attendance": 79.7,
       "previous_marks": 55.9,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 5,
       "attendance": 100,
       "previous_marks": 48.7,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 5.6,
       "attendance": 70.8,
       "previous_marks": 70.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.5,
@@ -2109,49 +2107,49 @@
       "attendance": 59.6,
       "previous_marks": 65.6,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.8,
       "attendance": 68.4,
       "previous_marks": 57.4,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.8,
       "attendance": 44.9,
       "previous_marks": 75.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 9.8,
       "attendance": 72.8,
       "previous_marks": 32.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.5,
       "attendance": 82.2,
       "previous_marks": 74.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.4,
       "attendance": 89.4,
       "previous_marks": 77.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.2,
       "attendance": 59.2,
       "previous_marks": 34.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.9,
@@ -2165,7 +2163,7 @@
       "attendance": 100,
       "previous_marks": 74.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.4,
@@ -2193,21 +2191,21 @@
       "attendance": 78.7,
       "previous_marks": 64.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.1,
       "attendance": 79,
       "previous_marks": 90.2,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.9,
       "attendance": 100,
       "previous_marks": 49.4,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 4.2,
@@ -2228,77 +2226,77 @@
       "attendance": 91,
       "previous_marks": 75.3,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 4.9,
       "attendance": 42.5,
       "previous_marks": 12.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.9,
       "attendance": 72.4,
       "previous_marks": 61,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.8,
       "attendance": 60.5,
       "previous_marks": 37.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.4,
       "attendance": 48.6,
       "previous_marks": 68.2,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.6,
       "attendance": 65.6,
       "previous_marks": 44.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.6,
       "attendance": 68.7,
       "previous_marks": 75,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.9,
       "attendance": 82.9,
       "previous_marks": 52.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3,
       "attendance": 67.3,
       "previous_marks": 59.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.1,
       "attendance": 88.4,
       "previous_marks": 59.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.1,
       "attendance": 40.7,
       "previous_marks": 21.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.2,
@@ -2319,7 +2317,7 @@
       "attendance": 64.4,
       "previous_marks": 95.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.1,
@@ -2333,7 +2331,7 @@
       "attendance": 47.6,
       "previous_marks": 68.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3,
@@ -2347,7 +2345,7 @@
       "attendance": 93,
       "previous_marks": 56.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.4,
@@ -2361,42 +2359,42 @@
       "attendance": 59.4,
       "previous_marks": 51.4,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.3,
       "attendance": 62.7,
       "previous_marks": 33.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 10,
       "attendance": 90.5,
       "previous_marks": 80.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.5,
       "attendance": 56,
       "previous_marks": 67.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.2,
       "attendance": 52.2,
       "previous_marks": 63.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 9.7,
       "attendance": 99.1,
       "previous_marks": 44.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0,
@@ -2410,14 +2408,14 @@
       "attendance": 62.9,
       "previous_marks": 99.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3,
       "attendance": 68.5,
       "previous_marks": 57.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4,
@@ -2438,28 +2436,28 @@
       "attendance": 100,
       "previous_marks": 95.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 11.1,
       "attendance": 65.2,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7,
       "attendance": 77.8,
       "previous_marks": 32.8,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 2
     },
     {
       "study_hours": 2.2,
       "attendance": 57.3,
       "previous_marks": 66.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0.2,
@@ -2473,7 +2471,7 @@
       "attendance": 74.7,
       "previous_marks": 52.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.9,
@@ -2487,21 +2485,21 @@
       "attendance": 85.9,
       "previous_marks": 46.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.6,
       "attendance": 100,
       "previous_marks": 53.6,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 3,
       "attendance": 62.9,
       "previous_marks": 70.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0,
@@ -2515,7 +2513,7 @@
       "attendance": 77.7,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.3,
@@ -2529,28 +2527,28 @@
       "attendance": 60.2,
       "previous_marks": 52.7,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.4,
       "attendance": 67.3,
       "previous_marks": 46,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3,
       "attendance": 62.5,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0,
       "attendance": 93.7,
       "previous_marks": 82,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 3.9,
@@ -2564,14 +2562,14 @@
       "attendance": 75,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.1,
       "attendance": 70.8,
       "previous_marks": 52.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0.7,
@@ -2585,91 +2583,91 @@
       "attendance": 58.4,
       "previous_marks": 60.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.2,
       "attendance": 66.2,
       "previous_marks": 65.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.5,
       "attendance": 100,
       "previous_marks": 27.7,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 6.8,
       "attendance": 80.7,
       "previous_marks": 87.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.9,
       "attendance": 74.9,
       "previous_marks": 61.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.4,
       "attendance": 79.6,
       "previous_marks": 70,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.6,
       "attendance": 60.2,
       "previous_marks": 33.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.4,
       "attendance": 53.4,
       "previous_marks": 19.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.7,
       "attendance": 70.3,
       "previous_marks": 65.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 10,
       "attendance": 72.5,
       "previous_marks": 85,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.9,
       "attendance": 97.9,
       "previous_marks": 85,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.4,
       "attendance": 64.6,
       "previous_marks": 40.8,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.2,
       "attendance": 59.7,
       "previous_marks": 84.5,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.5,
@@ -2683,14 +2681,14 @@
       "attendance": 40,
       "previous_marks": 52.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.9,
       "attendance": 77,
       "previous_marks": 62.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.4,
@@ -2704,21 +2702,21 @@
       "attendance": 88.6,
       "previous_marks": 68.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.6,
       "attendance": 95.4,
       "previous_marks": 80,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.5,
       "attendance": 62.3,
       "previous_marks": 100,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0,
@@ -2746,21 +2744,21 @@
       "attendance": 88.8,
       "previous_marks": 59.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.8,
       "attendance": 88.4,
       "previous_marks": 68.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.8,
       "attendance": 41.4,
       "previous_marks": 26.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.7,
@@ -2774,35 +2772,35 @@
       "attendance": 82.2,
       "previous_marks": 61.1,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.6,
       "attendance": 72.3,
       "previous_marks": 79.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5,
       "attendance": 54.6,
       "previous_marks": 54.8,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.5,
       "attendance": 92.4,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.2,
       "attendance": 78.8,
       "previous_marks": 55,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.2,
@@ -2816,7 +2814,7 @@
       "attendance": 78.6,
       "previous_marks": 58.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.1,
@@ -2830,14 +2828,14 @@
       "attendance": 87.3,
       "previous_marks": 64.7,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 7.7,
       "attendance": 68.2,
       "previous_marks": 83.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.2,
@@ -2851,7 +2849,7 @@
       "attendance": 80.2,
       "previous_marks": 75.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.2,
@@ -2865,35 +2863,35 @@
       "attendance": 80.9,
       "previous_marks": 54.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.1,
       "attendance": 85.8,
       "previous_marks": 73.5,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 7.1,
       "attendance": 73.7,
       "previous_marks": 62.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.6,
       "attendance": 82.6,
       "previous_marks": 90,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7,
       "attendance": 65.7,
       "previous_marks": 18.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.7,
@@ -2914,28 +2912,28 @@
       "attendance": 88.7,
       "previous_marks": 72.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.5,
       "attendance": 63.3,
       "previous_marks": 94.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.3,
       "attendance": 78.7,
       "previous_marks": 69.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.8,
       "attendance": 80.5,
       "previous_marks": 58.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.2,
@@ -2949,7 +2947,7 @@
       "attendance": 86.3,
       "previous_marks": 90.8,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 3.4,
@@ -2963,28 +2961,28 @@
       "attendance": 77.1,
       "previous_marks": 62.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.5,
       "attendance": 100,
       "previous_marks": 52.7,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 6.2,
       "attendance": 97.3,
       "previous_marks": 57.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.9,
       "attendance": 58.6,
       "previous_marks": 59,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.5,
@@ -2998,14 +2996,14 @@
       "attendance": 89.3,
       "previous_marks": 68.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 10.3,
       "attendance": 90.1,
       "previous_marks": 48,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3,
@@ -3026,28 +3024,28 @@
       "attendance": 72,
       "previous_marks": 72.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.8,
       "attendance": 78.1,
       "previous_marks": 64.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.2,
       "attendance": 55.8,
       "previous_marks": 18.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.9,
       "attendance": 80.5,
       "previous_marks": 81.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.7,
@@ -3068,35 +3066,35 @@
       "attendance": 60.1,
       "previous_marks": 7.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.3,
       "attendance": 61.9,
       "previous_marks": 89.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7,
       "attendance": 40,
       "previous_marks": 51,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 8.8,
       "attendance": 77.3,
       "previous_marks": 90.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0,
       "attendance": 40,
       "previous_marks": 35.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.5,
@@ -3124,28 +3122,28 @@
       "attendance": 100,
       "previous_marks": 55.6,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 5.8,
       "attendance": 58.9,
       "previous_marks": 31.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.8,
       "attendance": 76.8,
       "previous_marks": 45.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.5,
       "attendance": 60.2,
       "previous_marks": 59,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.4,
@@ -3159,77 +3157,77 @@
       "attendance": 80.1,
       "previous_marks": 75.1,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 9.8,
       "attendance": 44.6,
       "previous_marks": 75.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.4,
       "attendance": 67.2,
       "previous_marks": 65,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.9,
       "attendance": 96.6,
       "previous_marks": 73.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.4,
       "attendance": 60.5,
       "previous_marks": 47.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.7,
       "attendance": 63.4,
       "previous_marks": 31,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.9,
       "attendance": 79.3,
       "previous_marks": 43.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6,
       "attendance": 82.2,
       "previous_marks": 88.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.5,
       "attendance": 72.3,
       "previous_marks": 65.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.9,
       "attendance": 58,
       "previous_marks": 80.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.4,
       "attendance": 74.4,
       "previous_marks": 96.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.2,
@@ -3243,14 +3241,14 @@
       "attendance": 40,
       "previous_marks": 38.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.8,
       "attendance": 61.9,
       "previous_marks": 25.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2,
@@ -3271,7 +3269,7 @@
       "attendance": 61.6,
       "previous_marks": 35.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.1,
@@ -3285,28 +3283,28 @@
       "attendance": 100,
       "previous_marks": 82.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.2,
       "attendance": 55.6,
       "previous_marks": 28,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 9.7,
       "attendance": 85.2,
       "previous_marks": 45.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.9,
       "attendance": 83.8,
       "previous_marks": 75.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0,
@@ -3320,7 +3318,7 @@
       "attendance": 73.4,
       "previous_marks": 94.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.3,
@@ -3334,28 +3332,28 @@
       "attendance": 83.5,
       "previous_marks": 76.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.5,
       "attendance": 40,
       "previous_marks": 65.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.2,
       "attendance": 91.5,
       "previous_marks": 60.5,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 3.4,
       "attendance": 65,
       "previous_marks": 57.5,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.5,
@@ -3376,7 +3374,7 @@
       "attendance": 60.7,
       "previous_marks": 55.6,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.4,
@@ -3390,7 +3388,7 @@
       "attendance": 60.9,
       "previous_marks": 96.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.6,
@@ -3404,7 +3402,7 @@
       "attendance": 95.7,
       "previous_marks": 52.9,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 1.9,
@@ -3418,28 +3416,28 @@
       "attendance": 61.1,
       "previous_marks": 87.7,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.9,
       "attendance": 40,
       "previous_marks": 29.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.8,
       "attendance": 46.8,
       "previous_marks": 65.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.7,
       "attendance": 64.2,
       "previous_marks": 35.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.5,
@@ -3453,28 +3451,28 @@
       "attendance": 50.4,
       "previous_marks": 43.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.2,
       "attendance": 82.2,
       "previous_marks": 76.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.5,
       "attendance": 79.2,
       "previous_marks": 57,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.4,
       "attendance": 73.6,
       "previous_marks": 83.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0,
@@ -3488,7 +3486,7 @@
       "attendance": 76.5,
       "previous_marks": 70.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.4,
@@ -3502,7 +3500,7 @@
       "attendance": 53.6,
       "previous_marks": 37.1,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.2,
@@ -3516,7 +3514,7 @@
       "attendance": 78.8,
       "previous_marks": 57,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.6,
@@ -3530,14 +3528,14 @@
       "attendance": 61.1,
       "previous_marks": 40.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7,
       "attendance": 56.2,
       "previous_marks": 76,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.5,
@@ -3551,7 +3549,7 @@
       "attendance": 74.9,
       "previous_marks": 63.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.5,
@@ -3565,21 +3563,21 @@
       "attendance": 99.5,
       "previous_marks": 57.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3,
       "attendance": 100,
       "previous_marks": 89.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.2,
       "attendance": 71.2,
       "previous_marks": 62.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.7,
@@ -3593,14 +3591,14 @@
       "attendance": 91.8,
       "previous_marks": 74.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.3,
       "attendance": 42.5,
       "previous_marks": 94.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.7,
@@ -3614,49 +3612,49 @@
       "attendance": 44.3,
       "previous_marks": 44,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.7,
       "attendance": 68.7,
       "previous_marks": 47.2,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4,
       "attendance": 64.5,
       "previous_marks": 44.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.1,
       "attendance": 77.9,
       "previous_marks": 83.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.9,
       "attendance": 80.7,
       "previous_marks": 82.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6,
       "attendance": 72.7,
       "previous_marks": 88.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0.7,
       "attendance": 46.7,
       "previous_marks": 32.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.8,
@@ -3677,7 +3675,7 @@
       "attendance": 66.3,
       "previous_marks": 25.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.9,
@@ -3691,21 +3689,21 @@
       "attendance": 79.4,
       "previous_marks": 69.7,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0.4,
       "attendance": 53.3,
       "previous_marks": 15.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.1,
       "attendance": 69.5,
       "previous_marks": 28.6,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0.4,
@@ -3733,21 +3731,21 @@
       "attendance": 63.2,
       "previous_marks": 80.2,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.1,
       "attendance": 74.8,
       "previous_marks": 70,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.9,
       "attendance": 89.8,
       "previous_marks": 63.9,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 2,
@@ -3768,56 +3766,56 @@
       "attendance": 83.1,
       "previous_marks": 59.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 10,
       "attendance": 87.2,
       "previous_marks": 96.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.5,
       "attendance": 44.3,
       "previous_marks": 66.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.4,
       "attendance": 53.1,
       "previous_marks": 43.7,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.8,
       "attendance": 87.2,
       "previous_marks": 67.5,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 4.5,
       "attendance": 63.2,
       "previous_marks": 44,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.7,
       "attendance": 63.1,
       "previous_marks": 54.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 8,
       "attendance": 90.5,
       "previous_marks": 51.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3,
@@ -3838,49 +3836,49 @@
       "attendance": 56.2,
       "previous_marks": 15.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6,
       "attendance": 91,
       "previous_marks": 69.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.5,
       "attendance": 74.3,
       "previous_marks": 56.7,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.2,
       "attendance": 80,
       "previous_marks": 88.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.8,
       "attendance": 72.8,
       "previous_marks": 30.3,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.4,
       "attendance": 53.8,
       "previous_marks": 47.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.3,
       "attendance": 65.9,
       "previous_marks": 44.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.3,
@@ -3894,14 +3892,14 @@
       "attendance": 77.4,
       "previous_marks": 57.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.1,
       "attendance": 81,
       "previous_marks": 82,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.6,
@@ -3915,7 +3913,7 @@
       "attendance": 95.2,
       "previous_marks": 63.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.9,
@@ -3929,70 +3927,70 @@
       "attendance": 50.6,
       "previous_marks": 29,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.4,
       "attendance": 69,
       "previous_marks": 84.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6,
       "attendance": 100,
       "previous_marks": 78.2,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.8,
       "attendance": 61.8,
       "previous_marks": 68,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 8.8,
       "attendance": 95.3,
       "previous_marks": 47.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.9,
       "attendance": 53.2,
       "previous_marks": 36,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.6,
       "attendance": 61,
       "previous_marks": 42.1,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7,
       "attendance": 40,
       "previous_marks": 45,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.5,
       "attendance": 63.3,
       "previous_marks": 46.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.6,
       "attendance": 40,
       "previous_marks": 64.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.5,
@@ -4006,28 +4004,28 @@
       "attendance": 77.5,
       "previous_marks": 34.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.9,
       "attendance": 70.1,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.3,
       "attendance": 58.3,
       "previous_marks": 31.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.1,
       "attendance": 66,
       "previous_marks": 30.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4,
@@ -4041,56 +4039,56 @@
       "attendance": 65.6,
       "previous_marks": 48.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.4,
       "attendance": 77.9,
       "previous_marks": 97.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 9.2,
       "attendance": 64.8,
       "previous_marks": 46.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.1,
       "attendance": 56.8,
       "previous_marks": 56.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0.8,
       "attendance": 60.5,
       "previous_marks": 45.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 8.8,
       "attendance": 59.6,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.5,
       "attendance": 100,
       "previous_marks": 70.1,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.7,
       "attendance": 98.5,
       "previous_marks": 66.5,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.2,
@@ -4104,21 +4102,21 @@
       "attendance": 60.4,
       "previous_marks": 52.3,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.7,
       "attendance": 57.4,
       "previous_marks": 19.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.6,
       "attendance": 48,
       "previous_marks": 75.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.2,
@@ -4132,35 +4130,35 @@
       "attendance": 68,
       "previous_marks": 88,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 9.3,
       "attendance": 94.5,
       "previous_marks": 35.1,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0.5,
       "attendance": 59.1,
       "previous_marks": 42.2,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4,
       "attendance": 72.1,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.4,
       "attendance": 44.9,
       "previous_marks": 28.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.5,
@@ -4174,49 +4172,49 @@
       "attendance": 54.7,
       "previous_marks": 13.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 10.3,
       "attendance": 89.6,
       "previous_marks": 76,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.1,
       "attendance": 85.1,
       "previous_marks": 55.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.9,
       "attendance": 81.5,
       "previous_marks": 95.8,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.1,
       "attendance": 48.5,
       "previous_marks": 50.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7,
       "attendance": 53.8,
       "previous_marks": 41,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.5,
       "attendance": 66.1,
       "previous_marks": 31.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.6,
@@ -4230,49 +4228,49 @@
       "attendance": 81.4,
       "previous_marks": 77.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.1,
       "attendance": 68.9,
       "previous_marks": 48.6,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.4,
       "attendance": 44.3,
       "previous_marks": 58.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 11.8,
       "attendance": 73.4,
       "previous_marks": 55.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0.7,
       "attendance": 63.4,
       "previous_marks": 58.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1,
       "attendance": 40,
       "previous_marks": 40.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.4,
       "attendance": 93.9,
       "previous_marks": 53,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 5.7,
@@ -4286,14 +4284,14 @@
       "attendance": 75.8,
       "previous_marks": 58.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.1,
       "attendance": 100,
       "previous_marks": 60.5,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 6.1,
@@ -4307,21 +4305,21 @@
       "attendance": 68.9,
       "previous_marks": 27.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.4,
       "attendance": 62.9,
       "previous_marks": 48.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.7,
       "attendance": 100,
       "previous_marks": 78.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3,
@@ -4335,28 +4333,28 @@
       "attendance": 69.8,
       "previous_marks": 53.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.5,
       "attendance": 71,
       "previous_marks": 74.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.9,
       "attendance": 95.1,
       "previous_marks": 49.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.3,
       "attendance": 54.9,
       "previous_marks": 38,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.5,
@@ -4370,35 +4368,35 @@
       "attendance": 68.2,
       "previous_marks": 59.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.8,
       "attendance": 79.4,
       "previous_marks": 74.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.8,
       "attendance": 77.3,
       "previous_marks": 71,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.6,
       "attendance": 60.8,
       "previous_marks": 57.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.8,
       "attendance": 73.9,
       "previous_marks": 76,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.7,
@@ -4412,42 +4410,42 @@
       "attendance": 89.1,
       "previous_marks": 55.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.4,
       "attendance": 40,
       "previous_marks": 45.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4,
       "attendance": 68.9,
       "previous_marks": 43.1,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7,
       "attendance": 94.3,
       "previous_marks": 52.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.9,
       "attendance": 40,
       "previous_marks": 74.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.4,
       "attendance": 58,
       "previous_marks": 50.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0,
@@ -4468,14 +4466,14 @@
       "attendance": 96.4,
       "previous_marks": 51.7,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.7,
       "attendance": 83.6,
       "previous_marks": 76.4,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 3.3,
@@ -4489,7 +4487,7 @@
       "attendance": 100,
       "previous_marks": 56.8,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.4,
@@ -4503,14 +4501,14 @@
       "attendance": 75.8,
       "previous_marks": 69,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.7,
       "attendance": 40,
       "previous_marks": 60,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.1,
@@ -4524,14 +4522,14 @@
       "attendance": 60.7,
       "previous_marks": 40.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0,
       "attendance": 51.9,
       "previous_marks": 1.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4,
@@ -4545,56 +4543,56 @@
       "attendance": 68.7,
       "previous_marks": 81.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.1,
       "attendance": 67.8,
       "previous_marks": 55.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.7,
       "attendance": 53.8,
       "previous_marks": 49.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.2,
       "attendance": 65.9,
       "previous_marks": 61.9,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.3,
       "attendance": 60.5,
       "previous_marks": 61,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.3,
       "attendance": 99.1,
       "previous_marks": 84.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.6,
       "attendance": 97.2,
       "previous_marks": 62.1,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 5.2,
       "attendance": 67.5,
       "previous_marks": 67.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.9,
@@ -4608,14 +4606,14 @@
       "attendance": 76.9,
       "previous_marks": 69.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.7,
       "attendance": 72.3,
       "previous_marks": 93,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.7,
@@ -4636,35 +4634,35 @@
       "attendance": 44.1,
       "previous_marks": 1.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 9.1,
       "attendance": 75.5,
       "previous_marks": 60.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7,
       "attendance": 74.6,
       "previous_marks": 90.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.5,
       "attendance": 73.7,
       "previous_marks": 30.3,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0,
       "attendance": 40.3,
       "previous_marks": 73,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.5,
@@ -4678,42 +4676,42 @@
       "attendance": 77.6,
       "previous_marks": 61.2,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.9,
       "attendance": 70.7,
       "previous_marks": 63.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.1,
       "attendance": 59,
       "previous_marks": 61.2,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.8,
       "attendance": 94.6,
       "previous_marks": 62.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.7,
       "attendance": 95,
       "previous_marks": 41.3,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 5.6,
       "attendance": 48.2,
       "previous_marks": 10.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.9,
@@ -4727,42 +4725,42 @@
       "attendance": 82.1,
       "previous_marks": 54.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.4,
       "attendance": 66.9,
       "previous_marks": 92.8,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 9.4,
       "attendance": 77.5,
       "previous_marks": 47.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5,
       "attendance": 67.7,
       "previous_marks": 65.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 9.7,
       "attendance": 46,
       "previous_marks": 82.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.2,
       "attendance": 100,
       "previous_marks": 36.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.2,
@@ -4776,14 +4774,14 @@
       "attendance": 99.9,
       "previous_marks": 54,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 7.1,
       "attendance": 67.6,
       "previous_marks": 82.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0,
@@ -4797,21 +4795,21 @@
       "attendance": 78.5,
       "previous_marks": 79,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.8,
       "attendance": 77.6,
       "previous_marks": 70.6,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.3,
       "attendance": 63.4,
       "previous_marks": 54.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.9,
@@ -4825,63 +4823,63 @@
       "attendance": 65.2,
       "previous_marks": 25.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.1,
       "attendance": 43.2,
       "previous_marks": 47.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5,
       "attendance": 95.3,
       "previous_marks": 75.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.1,
       "attendance": 57.5,
       "previous_marks": 24.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0.2,
       "attendance": 51,
       "previous_marks": 30.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.3,
       "attendance": 47,
       "previous_marks": 27.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7,
       "attendance": 69.9,
       "previous_marks": 80.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.8,
       "attendance": 73.6,
       "previous_marks": 58.8,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.9,
       "attendance": 40.4,
       "previous_marks": 14.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.2,
@@ -4895,7 +4893,7 @@
       "attendance": 100,
       "previous_marks": 44.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.3,
@@ -4909,14 +4907,14 @@
       "attendance": 92.7,
       "previous_marks": 57.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.1,
       "attendance": 61.3,
       "previous_marks": 86.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.3,
@@ -4930,63 +4928,63 @@
       "attendance": 62.9,
       "previous_marks": 42.9,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.2,
       "attendance": 60.5,
       "previous_marks": 48.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.6,
       "attendance": 48.5,
       "previous_marks": 73,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.4,
       "attendance": 40,
       "previous_marks": 59,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6,
       "attendance": 99.3,
       "previous_marks": 59.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.2,
       "attendance": 98.8,
       "previous_marks": 79.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.9,
       "attendance": 60,
       "previous_marks": 46,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.3,
       "attendance": 99.9,
       "previous_marks": 64,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 5.8,
       "attendance": 60.5,
       "previous_marks": 78.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.2,
@@ -5000,7 +4998,7 @@
       "attendance": 51.2,
       "previous_marks": 35,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.3,
@@ -5021,7 +5019,7 @@
       "attendance": 84.4,
       "previous_marks": 53.1,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 0.1,
@@ -5035,28 +5033,28 @@
       "attendance": 46.9,
       "previous_marks": 63.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.2,
       "attendance": 86.7,
       "previous_marks": 73.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.7,
       "attendance": 92,
       "previous_marks": 81.8,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 6,
       "attendance": 78.6,
       "previous_marks": 51.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0.8,
@@ -5070,35 +5068,35 @@
       "attendance": 80.2,
       "previous_marks": 80,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.1,
       "attendance": 60,
       "previous_marks": 15.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.7,
       "attendance": 69.6,
       "previous_marks": 58.5,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.9,
       "attendance": 40,
       "previous_marks": 66.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5,
       "attendance": 75.1,
       "previous_marks": 59.9,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3,
@@ -5112,7 +5110,7 @@
       "attendance": 78.8,
       "previous_marks": 38.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.8,
@@ -5126,14 +5124,14 @@
       "attendance": 49.7,
       "previous_marks": 53.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 12,
       "attendance": 74.9,
       "previous_marks": 73,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.5,
@@ -5154,35 +5152,35 @@
       "attendance": 70.1,
       "previous_marks": 75.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.4,
       "attendance": 59.5,
       "previous_marks": 26.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 8.2,
       "attendance": 84.9,
       "previous_marks": 86,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.5,
       "attendance": 66.8,
       "previous_marks": 55.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.8,
       "attendance": 65.5,
       "previous_marks": 40.9,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.1,
@@ -5196,28 +5194,28 @@
       "attendance": 70.9,
       "previous_marks": 59.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.2,
       "attendance": 69.7,
       "previous_marks": 34.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.1,
       "attendance": 72.2,
       "previous_marks": 72.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.1,
       "attendance": 47,
       "previous_marks": 52.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.4,
@@ -5231,7 +5229,7 @@
       "attendance": 42.9,
       "previous_marks": 36.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.6,
@@ -5245,42 +5243,42 @@
       "attendance": 46.5,
       "previous_marks": 56.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 8.9,
       "attendance": 73.6,
       "previous_marks": 66.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.9,
       "attendance": 66,
       "previous_marks": 54.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.3,
       "attendance": 75.7,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.4,
       "attendance": 100,
       "previous_marks": 92.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.5,
       "attendance": 43.5,
       "previous_marks": 33.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.2,
@@ -5301,14 +5299,14 @@
       "attendance": 44.9,
       "previous_marks": 44.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.2,
       "attendance": 79.9,
       "previous_marks": 54.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0,
@@ -5322,7 +5320,7 @@
       "attendance": 85.1,
       "previous_marks": 84.3,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.9,
@@ -5343,7 +5341,7 @@
       "attendance": 44.9,
       "previous_marks": 36.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.2,
@@ -5357,7 +5355,7 @@
       "attendance": 100,
       "previous_marks": 76.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.1,
@@ -5371,56 +5369,56 @@
       "attendance": 100,
       "previous_marks": 97.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.3,
       "attendance": 77.6,
       "previous_marks": 68.7,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.7,
       "attendance": 48.7,
       "previous_marks": 40.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.2,
       "attendance": 56.6,
       "previous_marks": 45.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.9,
       "attendance": 54.4,
       "previous_marks": 56.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.8,
       "attendance": 49.8,
       "previous_marks": 39.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.1,
       "attendance": 47.3,
       "previous_marks": 40.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.7,
       "attendance": 65,
       "previous_marks": 58.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0,
@@ -5434,14 +5432,14 @@
       "attendance": 65.2,
       "previous_marks": 88.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2,
       "attendance": 50.5,
       "previous_marks": 55.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.3,
@@ -5462,63 +5460,63 @@
       "attendance": 62,
       "previous_marks": 41.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0,
       "attendance": 60.6,
       "previous_marks": 59.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.7,
       "attendance": 67.2,
       "previous_marks": 89.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2,
       "attendance": 54.7,
       "previous_marks": 5.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.2,
       "attendance": 40,
       "previous_marks": 46,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.1,
       "attendance": 80.8,
       "previous_marks": 70.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.1,
       "attendance": 65.4,
       "previous_marks": 46.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.3,
       "attendance": 61.9,
       "previous_marks": 70.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 8.8,
       "attendance": 88,
       "previous_marks": 47.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.8,
@@ -5532,7 +5530,7 @@
       "attendance": 100,
       "previous_marks": 94.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0,
@@ -5546,42 +5544,42 @@
       "attendance": 76.1,
       "previous_marks": 72.2,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.8,
       "attendance": 85.2,
       "previous_marks": 81.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.4,
       "attendance": 60,
       "previous_marks": 58.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.7,
       "attendance": 73.7,
       "previous_marks": 76.1,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 11.3,
       "attendance": 80.2,
       "previous_marks": 85.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.4,
       "attendance": 78.8,
       "previous_marks": 53,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.6,
@@ -5595,7 +5593,7 @@
       "attendance": 78.7,
       "previous_marks": 74.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.8,
@@ -5630,7 +5628,7 @@
       "attendance": 44.4,
       "previous_marks": 62.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.7,
@@ -5644,7 +5642,7 @@
       "attendance": 92.3,
       "previous_marks": 39.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8,
@@ -5665,7 +5663,7 @@
       "attendance": 41.4,
       "previous_marks": 68.9,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.9,
@@ -5679,7 +5677,7 @@
       "attendance": 61.4,
       "previous_marks": 39.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.8,
@@ -5693,14 +5691,14 @@
       "attendance": 44.1,
       "previous_marks": 81.7,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.4,
       "attendance": 99,
       "previous_marks": 97,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.4,
@@ -5721,7 +5719,7 @@
       "attendance": 75.4,
       "previous_marks": 95.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.6,
@@ -5735,21 +5733,21 @@
       "attendance": 49.7,
       "previous_marks": 54.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.5,
       "attendance": 100,
       "previous_marks": 33.7,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 5.4,
       "attendance": 91.1,
       "previous_marks": 72.6,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.1,
@@ -5763,14 +5761,14 @@
       "attendance": 53.7,
       "previous_marks": 41.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 8.2,
       "attendance": 99.5,
       "previous_marks": 53.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.9,
@@ -5784,14 +5782,14 @@
       "attendance": 70.7,
       "previous_marks": 50.8,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.8,
       "attendance": 59.4,
       "previous_marks": 9.5,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.3,
@@ -5812,28 +5810,28 @@
       "attendance": 53.5,
       "previous_marks": 44.7,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.9,
       "attendance": 69,
       "previous_marks": 65.8,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0.6,
       "attendance": 57.5,
       "previous_marks": 55,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.4,
       "attendance": 67.1,
       "previous_marks": 71.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.8,
@@ -5847,7 +5845,7 @@
       "attendance": 66.2,
       "previous_marks": 45.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.7,
@@ -5861,7 +5859,7 @@
       "attendance": 65.1,
       "previous_marks": 69.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.4,
@@ -5889,14 +5887,14 @@
       "attendance": 67.4,
       "previous_marks": 75.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.1,
       "attendance": 67.4,
       "previous_marks": 64.6,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.7,
@@ -5910,21 +5908,21 @@
       "attendance": 84.3,
       "previous_marks": 78.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.5,
       "attendance": 80.5,
       "previous_marks": 90.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.4,
       "attendance": 83.3,
       "previous_marks": 67,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 0,
@@ -5938,21 +5936,21 @@
       "attendance": 56.2,
       "previous_marks": 62.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.3,
       "attendance": 40,
       "previous_marks": 50.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.4,
       "attendance": 85.5,
       "previous_marks": 96.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.1,
@@ -5966,7 +5964,7 @@
       "attendance": 89.9,
       "previous_marks": 70.5,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 2.6,
@@ -5980,35 +5978,35 @@
       "attendance": 70.5,
       "previous_marks": 66.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.2,
       "attendance": 62.4,
       "previous_marks": 59.4,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.6,
       "attendance": 59.9,
       "previous_marks": 43,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.6,
       "attendance": 85.1,
       "previous_marks": 65.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.6,
       "attendance": 67.9,
       "previous_marks": 27,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.1,
@@ -6022,42 +6020,42 @@
       "attendance": 100,
       "previous_marks": 91.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6,
       "attendance": 60.9,
       "previous_marks": 91.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.2,
       "attendance": 72.8,
       "previous_marks": 66.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.2,
       "attendance": 56.9,
       "previous_marks": 45.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 9.5,
       "attendance": 67.7,
       "previous_marks": 75.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.6,
       "attendance": 100,
       "previous_marks": 82.5,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 0.5,
@@ -6085,14 +6083,14 @@
       "attendance": 62.6,
       "previous_marks": 72.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.6,
       "attendance": 55.5,
       "previous_marks": 24.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.8,
@@ -6106,7 +6104,7 @@
       "attendance": 100,
       "previous_marks": 54.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0,
@@ -6120,56 +6118,56 @@
       "attendance": 71.3,
       "previous_marks": 37.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.9,
       "attendance": 86.6,
       "previous_marks": 68.3,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 4.2,
       "attendance": 60.9,
       "previous_marks": 64.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4,
       "attendance": 61.1,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.2,
       "attendance": 95.2,
       "previous_marks": 89.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.7,
       "attendance": 79,
       "previous_marks": 74.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.6,
       "attendance": 79.4,
       "previous_marks": 78.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.2,
       "attendance": 84.2,
       "previous_marks": 82.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.8,
@@ -6183,7 +6181,7 @@
       "attendance": 71.9,
       "previous_marks": 77.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.3,
@@ -6197,7 +6195,7 @@
       "attendance": 58.1,
       "previous_marks": 66,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6,
@@ -6225,42 +6223,42 @@
       "attendance": 70.3,
       "previous_marks": 90.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.9,
       "attendance": 61.5,
       "previous_marks": 39.7,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.4,
       "attendance": 48.3,
       "previous_marks": 63,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 9.3,
       "attendance": 80.5,
       "previous_marks": 40.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.8,
       "attendance": 94.7,
       "previous_marks": 48.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.9,
       "attendance": 81.4,
       "previous_marks": 70.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.1,
@@ -6274,63 +6272,63 @@
       "attendance": 69.6,
       "previous_marks": 79.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.6,
       "attendance": 80,
       "previous_marks": 79.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.8,
       "attendance": 95.9,
       "previous_marks": 79.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.2,
       "attendance": 57.5,
       "previous_marks": 0,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.4,
       "attendance": 63.3,
       "previous_marks": 49.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.3,
       "attendance": 67.8,
       "previous_marks": 93.7,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.3,
       "attendance": 40,
       "previous_marks": 55.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.7,
       "attendance": 89.8,
       "previous_marks": 74,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.2,
       "attendance": 66,
       "previous_marks": 26.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.6,
@@ -6344,7 +6342,7 @@
       "attendance": 81.3,
       "previous_marks": 68.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.3,
@@ -6358,21 +6356,21 @@
       "attendance": 90.4,
       "previous_marks": 55.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7.1,
       "attendance": 61.4,
       "previous_marks": 36.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.5,
       "attendance": 72,
       "previous_marks": 84.5,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 0,
@@ -6386,21 +6384,21 @@
       "attendance": 49.4,
       "previous_marks": 13.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5,
       "attendance": 100,
       "previous_marks": 38.9,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 6.5,
       "attendance": 100,
       "previous_marks": 56.2,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.7,
@@ -6414,21 +6412,21 @@
       "attendance": 54.7,
       "previous_marks": 53.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.6,
       "attendance": 44.3,
       "previous_marks": 45.4,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.1,
       "attendance": 49.9,
       "previous_marks": 78.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.9,
@@ -6442,7 +6440,7 @@
       "attendance": 88.5,
       "previous_marks": 68.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.3,
@@ -6456,28 +6454,28 @@
       "attendance": 59.1,
       "previous_marks": 80.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 9.1,
       "attendance": 71.4,
       "previous_marks": 71.7,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 7,
       "attendance": 52.3,
       "previous_marks": 93.3,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.5,
       "attendance": 63,
       "previous_marks": 23.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.8,
@@ -6498,49 +6496,49 @@
       "attendance": 90.3,
       "previous_marks": 63.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.4,
       "attendance": 52.3,
       "previous_marks": 19.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.1,
       "attendance": 63,
       "previous_marks": 55.3,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 8.4,
       "attendance": 100,
       "previous_marks": 70.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.7,
       "attendance": 86.6,
       "previous_marks": 82.7,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 1.1,
       "attendance": 43.7,
       "previous_marks": 96.7,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.4,
       "attendance": 40,
       "previous_marks": 43.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.7,
@@ -6554,7 +6552,7 @@
       "attendance": 62.1,
       "previous_marks": 61.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5,
@@ -6568,21 +6566,21 @@
       "attendance": 67.2,
       "previous_marks": 46,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0,
       "attendance": 60.6,
       "previous_marks": 42.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0.2,
       "attendance": 49.2,
       "previous_marks": 39.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.2,
@@ -6596,63 +6594,63 @@
       "attendance": 55,
       "previous_marks": 31.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 9.4,
       "attendance": 62.2,
       "previous_marks": 47.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.4,
       "attendance": 67.2,
       "previous_marks": 35.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 7.7,
       "attendance": 63.6,
       "previous_marks": 64.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5,
       "attendance": 60.9,
       "previous_marks": 5.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 10.3,
       "attendance": 87.4,
       "previous_marks": 42.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.3,
       "attendance": 90.7,
       "previous_marks": 56.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.5,
       "attendance": 61.3,
       "previous_marks": 50,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 10.4,
       "attendance": 90.5,
       "previous_marks": 67.4,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 3.7,
@@ -6666,7 +6664,7 @@
       "attendance": 68.1,
       "previous_marks": 51.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 6.1,
@@ -6680,7 +6678,7 @@
       "attendance": 93.7,
       "previous_marks": 35.5,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 3.7,
@@ -6701,28 +6699,28 @@
       "attendance": 87.8,
       "previous_marks": 71.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.7,
       "attendance": 70,
       "previous_marks": 57.3,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 10.5,
       "attendance": 69.7,
       "previous_marks": 56,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.2,
       "attendance": 56.9,
       "previous_marks": 99.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.7,
@@ -6736,7 +6734,7 @@
       "attendance": 96.3,
       "previous_marks": 62.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 4.2,
@@ -6750,7 +6748,7 @@
       "attendance": 75.8,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 8.2,
@@ -6764,21 +6762,21 @@
       "attendance": 96.6,
       "previous_marks": 71.4,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 4.7,
       "attendance": 86,
       "previous_marks": 48.4,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 3.6,
       "attendance": 80.8,
       "previous_marks": 60.8,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 0.4,
@@ -6792,14 +6790,14 @@
       "attendance": 58.1,
       "previous_marks": 59.8,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 4.7,
       "attendance": 58.3,
       "previous_marks": 69.1,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 3.3,
@@ -6813,7 +6811,7 @@
       "attendance": 98.5,
       "previous_marks": 56,
       "result": "Pass",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 3.5,
@@ -6827,21 +6825,21 @@
       "attendance": 85.3,
       "previous_marks": 51.9,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.9,
       "attendance": 82.3,
       "previous_marks": 80.4,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 2.4,
       "attendance": 92.2,
       "previous_marks": 81.5,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 6.4,
@@ -6855,7 +6853,7 @@
       "attendance": 66.3,
       "previous_marks": 40.1,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.4,
@@ -6869,28 +6867,28 @@
       "attendance": 78.7,
       "previous_marks": 93.2,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5,
       "attendance": 70,
       "previous_marks": 42,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.3,
       "attendance": 57.2,
       "previous_marks": 91.8,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.5,
       "attendance": 68.5,
       "previous_marks": 43.3,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 2.5,
@@ -6904,42 +6902,42 @@
       "attendance": 86.4,
       "previous_marks": 100,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.5,
       "attendance": 94.1,
       "previous_marks": 54.1,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5.7,
       "attendance": 67.5,
       "previous_marks": 79.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.1,
       "attendance": 100,
       "previous_marks": 44.5,
       "result": "Fail",
-      "cluster": 2
+      "cluster": 1
     },
     {
       "study_hours": 7.1,
       "attendance": 75.6,
       "previous_marks": 49.6,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 6.1,
       "attendance": 90.3,
       "previous_marks": 87.5,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 5,
@@ -6953,35 +6951,35 @@
       "attendance": 80.4,
       "previous_marks": 66.6,
       "result": "Fail",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.8,
       "attendance": 61.8,
       "previous_marks": 60.5,
       "result": "Pass",
-      "cluster": 3
+      "cluster": 1
     },
     {
       "study_hours": 8.2,
       "attendance": 50.2,
       "previous_marks": 39.2,
       "result": "Pass",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 1.8,
       "attendance": 53.6,
       "previous_marks": 51.6,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.3,
       "attendance": 45.1,
       "previous_marks": 62.4,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 5.4,
@@ -6995,14 +6993,14 @@
       "attendance": 40,
       "previous_marks": 22.2,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0.9,
       "attendance": 40,
       "previous_marks": 41.9,
       "result": "Fail",
-      "cluster": 1
+      "cluster": 2
     },
     {
       "study_hours": 0.6,
