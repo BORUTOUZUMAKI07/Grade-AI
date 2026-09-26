@@ -10,7 +10,7 @@ from app.db.session import get_db
 from app.dependencies.auth import get_current_user, owned_or_404, staff_only
 from app.dependencies.container import get_inference_service
 from app.schemas.common import Page
-from app.schemas.prediction import (BatchRequest, BatchResponse, HistoryItem, PredictionRequest, PredictionResponse)
+from app.schemas.prediction import (BatchRequest, BatchResponse, HistoryItem, PredictionRequest, PredictionResponse, UnsupervisedAnalysisRequest)
 from app.services.inference_service import StudentInferenceService
 
 router = APIRouter()
@@ -53,6 +53,30 @@ def process_prediction(payload: PredictionRequest,
         pass_probability=result["pass_probability"], model_name=payload.model))
     db.commit()
     return result
+
+
+@router.post("/unsupervised")
+def unsupervised_analysis(payload: UnsupervisedAnalysisRequest,
+    service: StudentInferenceService = Depends(get_inference_service),
+    user: User = Depends(get_current_user)):
+    """Run PCA or K-Means analysis without creating a Pass/Fail prediction/history row."""
+    _single.check(f"u{user.id}")
+    _single.hit(f"u{user.id}")
+    result = service.unsupervised_profile(payload.study_hours, payload.attendance,
+                                          payload.previous_marks)
+    selected = payload.model
+    return {
+        "selected_model": selected,
+        "model_name": "K-Means (2 clusters)" if selected == "kmeans" else "PCA (2 components)",
+        "inputs": {"study_hours": payload.study_hours, "attendance": payload.attendance,
+                   "previous_marks": payload.previous_marks},
+        "analysis": result[selected],
+        "training_reference": {
+            "clusters": 2 if selected == "kmeans" else None,
+            "components": 2 if selected == "pca" else None,
+        },
+        "note": result[selected]["interpretation"],
+    }
 
 
 @router.get("/training-predictions")
