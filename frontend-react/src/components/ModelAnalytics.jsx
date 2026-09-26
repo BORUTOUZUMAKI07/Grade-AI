@@ -125,8 +125,8 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction, a
           <h4 className="mb-3 font-semibold text-white">{name}</h4>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
             {[
-              ['Accuracy', result.accuracy], ['Precision', result.precision], ['Recall', result.recall],
-              ['F1', result.f1], ['ROC-AUC', result.roc_auc], ['Brier score', result.brier_score], ['ECE', result.calibration?.expected_calibration_error],
+              ['Accuracy', result.accuracy], ['Balanced accuracy', result.balanced_accuracy], ['Precision', result.precision], ['Recall', result.recall],
+              ['Specificity', result.specificity], ['F1', result.f1], ['ROC-AUC', result.roc_auc], ['PR-AUC', result.pr_auc], ['Log loss', result.log_loss], ['Brier score', result.brier_score], ['ECE', result.calibration?.expected_calibration_error],
             ].map(([label, value]) => <div key={label} className="rounded-lg bg-white/[0.03] p-3">
               <p className="text-[10px] uppercase tracking-wide text-neutral-500">{label}</p>
               <p className="mono mt-1 text-lg font-semibold text-white">{Number.isFinite(Number(value)) ? Number(value).toFixed(3) : 'N/A'}</p>
