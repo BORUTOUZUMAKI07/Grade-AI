@@ -41,3 +41,8 @@ node_modules/
 .next/
 frontend-react/.next/
 frontend-react/node_modules/
+
+# --- Local SQLite databases (never commit runtime records) ---
+*.db
+*.sqlite
+*.sqlite3
