@@ -154,7 +154,21 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction, a
           </div>
         </div>)}
       </div>
-      <p className="mt-4 text-xs leading-relaxed text-neutral-500">Metrics are from a single held-out split; no cross-validation or probability-calibration procedure is claimed. The training artifacts used by the app are refit on the full dataset after evaluation. PCA and K-Means remain descriptive and are not assigned classifier accuracy.</p>
+      {summary.validation.cross_validation && <div className="mt-5 rounded-xl border border-white/10 bg-black/20 p-4">
+        <h4 className="font-semibold text-white">5-fold cross-validation (training partition only)</h4>
+        <p className="mt-1 text-xs text-neutral-500">CV is used as a stability diagnostic on the outer training data. The separate held-out test metrics above remain the final evaluation.</p>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          {['decision_tree', 'logistic_regression'].map((key) => {
+            const cv = summary.validation.cross_validation[key];
+            return <div key={key} className="rounded-lg border border-white/5 p-3">
+              <p className="text-sm font-medium text-neutral-200">{key === 'decision_tree' ? 'Decision Tree' : 'Logistic Regression'}</p>
+              <p className="mt-2 text-sm text-neutral-400">Accuracy: {Number(cv?.accuracy?.mean ?? NaN).toFixed(3)} ± {Number(cv?.accuracy?.sd ?? NaN).toFixed(3)}</p>
+              <p className="text-sm text-neutral-400">Log loss: {Number(cv?.log_loss?.mean ?? NaN).toFixed(3)} ± {Number(cv?.log_loss?.sd ?? NaN).toFixed(3)}</p>
+            </div>;
+          })}
+        </div>
+      </div>}
+      <p className="mt-4 text-xs leading-relaxed text-neutral-500">Held-out metrics are from the untouched test split; five-fold CV is reported separately on the training partition. No probability-calibration procedure is claimed. The training artifacts used by the app are refit on the full dataset after evaluation. PCA and K-Means remain descriptive and are not assigned classifier accuracy.</p>
     </section>}
 
     <section className={panel}>
