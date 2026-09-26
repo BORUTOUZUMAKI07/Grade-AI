@@ -64,7 +64,7 @@ jobs:
             echo "Model artifacts are already up to date."
           else
             git commit -m "Add refreshed trained model artifacts"
-            git pull --rebase origin main
+            git pull --rebase -X theirs origin main
             git push origin HEAD:main
           fi
       - name: Upload trained model artifacts
