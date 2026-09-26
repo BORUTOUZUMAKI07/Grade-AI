@@ -219,15 +219,16 @@ main <- function() {
                   total_records=nrow(students), explained_variance=round(pca$sdev^2/sum(pca$sdev^2), 6)),
     center=as.list(pca$center), scale=as.list(pca$scale),
     loadings=lapply(seq_len(ncol(pca$rotation)), function(i) as.list(pca$rotation[, i])),
-    loading_names=rownames(pca$rotation), scores=unname(pca$x[, 1:min(3,ncol(pca$x)), drop=FALSE]),
-    score_columns=paste0("PC", seq_len(min(3,ncol(pca$x))))
+    loading_names=rownames(pca$rotation), scores=unname(pca$x[, 1:2, drop=FALSE]),
+    score_columns=c("PC1", "PC2"),
+    components_retained=2
   )
   jsonlite::write_json(pca_payload, file.path(CONFIG$output_dir, CONFIG$pca_filename),
                        auto_unbox=TRUE, pretty=TRUE, digits=NA)
 
   # 4) K-Means on standardized inputs. Fix seed for repeatable demo clusters.
   set.seed(CONFIG$cluster_seed)
-  k <- min(CONFIG$clusters, max(2, floor(sqrt(nrow(students)/2))))
+  k <- 2L
   km <- stats::kmeans(scaled, centers=k, nstart=25)
   cluster_payload <- list(
     metadata=list(name="K-Means Clustering", framework="R stats::kmeans",
@@ -245,7 +246,7 @@ main <- function() {
 
   # One summary document powers the model registry/analytics UI.
   analytics <- list(
-    dataset_note="Synthetic demo dataset. Decision Tree and Logistic Regression validation metrics use a reproducible stratified 80/20 hold-out. Final artifacts are then refit on all rows. PCA and K-Means are descriptive/unsupervised and have no predictive accuracy score.",
+    dataset_note="Synthetic demo dataset. Decision Tree and Logistic Regression validation metrics use a reproducible stratified 80/20 hold-out. Final artifacts are then refit on all rows. PCA (2 components) and K-Means (2 clusters) are unsupervised; cluster pass rates are descriptive historical profiles, not standalone classifiers.",
     data_source="r_analytics/data/student_data.csv (synthetic demo data)",
     trained_at=format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ"), total_records=nrow(students),
     validation=list(method="stratified 80/20 hold-out with 5-fold stratified CV on training partition", seed=split$seed,
@@ -253,7 +254,7 @@ main <- function() {
                     positive_class="Pass", threshold=0.5,
                     decision_tree=tree_eval, logistic_regression=logit_eval,
                     cross_validation=cv_summary,
-                    unsupervised_note="PCA and K-Means are not evaluated as Pass/Fail classifiers; no accuracy, F1 or AUC is assigned to them."),
+                    unsupervised_note="PCA (2 components) and K-Means (2 clusters) are not evaluated as standalone Pass/Fail classifiers; no accuracy, F1 or AUC is assigned to them. Cluster outcome profiles are descriptive training-set summaries and must not be treated as validated risk estimates."),
     result_counts=as.list(table(students$Result)),
     feature_summary=lapply(x, function(v) list(min=min(v), max=max(v), mean=mean(v), median=median(v), sd=stats::sd(v))),
     tree=list(accuracy=mean(stats::predict(tree, students, type="class")==students$Result),
