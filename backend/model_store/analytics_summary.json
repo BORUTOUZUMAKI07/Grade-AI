@@ -1,7 +1,7 @@
 {
-  "dataset_note": "Synthetic demo dataset. Decision Tree and Logistic Regression validation metrics use a reproducible stratified 80/20 hold-out. Final artifacts are then refit on all rows. PCA and K-Means are descriptive/unsupervised and have no predictive accuracy score.",
+  "dataset_note": "Synthetic demo dataset. Decision Tree and Logistic Regression validation metrics use a reproducible stratified 80/20 hold-out. Final artifacts are then refit on all rows. K-Means k is selected by silhouette analysis over 2..6 (selected k=2); PCA uses the first two components for visualization (71.6% variance) and reports how many components reach 90% variance (3). Cluster pass rates are descriptive historical profiles, not standalone classifiers.",
   "data_source": "r_analytics/data/student_data.csv (synthetic demo data)",
-  "trained_at": "2026-09-26T07:00:45Z",
+  "trained_at": "2026-09-26T07:51:41Z",
   "total_records": 1000,
   "validation": {
     "method": "stratified 80/20 hold-out with 5-fold stratified CV on training partition",
@@ -189,7 +189,7 @@
       },
       "note": "Fold-level estimates are computed only within the outer training partition; final reported hold-out metrics use the untouched test partition."
     },
-    "unsupervised_note": "PCA and K-Means are not evaluated as Pass/Fail classifiers; no accuracy, F1 or AUC is assigned to them."
+    "unsupervised_note": "K-Means cluster count is selected by average silhouette across k=2..6 (selected k=2, silhouette=0.2541). PCA displays PC1/PC2 (71.6% variance); 3 components are needed to reach 90% variance. These unsupervised tools are not standalone Pass/Fail classifiers; cluster outcome profiles are descriptive training-set summaries, not validated risk estimates."
   },
   "result_counts": {
     "Fail": 500,
@@ -229,7 +229,7 @@
   "logistic_regression": {
     "name": "Logistic Regression",
     "framework": "R stats::glm binomial",
-    "trained_at": "2026-09-26T07:00:45Z",
+    "trained_at": "2026-09-26T07:51:41Z",
     "total_records": 1000,
     "target": "Pass/Fail",
     "note": "Synthetic demo classifier; probabilities are not calibrated for real student outcomes."
@@ -237,9 +237,14 @@
   "pca": {
     "name": "PCA",
     "framework": "R stats::prcomp",
-    "trained_at": "2026-09-26T07:00:45Z",
+    "trained_at": "2026-09-26T07:51:41Z",
     "total_records": 1000,
-    "explained_variance": [0.411815, 0.30394, 0.284245]
+    "explained_variance": [0.411815, 0.30394, 0.284245],
+    "cumulative_explained_variance": [0.411815, 0.715755, 1],
+    "visualization_components": 2,
+    "visualization_variance": 0.715755,
+    "components_for_90pct": 3,
+    "selection_rule": "Retain the smallest number of components reaching at least 90% cumulative explained variance; the UI continues to display PC1/PC2 for a 2D plot."
   },
   "clustering": [484, 516]
 }

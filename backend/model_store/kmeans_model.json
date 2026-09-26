@@ -2,30 +2,92 @@
   "metadata": {
     "name": "K-Means Clustering",
     "framework": "R stats::kmeans",
-    "trained_at": "2026-09-26T07:00:45Z",
+    "trained_at": "2026-09-26T07:51:41Z",
     "total_records": 1000,
     "clusters": 2,
-    "features": [
-      "StudyHours",
-      "Attendance",
-      "PreviousMarks"
-    ]
+    "features": ["StudyHours", "Attendance", "PreviousMarks"],
+    "selection_method": "Highest average silhouette score over candidate k=2..6; ties favor smaller k.",
+    "selected_silhouette": 0.254053,
+    "candidate_evaluation": [
+      {
+        "k": 2,
+        "silhouette": 0.254053,
+        "inertia": 2173.524469,
+        "cluster_sizes": [
+          516,
+          484
+        ]
+      },
+      {
+        "k": 3,
+        "silhouette": 0.242301,
+        "inertia": 1751.676598,
+        "cluster_sizes": [
+          373,
+          343,
+          284
+        ]
+      },
+      {
+        "k": 4,
+        "silhouette": 0.252737,
+        "inertia": 1421.209602,
+        "cluster_sizes": [
+          253,
+          233,
+          271,
+          243
+        ]
+      },
+      {
+        "k": 5,
+        "silhouette": 0.236562,
+        "inertia": 1255.559484,
+        "cluster_sizes": [
+          197,
+          199,
+          185,
+          228,
+          191
+        ]
+      },
+      {
+        "k": 6,
+        "silhouette": 0.241577,
+        "inertia": 1111.312113,
+        "cluster_sizes": [
+          182,
+          143,
+          220,
+          157,
+          140,
+          158
+        ]
+      }
+    ],
+    "note": "Cluster membership is descriptive; training cluster pass rates are not validated individual predictions."
+  },
+  "center": {
+    "study_hours": 4.7244,
+    "attendance": 72.5417,
+    "previous_marks": 56.6342
+  },
+  "scale": {
+    "study_hours": 2.40351857524371,
+    "attendance": 15.5811457606048,
+    "previous_marks": 22.0417528619942
   },
   "centers": [
-    [
-      0.556424599035406,
-      0.381516039714056,
-      0.650197947915935
-    ],
-    [
-      -0.521917647157242,
-      -0.357856130274424,
-      -0.609875594556809
-    ]
+    [0.556424599035406, 0.381516039714056, 0.650197947915935],
+    [-0.521917647157242, -0.357856130274424, -0.609875594556809]
   ],
   "cluster_sizes": [
     484,
     516
+  ],
+  "cluster_pass_rates": [
+    0.795454545454545,
+    0.222868217054264
   ],
   "records": [
     {
@@ -7028,19 +7090,5 @@
       "result": "Pass",
       "cluster": 1
     }
-  ],
-  "center": {
-    "study_hours": 4.7244,
-    "attendance": 72.5417,
-    "previous_marks": 56.6342
-  },
-  "scale": {
-    "study_hours": 2.40351857524371,
-    "attendance": 15.5811457606048,
-    "previous_marks": 22.0417528619942
-  },
-  "cluster_pass_rates": {
-    "1": 0.7954545454545454,
-    "2": 0.22286821705426357
-  }
+  ]
 }
