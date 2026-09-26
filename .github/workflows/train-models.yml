@@ -23,6 +23,8 @@ jobs:
           use-public-rspm: true
       - name: Install R packages
         run: Rscript -e 'install.packages(c("rpart", "jsonlite"), repos="https://cloud.r-project.org")'
+      - name: Generate and validate deterministic synthetic dataset
+        run: python r_analytics/data/generate_balanced_dataset.py
       - name: Train all models
         run: Rscript r_analytics/src/train.R
       - name: Validate generated artifacts
@@ -31,7 +33,7 @@ jobs:
           import json
           from pathlib import Path
           root = Path("backend/model_store")
-          expected = ["decision_tree_model.json", "regression_weights.json", "pca_model.json",
+          expected = ["decision_tree_model.json", "logistic_regression_model.json", "pca_model.json",
                       "kmeans_model.json", "analytics_summary.json"]
           for name in expected:
               path = root / name
@@ -41,8 +43,12 @@ jobs:
               print(f"Validated {name} ({path.stat().st_size} bytes)")
           tree = json.loads((root / "decision_tree_model.json").read_text())
           assert "tree" in tree and "raw_records" in tree and len(tree["raw_records"]) >= 4
-          weights = json.loads((root / "regression_weights.json").read_text())["weights"]
+          weights = json.loads((root / "logistic_regression_model.json").read_text())["weights"]
           assert all(k in weights for k in ["intercept", "study_hours", "attendance", "previous_marks"])
+          summary = json.loads((root / "analytics_summary.json").read_text())
+          validation = summary["validation"]
+          assert validation["method"] == "stratified 80/20 hold-out"
+          assert validation["logistic_regression"]["n"] == validation["test_rows"]
           PY
       - name: Commit trained weights to main
         run: |
