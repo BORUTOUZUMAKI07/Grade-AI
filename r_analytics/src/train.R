@@ -112,6 +112,57 @@ main <- function() {
   logit_pred <- ifelse(logit_score >= 0.5, "Pass", "Fail")
   logit_eval <- evaluate_binary(split$test$Result, logit_pred, logit_score)
 
+  # Five-fold stratified CV on the outer training partition only.
+  # The outer test partition remains untouched by CV and model selection.
+  set.seed(20260926)
+  cv_fold_id <- integer(nrow(split$train))
+  for (label in levels(split$train$Result)) {
+    idx <- which(split$train$Result == label)
+    idx <- sample(idx)
+    cv_fold_id[idx] <- rep(seq_len(5), length.out=length(idx))
+  }
+  cv_rows <- lapply(seq_len(5), function(fold) {
+    cv_train <- split$train[cv_fold_id != fold, , drop=FALSE]
+    cv_valid <- split$train[cv_fold_id == fold, , drop=FALSE]
+    tree_cv <- rpart::rpart(Result ~ StudyHours + Attendance + PreviousMarks,
+                            data=cv_train, method="class",
+                            control=rpart::rpart.control(cp=0.01, maxdepth=5, minbucket=10))
+    tree_prob <- as.numeric(stats::predict(tree_cv, cv_valid, type="prob")[, "Pass"])
+    tree_hat <- ifelse(tree_prob >= 0.5, "Pass", "Fail")
+    cv_x <- cv_train[, c("StudyHours", "Attendance", "PreviousMarks")]
+    cv_center <- vapply(cv_x, mean, numeric(1))
+    cv_scale <- vapply(cv_x, stats::sd, numeric(1))
+    cv_scale[!is.finite(cv_scale) | cv_scale == 0] <- 1
+    cv_train_scaled <- as.data.frame(scale(cv_x, center=cv_center, scale=cv_scale))
+    names(cv_train_scaled) <- c("StudyHours", "Attendance", "PreviousMarks")
+    cv_train_scaled$Result <- cv_train$Result
+    cv_valid_scaled <- as.data.frame(scale(cv_valid[, c("StudyHours", "Attendance", "PreviousMarks")],
+                                           center=cv_center, scale=cv_scale))
+    names(cv_valid_scaled) <- c("StudyHours", "Attendance", "PreviousMarks")
+    logit_cv <- stats::glm(Result ~ StudyHours + Attendance + PreviousMarks,
+                           data=cv_train_scaled, family=stats::binomial())
+    logit_prob <- as.numeric(stats::predict(logit_cv, newdata=cv_valid_scaled, type="response"))
+    logit_hat <- ifelse(logit_prob >= 0.5, "Pass", "Fail")
+    actual <- as.character(cv_valid$Result)
+    list(fold=fold,
+         decision_tree=list(n=length(actual), accuracy=mean(tree_hat==actual),
+                            log_loss=mean(-((actual=="Pass")*log(pmax(tree_prob,1e-15))+
+                                            (actual=="Fail")*log(pmax(1-tree_prob,1e-15))))),
+         logistic_regression=list(n=length(actual), accuracy=mean(logit_hat==actual),
+                            log_loss=mean(-((actual=="Pass")*log(pmax(logit_prob,1e-15))+
+                                            (actual=="Fail")*log(pmax(1-logit_prob,1e-15))))))
+  })
+  summarize_cv <- function(key, metric) {
+    vals <- vapply(cv_rows, function(row) row[[key]][[metric]], numeric(1))
+    list(mean=mean(vals), sd=stats::sd(vals), fold_values=as.list(vals))
+  }
+  cv_summary <- list(folds=5, data="outer training partition only",
+                     decision_tree=list(accuracy=summarize_cv("decision_tree","accuracy"),
+                                        log_loss=summarize_cv("decision_tree","log_loss")),
+                     logistic_regression=list(accuracy=summarize_cv("logistic_regression","accuracy"),
+                                              log_loss=summarize_cv("logistic_regression","log_loss")),
+                     note="Fold-level estimates are computed only within the outer training partition; final reported hold-out metrics use the untouched test partition.")
+
   # 1) Decision Tree classifier (existing API-compatible export) (existing API-compatible export)
   tree <- rpart::rpart(Result ~ StudyHours + Attendance + PreviousMarks,
                        data=students, method="class", control=rpart::rpart.control(cp=0.01))
@@ -183,10 +234,11 @@ main <- function() {
     dataset_note="Synthetic demo dataset. Decision Tree and Logistic Regression validation metrics use a reproducible stratified 80/20 hold-out. Final artifacts are then refit on all rows. PCA and K-Means are descriptive/unsupervised and have no predictive accuracy score.",
     data_source="r_analytics/data/student_data.csv (synthetic demo data)",
     trained_at=format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ"), total_records=nrow(students),
-    validation=list(method="stratified 80/20 hold-out", seed=split$seed,
+    validation=list(method="stratified 80/20 hold-out with 5-fold stratified CV on training partition", seed=split$seed,
                     train_rows=split$train_rows, test_rows=split$test_rows,
                     positive_class="Pass", threshold=0.5,
                     decision_tree=tree_eval, logistic_regression=logit_eval,
+                    cross_validation=cv_summary,
                     unsupervised_note="PCA and K-Means are not evaluated as Pass/Fail classifiers; no accuracy, F1 or AUC is assigned to them."),
     result_counts=as.list(table(students$Result)),
     feature_summary=lapply(x, function(v) list(min=min(v), max=max(v), mean=mean(v), median=median(v), sd=stats::sd(v))),
