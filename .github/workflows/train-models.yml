@@ -26,7 +26,7 @@ jobs:
         with:
           use-public-rspm: true
       - name: Install R packages
-        run: Rscript -e 'install.packages(c("rpart", "jsonlite"), repos="https://cloud.r-project.org")'
+        run: Rscript -e 'install.packages(c("rpart", "jsonlite", "cluster"), repos="https://cloud.r-project.org")'
       - name: Generate and validate deterministic synthetic dataset
         run: python r_analytics/data/generate_balanced_dataset.py
       - name: Train all models
