@@ -69,100 +69,63 @@ class StudentInferenceService:
 
     def _classify(self, model_payload: dict, study_hours: float, attendance: float,
                   previous_marks: float, model: str = "decision_tree") -> dict:
+        """Run only a registered supervised classifier; PCA and K-Means are analytics-only."""
+        if model not in {"decision_tree", "logistic_regression"}:
+            raise ValueError("Choose Decision Tree or Logistic Regression.")
         point = {"study_hours": study_hours, "attendance": attendance, "previous_marks": previous_marks}
         records = model_payload.get("raw_records", [])
         similar = nearest_records(records, point)
-        steps = []
         if model == "logistic_regression":
             artifact = _read_json("logistic_regression_model.json") or {}
             weights = artifact.get("weights")
             if not weights:
-                raise ValueError("Logistic Regression artifact is missing. Run the R training script.")
+                raise ValueError("Logistic Regression artifact is missing. Run the R training workflow.")
             z = float(weights.get("intercept", 0))
-            for key, value in (("study_hours", study_hours), ("attendance", attendance), ("previous_marks", previous_marks)):
-                z += float(weights.get(key, 0)) * ((value - float(artifact.get("center", {}).get(key, 0))) / (float(artifact.get("scale", {}).get(key, 1)) or 1))
+            for key, value in point.items():
+                center = float(artifact.get("center", {}).get(key, 0))
+                scale = float(artifact.get("scale", {}).get(key, 1)) or 1
+                z += float(weights.get(key, 0)) * ((value - center) / scale)
             pass_probability = 1.0 / (1.0 + math.exp(-max(-35.0, min(35.0, z))))
             prediction = "Pass" if pass_probability >= 0.5 else "Fail"
-            confidence = max(pass_probability, 1 - pass_probability)
-            steps = ["Logistic Regression applies a sigmoid to a weighted combination of standardized inputs.",
-                     f"Estimated Pass probability: {pass_probability:.3f}.",
-                     "This probability comes from synthetic demo data and is not calibrated for real student outcomes."]
+            score = max(pass_probability, 1 - pass_probability)
+            explanation = [
+                "Logistic Regression applies a sigmoid to a weighted combination of standardized inputs.",
+                f"Estimated Pass probability: {pass_probability:.3f}.",
+                "This estimate is based on synthetic demo data and is not calibrated for real student outcomes.",
+            ]
             source = "R stats::glm binomial logistic regression"
-        elif model == "kmeans":
-            km = _read_json("kmeans_model.json") or {}
-            pca = _read_json("pca_model.json") or {}
-            centers = km.get("centers", [])
-            if not centers: raise ValueError("K-Means artifact missing; run the R training script.")
-            vals = [study_hours, attendance, previous_marks]
-            names = ["StudyHours", "Attendance", "PreviousMarks"]
-            z = [(vals[i] - float(pca.get("center", {}).get(names[i], 0))) / (float(pca.get("scale", {}).get(names[i], 1)) or 1) for i in range(3)]
-            cluster_id = min(range(len(centers)), key=lambda j: sum((z[i] - float(centers[j][i])) ** 2 for i in range(3))) + 1
-            members = [r for r in km.get("records", []) if int(r.get("cluster", 0)) == cluster_id]
-            passed = sum(r.get("result") == "Pass" for r in members); failed = len(members) - passed
-            pass_probability = (passed + 1) / (len(members) + 2); prediction = "Pass" if pass_probability >= 0.5 else "Fail"
-            confidence = max(pass_probability, 1 - pass_probability)
-            steps = [f"Nearest K-Means centroid is cluster {cluster_id}.", f"Cluster labels: {passed} Pass and {failed} Fail.", "Pass probability is the smoothed Pass share of the assigned cluster."]
-            source = "K-Means with cluster-to-outcome label mapping"
-        elif model == "pca_knn":
-            pca = _read_json("pca_model.json") or {}
-            scores, loads, names = pca.get("scores", []), pca.get("loadings", []), pca.get("loading_names", [])
-            if not scores or not loads: raise ValueError("PCA artifact missing; run the R training script.")
-            vals = {"StudyHours": study_hours, "Attendance": attendance, "PreviousMarks": previous_marks}
-            z = [(vals[n] - float(pca.get("center", {}).get(n, 0))) / (float(pca.get("scale", {}).get(n, 1)) or 1) for n in names]
-            projected = [sum(z[i] * float(loads[j].get(names[i], 0)) for i in range(len(names))) for j in range(min(3, len(loads)))]
-            train = (_read_json("kmeans_model.json") or {}).get("records", []); ranked = []
-            for i, row in enumerate(scores):
-                coords = row if isinstance(row, list) else [row]
-                dist = math.sqrt(sum((projected[j] - float(coords[j])) ** 2 for j in range(min(len(projected), len(coords)))))
-                if i < len(train): ranked.append((dist, train[i]))
-            neighbours = sorted(ranked, key=lambda x: x[0])[:15]
-            passed = sum(r.get("result") == "Pass" for _, r in neighbours); failed = len(neighbours) - passed
-            pass_probability = (passed + 1) / (len(neighbours) + 2); prediction = "Pass" if pass_probability >= 0.5 else "Fail"
-            confidence = max(pass_probability, 1 - pass_probability)
-            steps = [f"Projected inputs into {len(projected)} principal components.", f"Among nearest PCA-space records: {passed} Pass and {failed} Fail.", "Pass probability is the smoothed neighbour Pass share."]
-            source = "PCA projection + nearest-neighbour label vote"
+            confidence_kind = "uncalibrated_model_probability"
+            confidence_note = "Maximum class probability from the fitted logistic model; not calibrated uncertainty."
         else:
             tree = model_payload.get("tree")
-            if tree:
-                leaf, steps = walk_tree(tree, point)
-                counts = leaf.get("counts", {})
-                n = leaf.get("n") or sum(counts.values())
-                prediction = leaf["prediction"]
-                confidence = (counts.get(prediction, 0) + 1) / (n + 2)
-                pass_probability = (counts.get("Pass", 0) + 1) / (n + 2)
-                steps.append(f"That branch holds {n} training students: {counts.get('Pass', 0)} passed and {counts.get('Fail', 0)} failed")
-                source = f"{model_payload.get('metadata', {}).get('framework', 'Trained')} decision tree"
-            else:
-                if study_hours >= 5.5 and attendance >= 68.5:
-                    prediction, confidence = "Pass", 0.96
-                elif previous_marks >= 53.5 or attendance >= 74.5:
-                    prediction, confidence = "Pass", 0.88
-                else:
-                    prediction, confidence = "Fail", 0.94
-                pass_probability = sum(1 for s in similar if s["result"] == "Pass") / len(similar) if similar else 0.0
-                steps = ["No trained tree was found; fixed fallback rules were used. Run the R training script."]
-                source = "Fallback rules (no trained tree)"
-        confidence_kind = {
-            "decision_tree": "smoothed_training_leaf_share",
-            "logistic_regression": "sigmoid_probability_from_logistic_regression",
-            "kmeans": "smoothed_cluster_pass_share",
-            "pca_knn": "smoothed_neighbour_vote_share",
-        }.get(model, "fallback_heuristic")
-        confidence_note = {
-            "decision_tree": "Smoothed Pass/Fail share in the reached training leaf; not calibrated confidence.",
-            "logistic_regression": "Maximum of model-estimated Pass/Fail probabilities; not calibrated confidence or uncertainty.",
-            "kmeans": "Smoothed Pass share among training records in the nearest cluster; cluster labels are descriptive.",
-            "pca_knn": "Smoothed Pass share among nearby training records in PCA space; not calibrated.",
-        }.get(model, "Fallback-rule score; not model-estimated or calibrated.")
-        if source.startswith("Fallback rules"):
-            confidence_kind = "fallback_heuristic"
-            confidence_note = "Fallback rule heuristic; it is not learned, validated, or calibrated."
-        return {"predicted_result": prediction, "confidence_score": round(confidence, 4),
-                "confidence_kind": confidence_kind, "confidence_note": confidence_note,
-                "pass_probability": round(pass_probability, 4), "similar_students": similar,
-                "explanation": steps, "model_source": source,
-                "metadata": model_payload.get("metadata", {}), "raw_records": records,
-                "selected_model": model}
+            if not tree:
+                raise ValueError("Decision Tree artifact is missing. Run the R training workflow.")
+            leaf, explanation = walk_tree(tree, point)
+            counts = leaf.get("counts", {})
+            n = int(leaf.get("n") or sum(counts.values()))
+            pass_probability = (counts.get("Pass", 0) + 1) / (n + 2)
+            prediction = leaf["prediction"]
+            score = max(pass_probability, 1 - pass_probability)
+            explanation.append(
+                f"This leaf contains {n} synthetic training rows: "
+                f"{counts.get('Pass', 0)} Pass and {counts.get('Fail', 0)} Fail."
+            )
+            source = f"{model_payload.get('metadata', {}).get('framework', 'Trained')} decision tree"
+            confidence_kind = "smoothed_training_leaf_share"
+            confidence_note = "Smoothed class share in the reached training leaf; not calibrated confidence."
+        return {
+            "predicted_result": prediction,
+            "confidence_score": round(score, 4),
+            "confidence_kind": confidence_kind,
+            "confidence_note": confidence_note,
+            "pass_probability": round(pass_probability, 4),
+            "similar_students": similar,
+            "explanation": explanation,
+            "model_source": source,
+            "metadata": model_payload.get("metadata", {}),
+            "raw_records": records,
+            "selected_model": model,
+        }
 
     def execute_tree_classification(self, study_hours: float, attendance: float,
                                     previous_marks: float, model: str = "decision_tree") -> dict:
@@ -200,8 +163,8 @@ class StudentInferenceService:
 
         These are in-sample predictions on training data, not held-out evaluation.
         """
-        if model not in {"decision_tree", "linear_regression", "kmeans", "pca_knn"}:
-            raise ValueError("Choose Decision Tree, Linear Regression, K-Means or PCA + nearest-neighbour.")
+        if model not in {"decision_tree", "logistic_regression"}:
+            raise ValueError("Choose Decision Tree or Logistic Regression.")
         payload = self._repository.fetch_all()
         records = payload.get("raw_records", [])
         rows = []
