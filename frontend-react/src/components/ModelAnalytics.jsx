@@ -260,8 +260,8 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction, a
             </ResponsiveContainer>
           </div>
           <div className="grid content-start gap-3 sm:grid-cols-2 lg:grid-cols-1">
-            <Metric label="Training R-squared" value={Number(summary.logistic_regression?.r_squared ?? 0).toFixed(3)} detail="In-sample fit to binary pass/fail labels; not validation performance" />
-            <Metric label="Training RMSE" value={Number(summary.logistic_regression?.rmse ?? 0).toFixed(3)} detail="In-sample error on a 0/1 target; not exam-mark error or calibrated probability error" />
+            <Metric label="Model type" value="Binary classifier" detail="Logistic Regression estimates Pass probability using the sigmoid of a linear log-odds score." />
+            <Metric label="Decision threshold" value="0.50" detail="Predicted Pass when estimated probability is at least 0.50; this is a demo threshold, not a policy cutoff." />
             <p className="text-xs leading-relaxed text-neutral-500">{summary.dataset_note || 'Metrics describe the dataset used to train these artifacts.'}</p>
           </div>
         </div>
