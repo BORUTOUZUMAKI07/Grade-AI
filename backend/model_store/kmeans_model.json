@@ -5,11 +5,23 @@
     "trained_at": "2026-09-26T07:00:45Z",
     "total_records": 1000,
     "clusters": 2,
-    "features": ["StudyHours", "Attendance", "PreviousMarks"]
+    "features": [
+      "StudyHours",
+      "Attendance",
+      "PreviousMarks"
+    ]
   },
   "centers": [
-    [0.556424599035406, 0.381516039714056, 0.650197947915935],
-    [-0.521917647157242, -0.357856130274424, -0.609875594556809]
+    [
+      0.556424599035406,
+      0.381516039714056,
+      0.650197947915935
+    ],
+    [
+      -0.521917647157242,
+      -0.357856130274424,
+      -0.609875594556809
+    ]
   ],
   "cluster_sizes": [
     484,
@@ -7016,5 +7028,19 @@
       "result": "Pass",
       "cluster": 1
     }
-  ]
+  ],
+  "center": {
+    "study_hours": 4.7244,
+    "attendance": 72.5417,
+    "previous_marks": 56.6342
+  },
+  "scale": {
+    "study_hours": 2.40351857524371,
+    "attendance": 15.5811457606048,
+    "previous_marks": 22.0417528619942
+  },
+  "cluster_pass_rates": {
+    "1": 0.7954545454545454,
+    "2": 0.22286821705426357
+  }
 }
