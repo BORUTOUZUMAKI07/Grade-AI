@@ -1,7 +1,7 @@
 {
   "dataset_note": "Synthetic demo dataset. Decision Tree and Logistic Regression validation metrics use a reproducible stratified 80/20 hold-out. Final artifacts are then refit on all rows. PCA and K-Means are descriptive/unsupervised and have no predictive accuracy score.",
   "data_source": "r_analytics/data/student_data.csv (synthetic demo data)",
-  "trained_at": "2026-09-26T05:37:38Z",
+  "trained_at": "2026-09-26T05:47:48Z",
   "total_records": 1000,
   "validation": {
     "method": "stratified 80/20 hold-out with 5-fold stratified CV on training partition",
@@ -13,11 +13,14 @@
     "decision_tree": {
       "n": 200,
       "accuracy": 0.76,
+      "balanced_accuracy": 0.76,
       "precision": 0.770833333333333,
       "recall": 0.74,
       "specificity": 0.78,
       "f1": 0.755102040816327,
       "roc_auc": 0.7788,
+      "pr_auc": 0.651946054927734,
+      "log_loss": 0.546320478534135,
       "confusion_matrix": {
         "labels": ["Fail", "Pass"],
         "rows": {
@@ -73,11 +76,14 @@
     "logistic_regression": {
       "n": 200,
       "accuracy": 0.795,
+      "balanced_accuracy": 0.795,
       "precision": 0.810526315789474,
       "recall": 0.77,
       "specificity": 0.82,
       "f1": 0.78974358974359,
       "roc_auc": 0.878,
+      "pr_auc": 0.888632998909438,
+      "log_loss": 0.433132416404169,
       "confusion_matrix": {
         "labels": ["Fail", "Pass"],
         "rows": {
@@ -223,7 +229,7 @@
   "logistic_regression": {
     "name": "Logistic Regression",
     "framework": "R stats::glm binomial",
-    "trained_at": "2026-09-26T05:37:37Z",
+    "trained_at": "2026-09-26T05:47:48Z",
     "total_records": 1000,
     "target": "Pass/Fail",
     "note": "Synthetic demo classifier; probabilities are not calibrated for real student outcomes."
@@ -231,7 +237,7 @@
   "pca": {
     "name": "PCA",
     "framework": "R stats::prcomp",
-    "trained_at": "2026-09-26T05:37:37Z",
+    "trained_at": "2026-09-26T05:47:48Z",
     "total_records": 1000,
     "explained_variance": [0.411815, 0.30394, 0.284245]
   },

@@ -2,7 +2,7 @@
   "metadata": {
     "name": "PCA",
     "framework": "R stats::prcomp",
-    "trained_at": "2026-09-26T05:37:37Z",
+    "trained_at": "2026-09-26T05:47:48Z",
     "total_records": 1000,
     "explained_variance": [0.411815, 0.30394, 0.284245]
   },

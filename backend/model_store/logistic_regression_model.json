@@ -2,7 +2,7 @@
   "metadata": {
     "name": "Logistic Regression",
     "framework": "R stats::glm binomial",
-    "trained_at": "2026-09-26T05:37:37Z",
+    "trained_at": "2026-09-26T05:47:48Z",
     "total_records": 1000,
     "target": "Pass/Fail",
     "note": "Synthetic demo classifier; probabilities are not calibrated for real student outcomes."
