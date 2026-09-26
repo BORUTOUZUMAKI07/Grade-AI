@@ -112,14 +112,20 @@ class StudentInferenceService:
 
         return {
             "kmeans": {
-                "cluster": cluster, "clusters": len(km.get("centers", [])) or 2,
+                "cluster": cluster, "clusters": len(km.get("centers", [])) or None,
                 "cluster_distance": round(math.sqrt(min(distances)), 6) if distances else None,
+                "selected_silhouette": km.get("metadata", {}).get("selected_silhouette"),
+                "selection_method": km.get("metadata", {}).get("selection_method"),
+                "candidate_evaluation": km.get("metadata", {}).get("candidate_evaluation", []),
                 "historical_training_pass_rate": rate,
                 "interpretation": "Descriptive training-cluster share only; not a validated individual Pass/Fail probability."
             },
             "pca": {
                 "components": projection, "components_retained": 2,
                 "explained_variance": (pca.get("metadata", {}).get("explained_variance") or [])[:2],
+                "visualization_variance": pca.get("metadata", {}).get("visualization_variance"),
+                "components_for_90pct": pca.get("metadata", {}).get("components_for_90pct"),
+                "cumulative_explained_variance": pca.get("metadata", {}).get("cumulative_explained_variance", []),
                 "interpretation": "Training-fitted two-component projection; not a Pass/Fail prediction."
             }
         }
