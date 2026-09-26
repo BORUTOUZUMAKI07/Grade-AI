@@ -8,6 +8,10 @@ on:
       - ".github/workflows/train-models.yml"
   workflow_dispatch:
 
+concurrency:
+  group: gradeai-model-training
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -59,6 +63,7 @@ jobs:
             echo "Model artifacts are already up to date."
           else
             git commit -m "Add refreshed trained model artifacts"
+            git pull --rebase origin main
             git push origin HEAD:main
           fi
       - name: Upload trained model artifacts
