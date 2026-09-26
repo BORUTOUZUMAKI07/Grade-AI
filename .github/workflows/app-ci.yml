@@ -49,6 +49,8 @@ jobs:
       - run: pip install -r requirements.txt httpx
       - name: Install R training dependencies
         run: Rscript -e 'install.packages(c("jsonlite", "rpart"), repos="https://cloud.r-project.org")'
+      - name: Generate and validate deterministic synthetic dataset
+        run: python r_analytics/data/generate_balanced_dataset.py
       - name: Train fresh analytics and model artifacts
         working-directory: r_analytics
         run: Rscript src/train.R
