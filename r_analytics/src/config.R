@@ -6,6 +6,6 @@ CONFIG <- list(
   pca_filename = "pca_model.json",
   clusters_filename = "kmeans_model.json",
   analytics_filename = "analytics_summary.json",
-  clusters = 3,
+  clusters = 2,
   cluster_seed = 42
 )
