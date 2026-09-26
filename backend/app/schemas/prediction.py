@@ -4,6 +4,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from app.schemas.common import UtcDatetime
 
 PredictiveModel = Literal["decision_tree", "logistic_regression"]
+UnsupervisedModel = Literal["kmeans", "pca"]
 
 class PredictionRequest(BaseModel):
     study_hours: float = Field(..., ge=0.0, le=24.0)
@@ -11,6 +12,12 @@ class PredictionRequest(BaseModel):
     previous_marks: float = Field(..., ge=0.0, le=100.0)
     student_id: int | None = None
     model: PredictiveModel = "decision_tree"
+
+class UnsupervisedAnalysisRequest(BaseModel):
+    study_hours: float = Field(..., ge=0.0, le=24.0)
+    attendance: float = Field(..., ge=0.0, le=100.0)
+    previous_marks: float = Field(..., ge=0.0, le=100.0)
+    model: UnsupervisedModel
 
 class StudentRecord(BaseModel):
     study_hours: float
