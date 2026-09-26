@@ -258,6 +258,7 @@ export default function App() {
   const [sensitivity, setSensitivity] = useState(null);
   const [predictionInputs, setPredictionInputs] = useState(null);
   const [data, setData] = useState(null);
+  const [unsupervisedResult, setUnsupervisedResult] = useState(null);
   const [activeTab, setActiveTab] = useState('distribution');
   const [logs, setLogs] = useState([]);
   const [activeRow, setActiveRow] = useState(null);
@@ -321,39 +322,22 @@ export default function App() {
   }, []);
 
   const run = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+    e.preventDefault(); setLoading(true);
+    const submittedInputs = { study_hours: parseFloat(studyHours || 0), attendance: parseFloat(attendance || 0), previous_marks: parseFloat(previousMarks || 0) };
     log(`Sending inputs to ${selectedModel}…`, 'RUN');
     try {
-      const payload = await api('/predict/', {
-        study_hours: parseFloat(studyHours || 0),
-        attendance: parseFloat(attendance || 0),
-        previous_marks: parseFloat(previousMarks || 0),
-        student_id: studentId ? Number(studentId) : undefined,
-        model: selectedModel,
-      });
-      setData(payload);
-      const submittedInputs = { study_hours: parseFloat(studyHours || 0), attendance: parseFloat(attendance || 0), previous_marks: parseFloat(previousMarks || 0) };
-      setPredictionInputs(submittedInputs);
-      setSensitivity(null);
-      try {
-        const curve = await api('/predict/sensitivity', { ...submittedInputs, model: payload.selected_model || selectedModel });
-        setSensitivity(curve);
-      } catch (curveError) {
-        log('Prediction succeeded; live response curve unavailable: ' + curveError.message, 'WARN');
+      if (selectedModel === 'kmeans' || selectedModel === 'pca') {
+        const result = await api('/predict/unsupervised', { ...submittedInputs, model: selectedModel });
+        setUnsupervisedResult(result); setData(null); setSensitivity(null); setPredictionInputs(submittedInputs);
+        log(`${result.model_name} analysis completed without generating a Pass/Fail prediction.`, 'OK'); toast.success(`${result.model_name} analysis completed`); return;
       }
-      setHistory((h) => [{ t: Date.now(), study: parseFloat(studyHours || 0), att: parseFloat(attendance || 0), marks: parseFloat(previousMarks || 0), result: payload.predicted_result, model: payload.selected_model || selectedModel, conf: Math.round(payload.confidence_score * 100) }, ...h].slice(0, 50));
+      const payload = await api('/predict/', { ...submittedInputs, student_id: studentId ? Number(studentId) : undefined, model: selectedModel });
+      setUnsupervisedResult(null); setData(payload); setPredictionInputs(submittedInputs); setSensitivity(null);
+      try { const curve = await api('/predict/sensitivity', { ...submittedInputs, model: payload.selected_model || selectedModel }); setSensitivity(curve); } catch (curveError) { log('Prediction succeeded; live response curve unavailable: ' + curveError.message, 'WARN'); }
+      setHistory((h) => [{ t: Date.now(), study: submittedInputs.study_hours, att: submittedInputs.attendance, marks: submittedInputs.previous_marks, result: payload.predicted_result, model: payload.selected_model || selectedModel, conf: Math.round(payload.confidence_score * 100) }, ...h].slice(0, 50));
       log(`Prediction (${payload.selected_model || selectedModel}): ${payload.predicted_result.toUpperCase()}`, 'OK');
-      if (payload.predicted_result === 'Pass') {
-        toast.success('Predicted to pass');
-        if (!reduce) confetti({ particleCount: 110, spread: 70, colors: [palette.accent, palette.pass, '#ffffff'], origin: { y: 0.6 } });
-      } else toast('Predicted to fail. Try raising study hours or attendance.', { icon: '⚠️' });
-    } catch (err) {
-      log(`Request failed: ${err.message}`, 'ERR');
-      toast.error(`Request failed: ${err.message}`);
-    } finally {
-      setLoading(false);
-    }
+      if (payload.predicted_result === 'Pass') { toast.success('Predicted to pass'); if (!reduce) confetti({ particleCount: 110, spread: 70, colors: [palette.accent, palette.pass, '#ffffff'], origin: { y: 0.6 } }); } else toast('Predicted to fail. Try raising study hours or attendance.', { icon: '⚠️' });
+    } catch (err) { log(`Request failed: ${err.message}`, 'ERR'); toast.error(`Request failed: ${err.message}`); } finally { setLoading(false); }
   };
 
   const points = useMemo(
@@ -464,7 +448,7 @@ export default function App() {
           <motion.section initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} className={`${glass} flex flex-col p-6 lg:col-span-4`}>
             <h2 className="mb-6 flex items-center gap-2 text-base font-semibold text-white"><Layers size={17} className="text-yellow-400" /> Student details</h2>
             <form onSubmit={run} className="space-y-6">
-              <label className="block"><span className="mb-2 block text-sm font-medium text-neutral-300">Prediction model</span><select value={selectedModel} onChange={(e) => { setSelectedModel(e.target.value); setSensitivity(null); }} className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3.5 text-sm text-white outline-none focus:border-yellow-400/70">{(modelRegistry.length ? modelRegistry.filter((m) => m.available) : [{id:'decision_tree',name:'Decision Tree'},{id:'logistic_regression',name:'Logistic Regression'}]).map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}</select><p className="mt-1 text-xs text-neutral-500">{selectedModel === 'logistic_regression' ? 'Binary logistic classifier; probability is a synthetic-demo estimate, not calibrated for real student outcomes.' : 'Uses the trained decision tree and its decision path.'}</p></label>
+              <label className="block"><span className="mb-2 block text-sm font-medium text-neutral-300">Prediction model</span><select value={selectedModel} onChange={(e) => { setSelectedModel(e.target.value); setSensitivity(null); }} className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3.5 text-sm text-white outline-none focus:border-yellow-400/70">{[{id:'decision_tree',name:'Decision Tree (Classification)'},{id:'logistic_regression',name:'Logistic Regression (Classification)'},{id:'kmeans',name:'K-Means (2 clusters)'},{id:'pca',name:'PCA (2 components)'}].map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}</select><p className="mt-1 text-xs text-neutral-500">{selectedModel === 'logistic_regression' ? 'Binary classifier; synthetic-demo probability, not calibrated for real outcomes.' : selectedModel === 'kmeans' ? 'Assigns inputs to one of two fitted clusters; not a Pass/Fail predictor.' : selectedModel === 'pca' ? 'Projects inputs onto two training-fitted principal components; not a Pass/Fail predictor.' : 'Uses the fitted decision tree and its decision path.'}</p></label>
               <Field icon={BookOpen} label="Study hours" hint="per day" value={studyHours} onChange={setStudyHours} min={0} max={24} step={0.1} unit="h" />
               <Field icon={CalendarCheck} label="Attendance" hint="percent" value={attendance} onChange={setAttendance} min={0} max={100} step={1} unit="%" />
               <Field icon={Trophy} label="Previous marks" hint="out of 100" value={previousMarks} onChange={setPreviousMarks} min={0} max={100} step={1} unit="/100" />
@@ -484,7 +468,7 @@ export default function App() {
               >
                 <span className="shine absolute inset-0" />
                 <span className="relative flex items-center justify-center gap-2">
-                  {loading ? <><Loader2 size={16} className="animate-spin" /> Predicting…</> : <><Activity size={16} /> Predict result</>}
+                  {loading ? <><Loader2 size={16} className="animate-spin" /> Analyzing…</> : <><Activity size={16} /> {selectedModel === "kmeans" || selectedModel === "pca" ? "Run analysis" : "Predict result"}</>}
                 </span>
               </motion.button>
             </form>
@@ -504,18 +488,36 @@ export default function App() {
           {/* Results */}
           <div className="flex flex-col gap-6 lg:col-span-8">
             <AnimatePresence mode="wait">
-              {data ? (
+              {data || unsupervisedResult ? (
                 <motion.div key="result-context" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="rounded-2xl border border-white/10 bg-black/20 px-5 py-3">
-                  <p className="text-xs text-neutral-400">Prediction details and model evidence are available in the tabs below. Interpret the result as a model estimate, not a guarantee.</p>
+                  <p className="text-xs text-neutral-400">{unsupervisedResult ? "Unsupervised analysis results are shown below. PCA and K-Means do not produce Pass/Fail predictions." : "Prediction details and model evidence are available in the tabs below. Interpret the result as a model estimate, not a guarantee."}</p>
                 </motion.div>
               ) : (
                 <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={`${glass} grid place-items-center border-dashed p-14 text-center`}>
                   <Sparkles className="mb-3 text-yellow-500" />
-                  <p className="text-sm text-neutral-400">Enter study hours, attendance and previous marks, then choose Predict result.</p>
+                  <p className="text-sm text-neutral-400">Enter study hours, attendance and previous marks, choose one of the four modes, then run prediction or analysis.</p>
                 </motion.div>
               )}
             </AnimatePresence>
 
+            {unsupervisedResult && (
+              <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className={`${glass} space-y-5 p-6`}>
+                <div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs uppercase tracking-widest text-yellow-300">Unsupervised analysis</p><h3 className="mt-1 text-xl font-semibold text-white">{unsupervisedResult.model_name}</h3></div><span className="rounded-full border border-yellow-400/20 bg-yellow-400/10 px-3 py-1 text-xs text-yellow-200">No Pass/Fail prediction</span></div>
+                {unsupervisedResult.selected_model === 'kmeans' ? (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="rounded-2xl border border-white/10 bg-black/30 p-5"><p className="text-xs text-neutral-500">Assigned cluster</p><p className="mono mt-2 text-4xl font-bold text-yellow-300">{unsupervisedResult.analysis?.cluster ? `Cluster ${unsupervisedResult.analysis.cluster}` : 'Unavailable'}</p><p className="mt-2 text-sm text-neutral-400">Nearest of two fitted cluster centers, using training-set standardization.</p></div>
+                    <div className="rounded-2xl border border-white/10 bg-black/30 p-5"><p className="text-xs text-neutral-500">Distance to assigned center</p><p className="mono mt-2 text-4xl font-bold text-white">{unsupervisedResult.analysis?.cluster_distance ?? '—'}</p><p className="mt-2 text-sm text-neutral-400">Euclidean distance in standardized feature space.</p></div>
+                    <div className="sm:col-span-2 rounded-2xl border border-white/10 bg-black/30 p-5"><p className="text-xs text-neutral-500">Historical cluster Pass share</p><p className="mono mt-2 text-2xl font-semibold text-white">{unsupervisedResult.analysis?.historical_training_pass_rate == null ? 'Not available' : `${(unsupervisedResult.analysis.historical_training_pass_rate * 100).toFixed(1)}%`}</p><p className="mt-2 text-xs text-neutral-500">Descriptive synthetic training-set share, not an individual risk score.</p></div>
+                  </div>
+                ) : (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {['pc1','pc2'].map((key,index) => <div key={key} className="rounded-2xl border border-white/10 bg-black/30 p-5"><p className="text-xs text-neutral-500">Principal component {index + 1}</p><p className="mono mt-2 text-3xl font-bold text-yellow-300">{unsupervisedResult.analysis?.components?.[key] ?? 'Unavailable'}</p><p className="mt-2 text-xs text-neutral-500">Training-fitted standardized projection coordinate.</p></div>)}
+                    <div className="sm:col-span-2 rounded-2xl border border-white/10 bg-black/30 p-5"><p className="text-sm font-semibold text-white">Two-dimensional PCA projection</p><div className="relative mt-4 h-56 rounded-xl border border-white/10 bg-black/40"><div className="absolute left-1/2 top-0 bottom-0 border-l border-dashed border-white/20"/><div className="absolute top-1/2 left-0 right-0 border-t border-dashed border-white/20"/>{unsupervisedResult.analysis?.components && <div title={`PC1 ${unsupervisedResult.analysis.components.pc1}; PC2 ${unsupervisedResult.analysis.components.pc2}`} className="absolute h-4 w-4 rounded-full border-2 border-white bg-yellow-300 shadow-[0_0_24px_rgba(250,204,21,.8)]" style={{left:`${Math.max(3,Math.min(97,50+unsupervisedResult.analysis.components.pc1*8))}%`,top:`${Math.max(3,Math.min(97,50-unsupervisedResult.analysis.components.pc2*8))}%`,transform:'translate(-50%,-50%)'}}/>}<span className="absolute bottom-2 right-3 text-xs text-neutral-500">PC1 →</span><span className="absolute left-3 top-2 text-xs text-neutral-500">↑ PC2</span></div><p className="mt-2 text-xs text-neutral-500">Dot shows the submitted student in the fitted two-component space; axes scaled for display.</p></div>
+                  </div>
+                )}
+                <p className="text-xs leading-relaxed text-neutral-500">{unsupervisedResult.note}</p>
+              </motion.section>
+            )}
             {data && (
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className={`${glass} flex min-h-[470px] flex-1 flex-col p-5`}>
                 <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
