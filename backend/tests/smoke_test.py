@@ -40,10 +40,10 @@ with TestClient(app) as c, TestClient(app) as c2, TestClient(app) as ca:
 
     # ---- selectable models and model analytics
     models = c.get(f"{P}/predict/models", headers=H)
-    chk("model registry exposes both trained models", models.status_code == 200 and {m["id"] for m in models.json()["models"]} >= {"decision_tree", "linear_regression"})
+    chk("model registry exposes both trained models", models.status_code == 200 and {m["id"] for m in models.json()["models"]} == {"decision_tree", "logistic_regression"})
     analytics = c.get(f"{P}/predict/analytics", headers=H)
-    chk("analytics endpoint exposes PCA, K-Means and regression artifacts",
-        analytics.status_code == 200 and analytics.json().get("pca") and analytics.json().get("clustering") and analytics.json().get("regression", {}).get("weights"))
+    chk("analytics endpoint exposes PCA, K-Means and Logistic Regression artifacts",
+        analytics.status_code == 200 and analytics.json().get("pca") and analytics.json().get("clustering") and analytics.json().get("logistic_regression", {}).get("weights"))
     # ---- held-out model evaluation contract: metrics must be from the test split,
     # not the full-data refit artifacts, and include the expected classification metrics.
     analytics_json = analytics.json()
@@ -54,7 +54,7 @@ with TestClient(app) as c, TestClient(app) as c2, TestClient(app) as ca:
         and validation.get("train_rows", 0) > 0 and validation.get("test_rows", 0) > 0
         and validation.get("positive_class") == "Pass",
         str({k: validation.get(k) for k in ("method", "seed", "train_rows", "test_rows", "positive_class")}))
-    for model_key in ("decision_tree", "linear_regression"):
+    for model_key in ("decision_tree", "logistic_regression"):
         metrics = validation.get(model_key, {})
         cm = metrics.get("confusion_matrix", {}).get("rows", {})
         matrix_total = sum(
@@ -94,15 +94,15 @@ with TestClient(app) as c, TestClient(app) as c2, TestClient(app) as ca:
     chk("live sensitivity holds other inputs and tags current values",
         curve_json.get("baseline_inputs", {}).get("attendance") == 75 and
         any(point.get("is_current") for point in curve_json.get("curves", {}).get("study_hours", {}).get("points", [])))
-    live_linear = c.post(f"{P}/predict/sensitivity", json=PRED(6, 75, 60, model="linear_regression"), headers=H)
-    chk("live sensitivity evaluates selected Linear Regression",
-        live_linear.status_code == 200 and live_linear.json().get("selected_model") == "linear_regression" and
+    live_linear = c.post(f"{P}/predict/sensitivity", json=PRED(6, 75, 60, model="logistic_regression"), headers=H)
+    chk("live sensitivity evaluates selected Logistic Regression",
+        live_linear.status_code == 200 and live_linear.json().get("selected_model") == "logistic_regression" and
         len(live_linear.json().get("curves", {}).get("attendance", {}).get("points", [])) == 11)
-    linear = c.post(f"{P}/predict/", json=PRED(6, 75, 60, model="linear_regression"), headers=H)
+    linear = c.post(f"{P}/predict/", json=PRED(6, 75, 60, model="logistic_regression"), headers=H)
     chk("linear regression selected model returns tagged prediction",
-        linear.status_code == 200 and linear.json().get("selected_model") == "linear_regression" and "linear probability" in linear.json().get("model_source", "").lower())
+        linear.status_code == 200 and linear.json().get("selected_model") == "logistic_regression" and "logistic regression" in linear.json().get("model_source", "").lower())
     recent = c.get(f"{P}/predict/history?page_size=10", headers=H).json()
-    chk("history persists selected model", any(item.get("model_name") == "linear_regression" for item in recent.get("items", [])))
+    chk("history persists selected model", any(item.get("model_name") == "logistic_regression" for item in recent.get("items", [])))
 
     # ---- classes & students
     r = c.post(f"{P}/classes", json={"name": "Class 10A"}, headers=H); cid = r.json()["id"]
