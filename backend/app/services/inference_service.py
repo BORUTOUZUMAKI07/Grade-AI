@@ -67,6 +67,38 @@ class StudentInferenceService:
                 "logistic_regression": _read_json("logistic_regression_model.json"),
                 "models": self.available_models()}
 
+    def unsupervised_profile(self, study_hours: float, attendance: float, previous_marks: float) -> dict:
+        """Apply fitted K-Means and PCA transforms to a new student; neither is a classifier."""
+        point = {"study_hours": float(study_hours), "attendance": float(attendance), "previous_marks": float(previous_marks)}
+        pca = _read_json("pca_model.json") or {}
+        km = _read_json("kmeans_model.json") or {}
+        projection = None
+        names = ["StudyHours", "Attendance", "PreviousMarks"]
+        if pca.get("center") and pca.get("scale") and len(pca.get("loadings", [])) >= 2:
+            z = [(point[k] - float(pca["center"].get(n, 0))) / (float(pca["scale"].get(n, 1)) or 1)
+                 for k, n in zip(("study_hours", "attendance", "previous_marks"), names)]
+            pcs = []
+            for comp in pca["loadings"][:2]:
+                vals = list(comp.values()) if isinstance(comp, dict) else comp
+                pcs.append(round(sum(z[i] * float(vals[i]) for i in range(min(len(z), len(vals)))), 6))
+            projection = {"pc1": pcs[0], "pc2": pcs[1]}
+        cluster = None
+        rate = None
+        if km.get("center") and km.get("scale") and km.get("centers"):
+            z = [(point[k] - float(km["center"].get(k, 0))) / (float(km["scale"].get(k, 1)) or 1)
+                 for k in ("study_hours", "attendance", "previous_marks")]
+            dists = []
+            for ctr in km["centers"]:
+                vals = list(ctr.values()) if isinstance(ctr, dict) else ctr
+                dists.append(sum((z[i] - float(vals[i])) ** 2 for i in range(min(len(z), len(vals)))))
+            if dists:
+                cluster = int(min(range(len(dists)), key=dists.__getitem__)) + 1
+                rates = km.get("cluster_pass_rates", [])
+                rate = rates.get(str(cluster)) if isinstance(rates, dict) else (rates[cluster-1] if len(rates) >= cluster else None)
+        return {"kmeans": {"cluster": cluster, "clusters": 2, "historical_training_pass_rate": rate,
+                           "interpretation": "Descriptive training-cluster share only; not a validated individual Pass/Fail probability."},
+                "pca": {"components": projection, "components_retained": 2,
+                        "interpretation": "Training-fitted projection; not a Pass/Fail prediction."}}
     def _classify(self, model_payload: dict, study_hours: float, attendance: float,
                   previous_marks: float, model: str = "decision_tree") -> dict:
         """Run only a registered supervised classifier; PCA and K-Means are analytics-only."""
@@ -125,6 +157,7 @@ class StudentInferenceService:
             "metadata": model_payload.get("metadata", {}),
             "raw_records": records,
             "selected_model": model,
+            "unsupervised_analysis": self.unsupervised_profile(study_hours, attendance, previous_marks),
         }
 
     def execute_tree_classification(self, study_hours: float, attendance: float,
