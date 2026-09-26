@@ -214,9 +214,17 @@ main <- function() {
   }
   scaled <- scale(x)
   pca <- stats::prcomp(x, center=TRUE, scale.=TRUE)
+  pca_variance <- pca$sdev^2 / sum(pca$sdev^2)
+  pca_cumulative <- cumsum(pca_variance)
+  pca_components_90 <- which(pca_cumulative >= 0.90)[1]
   pca_payload <- list(
     metadata=list(name="PCA", framework="R stats::prcomp", trained_at=format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ"),
-                  total_records=nrow(students), explained_variance=round(pca$sdev^2/sum(pca$sdev^2), 6)),
+                  total_records=nrow(students), explained_variance=round(pca_variance, 6),
+                  cumulative_explained_variance=round(pca_cumulative, 6),
+                  visualization_components=2,
+                  visualization_variance=round(sum(pca_variance[1:2]), 6),
+                  components_for_90pct=as.integer(pca_components_90),
+                  selection_rule="Retain the smallest number of components reaching at least 90% cumulative explained variance; the UI continues to display PC1/PC2 for a 2D plot."),
     center=as.list(pca$center), scale=as.list(pca$scale),
     loadings=lapply(seq_len(ncol(pca$rotation)), function(i) as.list(pca$rotation[, i])),
     loading_names=rownames(pca$rotation), scores=unname(pca$x[, 1:2, drop=FALSE]),
@@ -226,14 +234,33 @@ main <- function() {
   jsonlite::write_json(pca_payload, file.path(CONFIG$output_dir, CONFIG$pca_filename),
                        auto_unbox=TRUE, pretty=TRUE, digits=NA)
 
-  # 4) K-Means on standardized inputs. Fix seed for repeatable demo clusters.
+  # 4) Select K-Means k from the data, using average silhouette across k=2..6.
+  # cluster is a recommended R package; install explicitly for reproducible CI/local training.
+  if (!requireNamespace("cluster", quietly=TRUE)) install.packages("cluster", repos="https://cloud.r-project.org")
+  candidate_ks <- 2:min(6L, nrow(scaled) - 1L)
+  scaled_dist <- stats::dist(scaled)
+  kmeans_candidates <- lapply(candidate_ks, function(candidate_k) {
+    set.seed(CONFIG$cluster_seed + candidate_k)
+    candidate <- stats::kmeans(scaled, centers=candidate_k, nstart=25)
+    silhouette <- cluster::silhouette(candidate$cluster, scaled_dist)
+    list(k=as.integer(candidate_k), silhouette=mean(silhouette[, "sil_width"]),
+         inertia=unname(candidate$tot.withinss), sizes=as.integer(candidate$size))
+  })
+  candidate_scores <- vapply(kmeans_candidates, function(item) item$silhouette, numeric(1))
+  selected_index <- order(-candidate_scores, candidate_ks)[1]
+  k <- as.integer(candidate_ks[selected_index])
+  selected_silhouette <- kmeans_candidates[[selected_index]]$silhouette
   set.seed(CONFIG$cluster_seed)
-  k <- 2L
-  km <- stats::kmeans(scaled, centers=k, nstart=25)
+  km <- stats::kmeans(scaled, centers=k, nstart=50)
   cluster_payload <- list(
     metadata=list(name="K-Means Clustering", framework="R stats::kmeans",
                   trained_at=format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ"),
                   total_records=nrow(students), clusters=k, features=names(x),
+                  selection_method="Highest average silhouette score over candidate k=2..6; ties favor smaller k.",
+                  selected_silhouette=round(selected_silhouette, 6),
+                  candidate_evaluation=lapply(kmeans_candidates, function(item) list(
+                    k=item$k, silhouette=round(item$silhouette, 6),
+                    inertia=round(item$inertia, 6), cluster_sizes=as.list(item$sizes))),
                   note="Cluster membership is descriptive; training cluster pass rates are not validated individual predictions."),
     center=as.list(setNames(as.numeric(feature_center), c("study_hours", "attendance", "previous_marks"))),
     scale=as.list(setNames(as.numeric(feature_scale), c("study_hours", "attendance", "previous_marks"))),
@@ -250,7 +277,7 @@ main <- function() {
 
   # One summary document powers the model registry/analytics UI.
   analytics <- list(
-    dataset_note="Synthetic demo dataset. Decision Tree and Logistic Regression validation metrics use a reproducible stratified 80/20 hold-out. Final artifacts are then refit on all rows. PCA (2 components) and K-Means (2 clusters) are unsupervised; cluster pass rates are descriptive historical profiles, not standalone classifiers.",
+    dataset_note=paste0("Synthetic demo dataset. Decision Tree and Logistic Regression validation metrics use a reproducible stratified 80/20 hold-out. Final artifacts are then refit on all rows. K-Means k is selected by silhouette analysis over 2..6 (selected k=", k, "); PCA uses the first two components for visualization (", round(sum(pca_variance[1:2])*100, 1), "% variance) and reports how many components reach 90% variance (", pca_components_90, "). Cluster pass rates are descriptive historical profiles, not standalone classifiers."),
     data_source="r_analytics/data/student_data.csv (synthetic demo data)",
     trained_at=format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ"), total_records=nrow(students),
     validation=list(method="stratified 80/20 hold-out with 5-fold stratified CV on training partition", seed=split$seed,
@@ -258,7 +285,7 @@ main <- function() {
                     positive_class="Pass", threshold=0.5,
                     decision_tree=tree_eval, logistic_regression=logit_eval,
                     cross_validation=cv_summary,
-                    unsupervised_note="PCA (2 components) and K-Means (2 clusters) are not evaluated as standalone Pass/Fail classifiers; no accuracy, F1 or AUC is assigned to them. Cluster outcome profiles are descriptive training-set summaries and must not be treated as validated risk estimates."),
+                    unsupervised_note=paste0("K-Means cluster count is selected by average silhouette across k=2..6 (selected k=", k, ", silhouette=", round(selected_silhouette, 4), "). PCA displays PC1/PC2 (", round(sum(pca_variance[1:2])*100, 1), "% variance); ", pca_components_90, " components are needed to reach 90% variance. These unsupervised tools are not standalone Pass/Fail classifiers; cluster outcome profiles are descriptive training-set summaries, not validated risk estimates.")),
     result_counts=as.list(table(students$Result)),
     feature_summary=lapply(x, function(v) list(min=min(v), max=max(v), mean=mean(v), median=median(v), sd=stats::sd(v))),
     tree=list(accuracy=mean(stats::predict(tree, students, type="class")==students$Result),
