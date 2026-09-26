@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "name": "Logistic Regression",
+    "framework": "R stats::glm binomial",
+    "trained_at": "2026-09-26T05:37:37Z",
+    "total_records": 1000,
+    "target": "Pass/Fail",
+    "note": "Synthetic demo classifier; probabilities are not calibrated for real student outcomes."
+  },
+  "center": {
+    "study_hours": 4.7244,
+    "attendance": 72.5417,
+    "previous_marks": 56.6342
+  },
+  "scale": {
+    "study_hours": 2.40351857524371,
+    "attendance": 15.5811457606048,
+    "previous_marks": 22.0417528619942
+  },
+  "weights": {
+    "intercept": 0.00114617296943543,
+    "study_hours": 1.12450739502255,
+    "attendance": 0.667092197516754,
+    "previous_marks": 1.09267630297417
+  }
+}

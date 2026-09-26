@@ -1,58 +1,239 @@
 {
-  "dataset_note": "Synthetic demo dataset; metrics below are in-sample descriptive metrics, not held-out validation.",
-  "trained_at": "2026-09-25T09:05:48Z",
-  "total_records": 500,
+  "dataset_note": "Synthetic demo dataset. Decision Tree and Logistic Regression validation metrics use a reproducible stratified 80/20 hold-out. Final artifacts are then refit on all rows. PCA and K-Means are descriptive/unsupervised and have no predictive accuracy score.",
+  "data_source": "r_analytics/data/student_data.csv (synthetic demo data)",
+  "trained_at": "2026-09-26T05:37:38Z",
+  "total_records": 1000,
+  "validation": {
+    "method": "stratified 80/20 hold-out with 5-fold stratified CV on training partition",
+    "seed": 20260925,
+    "train_rows": 800,
+    "test_rows": 200,
+    "positive_class": "Pass",
+    "threshold": 0.5,
+    "decision_tree": {
+      "n": 200,
+      "accuracy": 0.76,
+      "precision": 0.770833333333333,
+      "recall": 0.74,
+      "specificity": 0.78,
+      "f1": 0.755102040816327,
+      "roc_auc": 0.7788,
+      "confusion_matrix": {
+        "labels": ["Fail", "Pass"],
+        "rows": {
+          "actual_Fail": {
+            "predicted_Fail": 78,
+            "predicted_Pass": 22
+          },
+          "actual_Pass": {
+            "predicted_Fail": 26,
+            "predicted_Pass": 74
+          }
+        }
+      },
+      "baseline_majority_accuracy": 0.5,
+      "brier_score": 0.180522353627197,
+      "calibration": {
+        "expected_calibration_error": 0.0274978556551195,
+        "bins": [
+          {
+            "bin": "0.0-0.2",
+            "count": 0,
+            "mean_predicted": "NA",
+            "observed_pass_rate": "NA"
+          },
+          {
+            "bin": "0.2-0.4",
+            "count": 89,
+            "mean_predicted": 0.206914180171068,
+            "observed_pass_rate": 0.235955056179775
+          },
+          {
+            "bin": "0.4-0.6",
+            "count": 15,
+            "mean_predicted": 0.403508771929825,
+            "observed_pass_rate": 0.333333333333333
+          },
+          {
+            "bin": "0.6-0.8",
+            "count": 26,
+            "mean_predicted": 0.647115384615385,
+            "observed_pass_rate": 0.653846153846154
+          },
+          {
+            "bin": "0.8-1.0",
+            "count": 70,
+            "mean_predicted": 0.838390022675737,
+            "observed_pass_rate": 0.814285714285714
+          }
+        ],
+        "note": "Descriptive 5-bin calibration check on the held-out split only; no calibration model was fitted."
+      }
+    },
+    "logistic_regression": {
+      "n": 200,
+      "accuracy": 0.795,
+      "precision": 0.810526315789474,
+      "recall": 0.77,
+      "specificity": 0.82,
+      "f1": 0.78974358974359,
+      "roc_auc": 0.878,
+      "confusion_matrix": {
+        "labels": ["Fail", "Pass"],
+        "rows": {
+          "actual_Fail": {
+            "predicted_Fail": 82,
+            "predicted_Pass": 18
+          },
+          "actual_Pass": {
+            "predicted_Fail": 23,
+            "predicted_Pass": 77
+          }
+        }
+      },
+      "baseline_majority_accuracy": 0.5,
+      "brier_score": 0.141717031738921,
+      "calibration": {
+        "expected_calibration_error": 0.0564243475351604,
+        "bins": [
+          {
+            "bin": "0.0-0.2",
+            "count": 47,
+            "mean_predicted": 0.107934833710293,
+            "observed_pass_rate": 0.0638297872340425
+          },
+          {
+            "bin": "0.2-0.4",
+            "count": 38,
+            "mean_predicted": 0.301229982639713,
+            "observed_pass_rate": 0.394736842105263
+          },
+          {
+            "bin": "0.4-0.6",
+            "count": 31,
+            "mean_predicted": 0.485956897954216,
+            "observed_pass_rate": 0.354838709677419
+          },
+          {
+            "bin": "0.6-0.8",
+            "count": 32,
+            "mean_predicted": 0.699073157340644,
+            "observed_pass_rate": 0.71875
+          },
+          {
+            "bin": "0.8-1.0",
+            "count": 52,
+            "mean_predicted": 0.904531752667744,
+            "observed_pass_rate": 0.923076923076923
+          }
+        ],
+        "note": "Descriptive 5-bin calibration check on the held-out split only; no calibration model was fitted."
+      }
+    },
+    "cross_validation": {
+      "folds": 5,
+      "data": "outer training partition only",
+      "decision_tree": {
+        "accuracy": {
+          "mean": 0.7075,
+          "sd": 0.0415519253464867,
+          "fold_values": [
+            0.74375,
+            0.71875,
+            0.73125,
+            0.6375,
+            0.70625
+          ]
+        },
+        "log_loss": {
+          "mean": 0.615129091805954,
+          "sd": 0.0577611046767695,
+          "fold_values": [
+            0.565671733412178,
+            0.590963600806056,
+            0.571804163797142,
+            0.701886711632234,
+            0.645319249382162
+          ]
+        }
+      },
+      "logistic_regression": {
+        "accuracy": {
+          "mean": 0.78,
+          "sd": 0.0213782892206088,
+          "fold_values": [
+            0.80625,
+            0.7875,
+            0.7875,
+            0.76875,
+            0.75
+          ]
+        },
+        "log_loss": {
+          "mean": 0.479383287209677,
+          "sd": 0.0440032572283186,
+          "fold_values": [
+            0.437081072416741,
+            0.471092071823672,
+            0.438545428271637,
+            0.529534803745679,
+            0.520663059790656
+          ]
+        }
+      },
+      "note": "Fold-level estimates are computed only within the outer training partition; final reported hold-out metrics use the untouched test partition."
+    },
+    "unsupervised_note": "PCA and K-Means are not evaluated as Pass/Fail classifiers; no accuracy, F1 or AUC is assigned to them."
+  },
   "result_counts": {
-    "Fail": 23,
-    "Pass": 477
+    "Fail": 500,
+    "Pass": 500
   },
   "feature_summary": {
     "StudyHours": {
       "min": 0,
       "max": 12,
-      "mean": 5.735,
-      "median": 5.7,
-      "sd": 2.49055832325265
+      "mean": 4.7244,
+      "median": 4.6,
+      "sd": 2.40351857524371
     },
     "Attendance": {
-      "min": 41.8,
+      "min": 40,
       "max": 100,
-      "mean": 76.6956,
-      "median": 76.65,
-      "sd": 12.8463519396097
+      "mean": 72.5417,
+      "median": 72.8,
+      "sd": 15.5811457606048
     },
     "PreviousMarks": {
-      "min": 10,
+      "min": 0,
       "max": 100,
-      "mean": 61.5992,
-      "median": 61.5,
-      "sd": 18.0485195369302
+      "mean": 56.6342,
+      "median": 56.7,
+      "sd": 22.0417528619942
     }
   },
   "tree": {
-    "accuracy": 0.966,
+    "accuracy": 0.766,
     "variable_importance": {
-      "StudyHours": 8.22260138415456,
-      "PreviousMarks": 7.42857142857143,
-      "Attendance": 2.06349206349206
+      "StudyHours": 69.4356818111459,
+      "PreviousMarks": 64.8116197253216,
+      "Attendance": 18.0870570210198
     }
   },
-  "regression": {
-    "name": "Linear Regression",
-    "framework": "R stats::lm (linear probability model)",
-    "trained_at": "2026-09-25T09:05:48Z",
-    "total_records": 500,
-    "target": "Pass=1, Fail=0",
-    "target_note": "Estimated pass score from binary labels; not a predicted exam mark.",
-    "r_squared": 0.148305891384894,
-    "rmse": 0.193328074170477
+  "logistic_regression": {
+    "name": "Logistic Regression",
+    "framework": "R stats::glm binomial",
+    "trained_at": "2026-09-26T05:37:37Z",
+    "total_records": 1000,
+    "target": "Pass/Fail",
+    "note": "Synthetic demo classifier; probabilities are not calibrated for real student outcomes."
   },
   "pca": {
     "name": "PCA",
     "framework": "R stats::prcomp",
-    "trained_at": "2026-09-25T09:05:48Z",
-    "total_records": 500,
-    "explained_variance": [0.339553, 0.335338, 0.325109]
+    "trained_at": "2026-09-26T05:37:37Z",
+    "total_records": 1000,
+    "explained_variance": [0.411815, 0.30394, 0.284245]
   },
-  "clustering": [165, 146, 189]
+  "clustering": [343, 284, 373]
 }
