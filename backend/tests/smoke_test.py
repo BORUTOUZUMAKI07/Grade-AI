@@ -188,5 +188,27 @@ with TestClient(app) as c, TestClient(app) as c2, TestClient(app) as ca:
     chk("429 carries Retry-After", "retry-after" in r.headers, r.headers.get("retry-after", ""))
     chk("a different account is not locked out", c.post(f"{P}/auth/login", json={"email": "t1@example.com", "password": "correct horse"}).status_code == 200)
 
+# ---- Independent intelligence service pipelines and model families
+from app.services.intelligence_service import train_service, run_service, get_metrics, FEATURES
+for service, sample in {
+    "weather":{"day_of_year":180,"humidity":55,"rainfall":1,"wind_speed":5},
+    "sales":{"price":30,"promotion":1,"ad_spend":100,"season":0.2},
+    "customers":{"annual_spend":800,"orders_per_year":12,"avg_order_value":75,"days_since_last_order":30},
+}.items():
+    try:
+        report=train_service(service)
+        chk(f"{service}: separate training reports all four model families",
+            set(report.get("models",{}))=={"Linear Regression","Decision Tree","PCA","K-Means"},
+            str(list(report.get("models",{}))))
+        for model in ("Linear Regression","Decision Tree","PCA","K-Means"):
+            result=run_service(service,sample,model)
+            chk(f"{service}: {model} inference returns model-tagged result",
+                result.get("model")==model and (("prediction" in result) if model in ("Linear Regression","Decision Tree") else (("projection" in result) if model=="PCA" else ("cluster" in result))),
+                str(result)[:180])
+        chk(f"{service}: held-out regression metrics present",
+            all(k in report["models"].get("Linear Regression",{}) for k in ("mae","rmse","r2","test_rows")))
+    except Exception as exc:
+        chk(f"{service}: service model suite executes",False,str(exc))
+
 print("\nFAILED:", fails if fails else "none")
 sys.exit(1 if fails else 0)
