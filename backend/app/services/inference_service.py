@@ -56,9 +56,7 @@ class StudentInferenceService:
     def available_models(self) -> list[dict]:
         return [
             {"id": "decision_tree", "name": "Decision Tree", "kind": "supervised", "available": bool((_read_json("decision_tree_model.json") or {}).get("tree"))},
-            {"id": "linear_regression", "name": "Linear Regression", "kind": "supervised", "available": bool((_read_json("regression_weights.json") or {}).get("weights"))},
-            {"id": "kmeans", "name": "K-Means (cluster to Pass/Fail)", "kind": "unsupervised + label mapping", "available": bool((_read_json("kmeans_model.json") or {}).get("centers"))},
-            {"id": "pca_knn", "name": "PCA + nearest-neighbour", "kind": "PCA + supervised neighbour vote", "available": bool((_read_json("pca_model.json") or {}).get("scores"))},
+            {"id": "logistic_regression", "name": "Logistic Regression", "kind": "supervised", "available": bool((_read_json("logistic_regression_model.json") or {}).get("weights"))},
         ]
 
     def analytics(self) -> dict:
@@ -66,7 +64,7 @@ class StudentInferenceService:
         pca = _read_json("pca_model.json")
         clusters = _read_json("kmeans_model.json")
         return {"summary": summary, "pca": pca, "clustering": clusters,
-                "regression": _read_json("regression_weights.json"),
+                "logistic_regression": _read_json("logistic_regression_model.json"),
                 "models": self.available_models()}
 
     def _classify(self, model_payload: dict, study_hours: float, attendance: float,
@@ -75,22 +73,21 @@ class StudentInferenceService:
         records = model_payload.get("raw_records", [])
         similar = nearest_records(records, point)
         steps = []
-        if model == "linear_regression":
-            regression = _read_json("regression_weights.json")
-            weights = (regression or {}).get("weights")
+        if model == "logistic_regression":
+            artifact = _read_json("logistic_regression_model.json") or {}
+            weights = artifact.get("weights")
             if not weights:
-                raise ValueError("Linear Regression artifact is missing. Run the R training script.")
-            score = (float(weights.get("intercept", 0)) +
-                     float(weights.get("study_hours", 0)) * study_hours +
-                     float(weights.get("attendance", 0)) * attendance +
-                     float(weights.get("previous_marks", 0)) * previous_marks)
-            pass_probability = min(1.0, max(0.0, score))
+                raise ValueError("Logistic Regression artifact is missing. Run the R training script.")
+            z = float(weights.get("intercept", 0))
+            for key, value in (("study_hours", study_hours), ("attendance", attendance), ("previous_marks", previous_marks)):
+                z += float(weights.get(key, 0)) * ((value - float(artifact.get("center", {}).get(key, 0))) / (float(artifact.get("scale", {}).get(key, 1)) or 1))
+            pass_probability = 1.0 / (1.0 + math.exp(-max(-35.0, min(35.0, z))))
             prediction = "Pass" if pass_probability >= 0.5 else "Fail"
             confidence = max(pass_probability, 1 - pass_probability)
-            steps = ["Linear Regression computes a weighted score from study hours, attendance and previous marks.",
-                     f"Estimated pass score (clamped to 0–1): {pass_probability:.3f}.",
-                     "This is a score fitted to Pass/Fail labels, not a predicted exam mark."]
-            source = "R stats::lm linear probability model"
+            steps = ["Logistic Regression applies a sigmoid to a weighted combination of standardized inputs.",
+                     f"Estimated Pass probability: {pass_probability:.3f}.",
+                     "This probability comes from synthetic demo data and is not calibrated for real student outcomes."]
+            source = "R stats::glm binomial logistic regression"
         elif model == "kmeans":
             km = _read_json("kmeans_model.json") or {}
             pca = _read_json("pca_model.json") or {}
@@ -147,13 +144,13 @@ class StudentInferenceService:
                 source = "Fallback rules (no trained tree)"
         confidence_kind = {
             "decision_tree": "smoothed_training_leaf_share",
-            "linear_regression": "distance_from_0.5_linear_score",
+            "logistic_regression": "sigmoid_probability_from_logistic_regression",
             "kmeans": "smoothed_cluster_pass_share",
             "pca_knn": "smoothed_neighbour_vote_share",
         }.get(model, "fallback_heuristic")
         confidence_note = {
             "decision_tree": "Smoothed Pass/Fail share in the reached training leaf; not calibrated confidence.",
-            "linear_regression": "Distance of a clipped linear score from 0.5; not a calibrated probability or uncertainty estimate.",
+            "logistic_regression": "Maximum of model-estimated Pass/Fail probabilities; not calibrated confidence or uncertainty.",
             "kmeans": "Smoothed Pass share among training records in the nearest cluster; cluster labels are descriptive.",
             "pca_knn": "Smoothed Pass share among nearby training records in PCA space; not calibrated.",
         }.get(model, "Fallback-rule score; not model-estimated or calibrated.")
@@ -170,8 +167,8 @@ class StudentInferenceService:
     def execute_tree_classification(self, study_hours: float, attendance: float,
                                     previous_marks: float, model: str = "decision_tree") -> dict:
         logger.info("Prediction model=%s hours=%s attendance=%s marks=%s", model, study_hours, attendance, previous_marks)
-        if model not in {"decision_tree", "linear_regression", "kmeans", "pca_knn"}:
-            raise ValueError("Choose Decision Tree, Linear Regression, K-Means or PCA + nearest-neighbour.")
+        if model not in {"decision_tree", "logistic_regression"}:
+            raise ValueError("Choose Decision Tree or Logistic Regression.")
         return self._classify(self._repository.fetch_all(), study_hours, attendance, previous_marks, model)
 
     def sensitivity(self, study_hours: float, attendance: float, previous_marks: float,
