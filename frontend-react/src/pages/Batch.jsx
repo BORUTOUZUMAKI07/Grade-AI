@@ -60,7 +60,7 @@ export default function Batch() {
       <div className="glass p-6">
         <input ref={fileRef} type="file" accept=".csv,text/csv" hidden onChange={onFile} />
         <div className="flex flex-wrap items-center gap-3">
-          <label className="text-xs text-neutral-400">Model <select value={model} onChange={(e) => setModel(e.target.value)} className="ml-2 rounded-xl border border-white/10 bg-black/40 px-3 py-2 text-sm text-white"><option value="decision_tree">Decision Tree</option><option value="linear_regression">Linear Regression</option></select></label>
+          <label className="text-xs text-neutral-400">Model <select value={model} onChange={(e) => setModel(e.target.value)} className="ml-2 rounded-xl border border-white/10 bg-black/40 px-3 py-2 text-sm text-white"><option value="decision_tree">Decision Tree</option><option value="logistic_regression">Logistic Regression</option></select></label>
           <button className={btnCls} onClick={() => fileRef.current.click()}><Upload size={14} /> Choose CSV file</button>
           <button className={btnCls} onClick={() => saveText('name,study_hours,attendance,previous_marks\nAsha,7,82,66\nBen,3,58,44\n', 'batch-template.csv')}><Download size={14} /> Download template</button>
           {parsed && parsed.valid.length > 0 && <button className={btnPrimary} onClick={run} disabled={busy}>{busy ? <Loader2 size={14} className="animate-spin" /> : <Play size={14} />} Run predictions</button>}
