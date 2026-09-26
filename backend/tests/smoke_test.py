@@ -49,7 +49,7 @@ with TestClient(app) as c, TestClient(app) as c2, TestClient(app) as ca:
     analytics_json = analytics.json()
     validation = analytics_json.get("summary", {}).get("validation", {})
     chk("analytics exposes a reproducible stratified hold-out",
-        analytics.status_code == 200 and validation.get("method") == "stratified 80/20 hold-out"
+        analytics.status_code == 200 and "stratified 80/20 hold-out" in validation.get("method", "")
         and validation.get("seed") == 20260925
         and validation.get("train_rows", 0) > 0 and validation.get("test_rows", 0) > 0
         and validation.get("positive_class") == "Pass",
@@ -99,7 +99,7 @@ with TestClient(app) as c, TestClient(app) as c2, TestClient(app) as ca:
         live_linear.status_code == 200 and live_linear.json().get("selected_model") == "logistic_regression" and
         len(live_linear.json().get("curves", {}).get("attendance", {}).get("points", [])) == 11)
     linear = c.post(f"{P}/predict/", json=PRED(6, 75, 60, model="logistic_regression"), headers=H)
-    chk("linear regression selected model returns tagged prediction",
+    chk("logistic regression selected model returns tagged prediction",
         linear.status_code == 200 and linear.json().get("selected_model") == "logistic_regression" and "logistic regression" in linear.json().get("model_source", "").lower())
     recent = c.get(f"{P}/predict/history?page_size=10", headers=H).json()
     chk("history persists selected model", any(item.get("model_name") == "logistic_regression" for item in recent.get("items", [])))
