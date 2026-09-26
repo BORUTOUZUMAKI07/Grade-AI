@@ -75,9 +75,15 @@ main <- function() {
   required <- c("StudyHours", "Attendance", "PreviousMarks", "Result")
   missing <- setdiff(required, names(students))
   if (length(missing)) stop(paste("Missing required columns:", paste(missing, collapse=", ")))
-  students <- students[complete.cases(students[, required]), ]
+  if (any(!complete.cases(students[, required]))) stop("Dataset contains missing values; regenerate and validate it first.")
+  if (!all(students$Result %in% c("Fail", "Pass"))) stop("Result must contain only Fail or Pass.")
   students$Result <- factor(students$Result, levels=c("Fail", "Pass"))
-  if (nrow(students) < 4) stop("At least four complete student rows are required.")
+  if (nrow(students) != 1000L || any(table(students$Result) != 500L))
+    stop("Expected exactly 1,000 synthetic demo rows: 500 Fail and 500 Pass. Run data/generate_balanced_dataset.py first.")
+  if (any(students$StudyHours < 0 | students$StudyHours > 12) ||
+      any(students$Attendance < 40 | students$Attendance > 100) ||
+      any(students$PreviousMarks < 0 | students$PreviousMarks > 100))
+    stop("Dataset contains feature values outside the generator's documented ranges.")
   dir.create(CONFIG$output_dir, recursive=TRUE, showWarnings=FALSE)
 
   # Evaluate on a stratified hold-out that is never used to fit these evaluation models.
@@ -89,36 +95,50 @@ main <- function() {
   tree_pred <- ifelse(tree_score >= 0.5, "Pass", "Fail")
   tree_eval <- evaluate_binary(split$test$Result, tree_pred, tree_score)
 
+  # Logistic Regression evaluation fit uses only the training partition.
   eval_x_train <- split$train[, c("StudyHours", "Attendance", "PreviousMarks")]
   eval_x_test <- split$test[, c("StudyHours", "Attendance", "PreviousMarks")]
-  eval_lm <- stats::lm(as.numeric(split$train$Result == "Pass") ~ StudyHours + Attendance + PreviousMarks,
-                       data=split$train)
-  lm_score <- pmin(1, pmax(0, as.numeric(stats::predict(eval_lm, newdata=eval_x_test))))
-  lm_pred <- ifelse(lm_score >= 0.5, "Pass", "Fail")
-  lm_eval <- evaluate_binary(split$test$Result, lm_pred, lm_score)
+  eval_center <- vapply(eval_x_train, mean, numeric(1))
+  eval_scale <- vapply(eval_x_train, stats::sd, numeric(1))
+  eval_scale[!is.finite(eval_scale) | eval_scale == 0] <- 1
+  eval_train <- as.data.frame(scale(eval_x_train, center=eval_center, scale=eval_scale))
+  names(eval_train) <- c("StudyHours", "Attendance", "PreviousMarks")
+  eval_train$Result <- split$train$Result
+  eval_test <- as.data.frame(scale(eval_x_test, center=eval_center, scale=eval_scale))
+  names(eval_test) <- c("StudyHours", "Attendance", "PreviousMarks")
+  eval_logit <- stats::glm(Result ~ StudyHours + Attendance + PreviousMarks,
+                           data=eval_train, family=stats::binomial())
+  logit_score <- as.numeric(stats::predict(eval_logit, newdata=eval_test, type="response"))
+  logit_pred <- ifelse(logit_score >= 0.5, "Pass", "Fail")
+  logit_eval <- evaluate_binary(split$test$Result, logit_pred, logit_score)
 
   # 1) Decision Tree classifier (existing API-compatible export) (existing API-compatible export)
   tree <- rpart::rpart(Result ~ StudyHours + Attendance + PreviousMarks,
                        data=students, method="class", control=rpart::rpart.control(cp=0.01))
   export_tree_meta(tree, students, CONFIG$output_dir, CONFIG$tree_filename)
 
-  # 2) Linear probability regression: Pass=1, Fail=0. This estimates a numeric pass score,
-  # not a final exam mark. Clamp inference output to [0, 1].
+  # 2) Logistic Regression classifier, standardized using full approved training data.
   x <- students[, c("StudyHours", "Attendance", "PreviousMarks")]
-  y <- as.numeric(students$Result == "Pass")
-  regression <- stats::lm(y ~ StudyHours + Attendance + PreviousMarks, data=students)
-  co <- stats::coef(regression)
-  reg_payload <- list(
-    metadata=list(name="Linear Regression", framework="R stats::lm (linear probability model)",
+  feature_center <- vapply(x, mean, numeric(1))
+  feature_scale <- vapply(x, stats::sd, numeric(1))
+  feature_scale[!is.finite(feature_scale) | feature_scale == 0] <- 1
+  x_scaled <- as.data.frame(scale(x, center=feature_center, scale=feature_scale))
+  names(x_scaled) <- c("StudyHours", "Attendance", "PreviousMarks")
+  x_scaled$Result <- students$Result
+  logistic <- stats::glm(Result ~ StudyHours + Attendance + PreviousMarks,
+                         data=x_scaled, family=stats::binomial())
+  co <- stats::coef(logistic)
+  logistic_payload <- list(
+    metadata=list(name="Logistic Regression", framework="R stats::glm binomial",
                   trained_at=format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ"),
-                  total_records=nrow(students), target="Pass=1, Fail=0",
-                  target_note="Estimated pass score from binary labels; not a predicted exam mark.",
-                  r_squared=unname(summary(regression)$r.squared),
-                  rmse=sqrt(mean((stats::predict(regression, students)-y)^2))),
+                  total_records=nrow(students), target="Pass/Fail",
+                  note="Synthetic demo classifier; probabilities are not calibrated for real student outcomes."),
+    center=as.list(setNames(as.numeric(feature_center), c("study_hours", "attendance", "previous_marks"))),
+    scale=as.list(setNames(as.numeric(feature_scale), c("study_hours", "attendance", "previous_marks"))),
     weights=list(intercept=unname(co[1]), study_hours=unname(co["StudyHours"]),
                  attendance=unname(co["Attendance"]), previous_marks=unname(co["PreviousMarks"]))
   )
-  jsonlite::write_json(reg_payload, file.path(CONFIG$output_dir, CONFIG$regression_filename),
+  jsonlite::write_json(logistic_payload, file.path(CONFIG$output_dir, "logistic_regression_model.json"),
                        auto_unbox=TRUE, pretty=TRUE, digits=NA)
 
   # 3) PCA on standardized numeric inputs; save loadings, center, scale and variance.
@@ -160,24 +180,24 @@ main <- function() {
 
   # One summary document powers the model registry/analytics UI.
   analytics <- list(
-    dataset_note="Synthetic demo dataset. Decision Tree and Linear Regression validation metrics use a reproducible stratified 80/20 hold-out. Final artifacts are then refit on all rows. PCA and K-Means are descriptive/unsupervised and have no predictive accuracy score.",
+    dataset_note="Synthetic demo dataset. Decision Tree and Logistic Regression validation metrics use a reproducible stratified 80/20 hold-out. Final artifacts are then refit on all rows. PCA and K-Means are descriptive/unsupervised and have no predictive accuracy score.",
     data_source="r_analytics/data/student_data.csv (synthetic demo data)",
     trained_at=format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ"), total_records=nrow(students),
     validation=list(method="stratified 80/20 hold-out", seed=split$seed,
                     train_rows=split$train_rows, test_rows=split$test_rows,
                     positive_class="Pass", threshold=0.5,
-                    decision_tree=tree_eval, linear_regression=lm_eval,
+                    decision_tree=tree_eval, logistic_regression=logit_eval,
                     unsupervised_note="PCA and K-Means are not evaluated as Pass/Fail classifiers; no accuracy, F1 or AUC is assigned to them."),
     result_counts=as.list(table(students$Result)),
     feature_summary=lapply(x, function(v) list(min=min(v), max=max(v), mean=mean(v), median=median(v), sd=stats::sd(v))),
     tree=list(accuracy=mean(stats::predict(tree, students, type="class")==students$Result),
               variable_importance=if (is.null(tree$variable.importance)) list() else as.list(tree$variable.importance)),
-    regression=reg_payload$metadata,
+    logistic_regression=logistic_payload$metadata,
     pca=pca_payload$metadata,
     clustering=km$size
   )
   jsonlite::write_json(analytics, file.path(CONFIG$output_dir, CONFIG$analytics_filename),
                        auto_unbox=TRUE, pretty=TRUE, digits=NA)
-  cat("Trained and exported Decision Tree, Linear Regression, PCA, K-Means and analytics artifacts.\n")
+  cat("Trained and exported Decision Tree, Logistic Regression, PCA, K-Means and analytics artifacts.\n")
 }
 main()
