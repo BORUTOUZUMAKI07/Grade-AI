@@ -398,6 +398,7 @@ export default function App() {
             {NAV.map(([label, id]) => (
               <a key={id} href={`#${id}`} className="rounded-full px-4 py-2 text-sm text-neutral-400 transition hover:bg-white/5 hover:text-white">{label}</a>
             ))}
+            <Link to="/intelligence" className="rounded-full bg-yellow-400/10 px-4 py-2 text-sm font-semibold text-yellow-300 transition hover:bg-yellow-400/20">AI Services</Link>
           </div>
           <div className="flex items-center gap-4">
             <div className="hidden items-center gap-2 sm:flex" role="group" aria-label="Colour theme">
