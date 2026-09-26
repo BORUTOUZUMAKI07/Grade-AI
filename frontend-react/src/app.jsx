@@ -139,7 +139,7 @@ function History({ history, onClear }) {
             <tbody className="mono divide-y divide-white/5 text-neutral-400">
               {history.slice(0, 20).map((h) => (
                 <tr key={h.t}>
-                  <td className="p-2">{new Date(h.t).toLocaleTimeString()}</td><td className="p-2">{h.study}h</td><td className="p-2">{h.att}%</td><td className="p-2">{h.marks}</td><td className="p-2 text-xs">{({decision_tree:'Decision Tree',linear_regression:'Linear Regression',kmeans:'K-Means',pca_knn:'PCA + kNN'}[h.model] || h.model || 'Decision Tree')}</td>
+                  <td className="p-2">{new Date(h.t).toLocaleTimeString()}</td><td className="p-2">{h.study}h</td><td className="p-2">{h.att}%</td><td className="p-2">{h.marks}</td><td className="p-2 text-xs">{({decision_tree:'Decision Tree',logistic_regression:'Logistic Regression'}[h.model] || h.model || 'Decision Tree')}</td>
                   <td className="p-2 font-semibold" style={{ color: h.result === 'Pass' ? 'var(--pass)' : 'var(--fail)' }}>{h.result}</td><td className="p-2">{h.conf}%</td>
                 </tr>
               ))}
@@ -153,7 +153,7 @@ function History({ history, onClear }) {
 
 const FAQS = [
   ['What does GradeAI predict?', 'A demo estimate of Pass/Fail from study hours, attendance and previous marks. This project currently uses synthetic demonstration data.'],
-  ['How much can I trust the result?', 'The displayed confidence is a model-specific proxy (such as a training-leaf share or distance from a threshold), not calibrated uncertainty. Treat results as educational demonstrations, not decisions about real students.'],
+  ['How much can I trust the result?', 'Displayed scores are model-specific and not calibrated uncertainty. Treat results as educational demonstrations, not decisions about real students.'],
   ['What do the charts and the 3D view show?', 'Every dot is a training record colored by its recorded label, not a prediction made by the selected model. The dataset is synthetic.'],
   ['Where does the data come from?', 'From a synthetic, balanced demo CSV shipped with the repository. It is not a real student record source. The Records tab shows the model training reference rows.'],
 ];
@@ -464,7 +464,7 @@ export default function App() {
           <motion.section initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} className={`${glass} flex flex-col p-6 lg:col-span-4`}>
             <h2 className="mb-6 flex items-center gap-2 text-base font-semibold text-white"><Layers size={17} className="text-yellow-400" /> Student details</h2>
             <form onSubmit={run} className="space-y-6">
-              <label className="block"><span className="mb-2 block text-sm font-medium text-neutral-300">Prediction model</span><select value={selectedModel} onChange={(e) => { setSelectedModel(e.target.value); setSensitivity(null); }} className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3.5 text-sm text-white outline-none focus:border-yellow-400/70">{(modelRegistry.length ? modelRegistry.filter((m) => m.available) : [{id:'decision_tree',name:'Decision Tree'},{id:'linear_regression',name:'Linear Regression'}]).map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}</select><p className="mt-1 text-xs text-neutral-500">{selectedModel === 'linear_regression' ? 'Linear score fitted to Pass/Fail labels; not exam marks.' : selectedModel === 'kmeans' ? 'Assigns the nearest cluster, then estimates outcome from that cluster’s Pass/Fail label mix.' : selectedModel === 'pca_knn' ? 'Projects inputs into PCA space and votes using the 15 nearest labeled training records.' : 'Uses the trained decision tree and its decision path.'}</p></label>
+              <label className="block"><span className="mb-2 block text-sm font-medium text-neutral-300">Prediction model</span><select value={selectedModel} onChange={(e) => { setSelectedModel(e.target.value); setSensitivity(null); }} className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3.5 text-sm text-white outline-none focus:border-yellow-400/70">{(modelRegistry.length ? modelRegistry.filter((m) => m.available) : [{id:'decision_tree',name:'Decision Tree'},{id:'logistic_regression',name:'Logistic Regression'}]).map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}</select><p className="mt-1 text-xs text-neutral-500">{selectedModel === 'logistic_regression' ? 'Binary logistic classifier; probability is a synthetic-demo estimate, not calibrated for real student outcomes.' : 'Uses the trained decision tree and its decision path.'}</p></label>
               <Field icon={BookOpen} label="Study hours" hint="per day" value={studyHours} onChange={setStudyHours} min={0} max={24} step={0.1} unit="h" />
               <Field icon={CalendarCheck} label="Attendance" hint="percent" value={attendance} onChange={setAttendance} min={0} max={100} step={1} unit="%" />
               <Field icon={Trophy} label="Previous marks" hint="out of 100" value={previousMarks} onChange={setPreviousMarks} min={0} max={100} step={1} unit="/100" />
@@ -685,7 +685,7 @@ export default function App() {
             {[
               [Layers, 'Enter three numbers', 'Study hours per day, attendance and the marks from the last exam.'],
               [Brain, 'The model compares', 'GradeAI checks them against its training records to find the closest matching pattern.'],
-              [Trophy, 'Read the result', 'You get pass or fail, a confidence score, and charts showing where the student sits among the data.'],
+              [Trophy, 'Read the result', 'You get pass or fail, a model-specific score and charts showing the synthetic reference data.'],
             ].map(([Icon, title, text], i) => (
               <motion.div key={title} {...reveal} transition={{ duration: 0.5, delay: i * 0.1 }} className={`${glass} p-8`}>
                 <div className="mb-5 flex items-center justify-between">
