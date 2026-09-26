@@ -2,7 +2,7 @@
   "metadata": {
     "name": "K-Means Clustering",
     "framework": "R stats::kmeans",
-    "trained_at": "2026-09-26T07:51:41Z",
+    "trained_at": "2026-09-26T08:02:48Z",
     "total_records": 1000,
     "clusters": 2,
     "features": ["StudyHours", "Attendance", "PreviousMarks"],

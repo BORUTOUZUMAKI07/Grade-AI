@@ -2,7 +2,7 @@
   "metadata": {
     "name": "Logistic Regression",
     "framework": "R stats::glm binomial",
-    "trained_at": "2026-09-26T07:51:41Z",
+    "trained_at": "2026-09-26T08:02:48Z",
     "total_records": 1000,
     "target": "Pass/Fail",
     "note": "Synthetic demo classifier; probabilities are not calibrated for real student outcomes."
@@ -18,7 +18,7 @@
     "previous_marks": 22.0417528619942
   },
   "weights": {
-    "intercept": 0.00114617296943545,
+    "intercept": 0.00114617296943543,
     "study_hours": 1.12450739502255,
     "attendance": 0.667092197516754,
     "previous_marks": 1.09267630297417
