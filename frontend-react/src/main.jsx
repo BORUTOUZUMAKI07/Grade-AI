@@ -11,6 +11,7 @@ const Students = lazy(() => import("./pages/Students.jsx"));
 const Batch = lazy(() => import("./pages/Batch.jsx"));
 const Admin = lazy(() => import("./pages/Admin.jsx"));
 const StudentHome = lazy(() => import("./pages/StudentHome.jsx"));
+const IntelligenceServices = lazy(() => import("./pages/IntelligenceServices.jsx"));
 
 // Apply the saved colour theme before the first paint of any page
 try { document.documentElement.dataset.theme = localStorage.getItem("gradeai-theme") || "brass"; } catch { /* storage unavailable */ }
@@ -26,6 +27,7 @@ function Gate() {
     <Suspense fallback={<Splash />}>
       <Routes>
         <Route path="/" element={staff ? <App /> : <StudentHome />} />
+        <Route path="/intelligence" element={staff ? <IntelligenceServices /> : <Navigate to="/" replace />} />
         <Route path="/students" element={staff ? <Students /> : <Navigate to="/" replace />} />
         <Route path="/batch" element={staff ? <Batch /> : <Navigate to="/" replace />} />
         <Route path="/admin" element={user.role === "admin" ? <Admin /> : <Navigate to="/" replace />} />
