@@ -6,3 +6,8 @@ sqlalchemy>=2.0.0
 pyjwt>=2.8.0
 argon2-cffi>=23.1.0
 reportlab>=4.0.0
+
+# Lightweight CPU models for weather, sales, and customer intelligence
+numpy>=1.26.0
+pandas>=2.1.0
+scikit-learn>=1.4.0
