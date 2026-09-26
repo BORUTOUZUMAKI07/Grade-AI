@@ -41,9 +41,23 @@ evaluate_binary <- function(actual, predicted, score) {
   ece <- if(length(nonempty)) sum(vapply(nonempty, function(i)
     bin_rows[[i]]$count / length(actual) *
       abs(bin_rows[[i]]$mean_predicted - bin_rows[[i]]$observed_pass_rate), numeric(1))) else NA_real_
+  # Average precision (stepwise PR-AUC) over descending predicted scores.
+  ord <- order(score, decreasing=TRUE)
+  sorted_actual <- as.numeric(actual[ord] == "Pass")
+  cumulative_tp <- cumsum(sorted_actual)
+  precision_at_rank <- cumulative_tp / seq_along(sorted_actual)
+  pr_auc <- if (sum(sorted_actual) > 0) {
+    sum(precision_at_rank * sorted_actual) / sum(sorted_actual)
+  } else NA_real_
+  eps <- 1e-15
+  clipped <- pmin(1-eps, pmax(eps, score))
+  log_loss <- mean(-((actual == "Pass") * log(clipped) +
+                     (actual == "Fail") * log(1-clipped)))
   list(n=length(actual), accuracy=mean(actual == predicted),
+       balanced_accuracy=(recall + specificity) / 2,
        precision=precision, recall=recall, specificity=specificity, f1=f1,
-       roc_auc=auc, confusion_matrix=list(
+       roc_auc=auc, pr_auc=pr_auc, log_loss=log_loss,
+       confusion_matrix=list(
          labels=c("Fail", "Pass"),
          rows=list(actual_Fail=list(predicted_Fail=tn, predicted_Pass=fp),
                    actual_Pass=list(predicted_Fail=fn, predicted_Pass=tp))),
