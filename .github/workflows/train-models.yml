@@ -51,7 +51,8 @@ jobs:
           assert all(k in weights for k in ["intercept", "study_hours", "attendance", "previous_marks"])
           summary = json.loads((root / "analytics_summary.json").read_text())
           validation = summary["validation"]
-          assert validation["method"] == "stratified 80/20 hold-out"
+          assert "stratified 80/20 hold-out" in validation["method"]
+          assert validation["cross_validation"]["folds"] == 5
           assert validation["logistic_regression"]["n"] == validation["test_rows"]
           PY
       - name: Commit trained weights to main
