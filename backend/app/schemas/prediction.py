@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from app.schemas.common import UtcDatetime
 
-PredictiveModel = Literal["decision_tree", "linear_regression", "kmeans", "pca_knn"]
+PredictiveModel = Literal["decision_tree", "logistic_regression"]
 
 class PredictionRequest(BaseModel):
     study_hours: float = Field(..., ge=0.0, le=24.0)
