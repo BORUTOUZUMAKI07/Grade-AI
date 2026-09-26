@@ -56,7 +56,7 @@ def process_prediction(payload: PredictionRequest,
 
 
 @router.get("/training-predictions")
-def training_predictions(model: str = Query("decision_tree", pattern="^(decision_tree|linear_regression|kmeans|pca_knn)$"),
+def training_predictions(model: str = Query("decision_tree", pattern="^(decision_tree|logistic_regression)$"),
     service: StudentInferenceService = Depends(get_inference_service),
     user: User = Depends(staff_only)):
     """Per-record predictions from the selected model on synthetic training rows."""
