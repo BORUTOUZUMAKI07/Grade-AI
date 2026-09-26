@@ -1,10 +1,10 @@
 import React,{useEffect,useState} from "react";
 import {Link,useParams} from "react-router-dom";
-import {ArrowLeft,RefreshCw,CloudSun,ChartNoAxesCombined,Users,GraduationCap,BrainCircuit,Activity,Database} from "lucide-react";
+import {ArrowLeft,RefreshCw,CloudSun,BarChart3,Users,GraduationCap,BrainCircuit,Activity,Database} from "lucide-react";
 const API=(import.meta.env.VITE_API_URL||"http://localhost:8000/api/v1").replace(/\/$/,"")+"/intelligence";
 const CFG={
 weather:{title:"Weather Intelligence",icon:CloudSun,fields:[["day_of_year","Day of year",180,1,366],["humidity","Humidity (%)",55,0,100],["rainfall","Rainfall (mm)",0,0,500],["wind_speed","Wind speed",5,0,250]],path:"/weather/predict",unit:"°C"},
-sales:{title:"Sales Intelligence",icon:ChartNoAxesCombined,fields:[["price","Price",30,0,100000],["promotion","Promotion (0/1)",0,0,1],["ad_spend","Advertising spend",100,0,10000000],["season","Seasonality (-1 to 1)",0,-1,1]],path:"/sales/predict",unit:"sales units"},
+sales:{title:"Sales Intelligence",icon:BarChart3,fields:[["price","Price",30,0,100000],["promotion","Promotion (0/1)",0,0,1],["ad_spend","Advertising spend",100,0,10000000],["season","Seasonality (-1 to 1)",0,-1,1]],path:"/sales/predict",unit:"sales units"},
 customers:{title:"Customer Intelligence",icon:Users,fields:[["annual_spend","Annual spend",800,0,100000000],["orders_per_year","Orders per year",12,0,10000],["avg_order_value","Average order value",75,0,1000000],["days_since_last_order","Days since last order",30,0,3650]],path:"/customers/segment",unit:"cluster"}
 };
 const MODELS=["Linear Regression","Decision Tree","PCA","K-Means"];
