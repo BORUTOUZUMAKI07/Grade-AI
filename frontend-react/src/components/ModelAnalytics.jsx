@@ -59,7 +59,7 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction, a
   const importance = Object.entries(summary.tree?.variable_importance || {})
     .map(([feature, value]) => ({ feature: labelFeature(feature), importance: Number(value) }))
     .sort((a, b) => b.importance - a.importance);
-  const weights = analytics?.regression?.weights || {};
+  const weights = analytics?.logistic_regression?.weights || {};
   const coefficients = Object.entries(weights)
     .map(([feature, value]) => ({ feature: feature === 'intercept' ? 'Intercept' : labelFeature(feature), coefficient: Number(value) }))
     .filter((item) => Number.isFinite(item.coefficient));
@@ -86,7 +86,7 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction, a
   const variance = pca?.metadata?.explained_variance || summary.pca?.explained_variance || [];
   const varianceRows = variance.map((v, i) => ({ component: 'PC' + (i + 1), variance: +(Number(v) * 100).toFixed(2) }));
   const trainedAt = summary.trained_at ? new Date(summary.trained_at).toLocaleString() : 'Not available';
-  const modelName = ({ decision_tree: 'Decision Tree', linear_regression: 'Linear Regression', kmeans: 'K-Means + cluster label mapping', pca_knn: 'PCA + nearest-neighbour' })[selectedModel] || selectedModel;
+  const modelName = ({ decision_tree: 'Decision Tree', logistic_regression: 'Logistic Regression' })[selectedModel] || selectedModel;
 
   if (!analytics || !summary || Object.keys(summary).length === 0) {
     return <div className={panel}><p className="font-semibold text-white">Model analytics are not available yet.</p><p className="mt-2 text-sm text-neutral-400">Run the R training workflow and make sure its JSON artifacts are deployed to backend/model_store.</p></div>;
@@ -104,7 +104,7 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction, a
       <div className="mt-2 flex flex-wrap items-center gap-4">
         <span className="text-lg font-bold text-white">{prediction.predicted_result}</span>
         <span className="text-sm text-neutral-300">Pass probability: {(Number(prediction.pass_probability || 0) * 100).toFixed(1)}%</span>
-        <span className="text-sm text-neutral-300">Confidence proxy: {(Number(prediction.confidence_score || 0) * 100).toFixed(1)}%</span>
+        <span className="text-sm text-neutral-300">Model score: {(Number(prediction.confidence_score || 0) * 100).toFixed(1)}%</span>
       </div>
     </div>}
 
@@ -120,7 +120,7 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction, a
       <div className="grid gap-4 lg:grid-cols-2">
         {[
           ['Decision Tree', summary.validation.decision_tree],
-          ['Linear probability model', summary.validation.linear_regression],
+          ['Logistic Regression', summary.validation.logistic_regression],
         ].map(([name, result]) => result && <div key={name} className="rounded-xl border border-white/10 bg-black/20 p-4">
           <h4 className="mb-3 font-semibold text-white">{name}</h4>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
@@ -243,7 +243,7 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction, a
       </div>
 
       <div className={panel + ' xl:col-span-2'}>
-        <ChartTitle title={selectedModel === 'linear_regression' ? 'Linear Regression coefficients (selected model)' : 'Linear Regression coefficients (reference model)'} note="The model fits Pass=1 / Fail=0 as a linear probability score, clipped to [0,1]. It does not predict exam marks." />
+        <ChartTitle title={selectedModel === 'logistic_regression' ? 'Logistic Regression coefficients (selected model)' : 'Logistic Regression coefficients (reference model)'} note="Coefficients act on standardized inputs inside the logistic log-odds function; the sigmoid maps the result to a Pass probability." />
         <div className="grid gap-5 lg:grid-cols-[1.2fr_1fr]">
           <div className="h-[320px] min-w-0">
             <ResponsiveContainer width="100%" height="100%">
@@ -260,13 +260,13 @@ export default function ModelAnalytics({ analytics, selectedModel, prediction, a
             </ResponsiveContainer>
           </div>
           <div className="grid content-start gap-3 sm:grid-cols-2 lg:grid-cols-1">
-            <Metric label="Training R-squared" value={Number(summary.regression?.r_squared ?? 0).toFixed(3)} detail="In-sample fit to binary pass/fail labels; not validation performance" />
-            <Metric label="Training RMSE" value={Number(summary.regression?.rmse ?? 0).toFixed(3)} detail="In-sample error on a 0/1 target; not exam-mark error or calibrated probability error" />
+            <Metric label="Training R-squared" value={Number(summary.logistic_regression?.r_squared ?? 0).toFixed(3)} detail="In-sample fit to binary pass/fail labels; not validation performance" />
+            <Metric label="Training RMSE" value={Number(summary.logistic_regression?.rmse ?? 0).toFixed(3)} detail="In-sample error on a 0/1 target; not exam-mark error or calibrated probability error" />
             <p className="text-xs leading-relaxed text-neutral-500">{summary.dataset_note || 'Metrics describe the dataset used to train these artifacts.'}</p>
           </div>
         </div>
       </div>
     </div>
-    <p className="text-xs leading-relaxed text-neutral-600">Artifacts trained: {summary.tree?.accuracy !== undefined ? 'Decision Tree' : 'Tree metrics unavailable'} · {summary.regression ? 'Linear Regression' : 'Regression metrics unavailable'} · {pca ? 'PCA' : 'PCA unavailable'} · {cluster ? 'K-Means' : 'K-Means unavailable'}. Values reflect the currently deployed JSON artifacts; they update only after training artifacts are refreshed and deployed.</p>
+    <p className="text-xs leading-relaxed text-neutral-600">Artifacts trained: {summary.tree?.accuracy !== undefined ? 'Decision Tree' : 'Tree metrics unavailable'} · {summary.logistic_regression ? 'Logistic Regression' : 'Logistic Regression metrics unavailable'} · {pca ? 'PCA' : 'PCA unavailable'} · {cluster ? 'K-Means' : 'K-Means unavailable'}. Values reflect the currently deployed JSON artifacts; they update only after training artifacts are refreshed and deployed.</p>
   </div>;
 }
