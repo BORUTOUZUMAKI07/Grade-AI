@@ -33,6 +33,7 @@ class PredictionResponse(BaseModel):
     metadata: dict
     raw_records: list[StudentRecord]
     selected_model: str = "decision_tree"
+    unsupervised_analysis: dict = Field(default_factory=dict)
     engine_status: str = "COMPLETED"
 
 class HistoryItem(BaseModel):
